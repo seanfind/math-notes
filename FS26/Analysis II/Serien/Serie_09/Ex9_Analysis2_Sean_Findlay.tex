@@ -309,4 +309,20 @@ $$
     $$
 \end{enumerate}
 
+\begin{problem}{Counterexample to Fubini}{}
+    Let $f: [0, \infty)^2 \rightarrow \R$, defined by 
+    $$
+        f(x) =
+        \begin{cases}
+            e^{y-x} & x \geq y \geq 0, \\
+            -e^{x-y} & 0 \leq x \leq y \\
+        \end{cases}
+    $$
+
+    Compute the iterated integrals:
+    $$
+        \int_{0}^{\infty} \left( \int_{0}^{\infty} f(x, y) \dd x \right) \dd y,\quad \int_{0}^{\infty} \left( \int_{0}^{\infty} f(x, y) \dd y \right) \dd x
+    $$
+\end{problem}
+
 \end{document}

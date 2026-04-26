@@ -1,0 +1,234 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{seantex}[sean latex styling]
+
+% --- Packages ---
+% (Using \RequirePackage instead of \usepackage for .sty files)
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[margin=1in]{geometry}
+\RequirePackage{amsmath, amsfonts, amssymb, amsthm}
+\RequirePackage{graphicx}
+\RequirePackage[x11names]{xcolor}
+\RequirePackage[most]{tcolorbox} 
+\RequirePackage{stmaryrd}
+\RequirePackage{enumitem} % Replaced the older 'enumerate' package
+\RequirePackage{mathtools}
+\RequirePackage{parskip}
+\RequirePackage{dsfont}
+\RequirePackage{nicematrix}
+
+% --- Custom Colors ---
+\definecolor{thmcolor}{RGB}{160, 80, 80}    % Muted Brick / Terracotta
+\definecolor{lemcolor}{RGB}{180, 110, 70}   % Calm Rust
+\definecolor{corcolor}{RGB}{160, 140, 80}   % Desaturated Mustard / Sand
+\definecolor{defcolor}{RGB}{80, 130, 100}   % Muted Forest / Deep Sage
+\definecolor{excolor}{RGB}{80, 110, 150}    % Steel Blue / Slate
+\definecolor{remcolor}{RGB}{130, 110, 140}  % Muted Mauve / Heather
+\definecolor{proofgray}{RGB}{245, 245, 245} % Light gray for Proofs (Unchanged)
+\definecolor{notecolor}{RGB}{120, 130, 140} % Neutral Slate/Steel Gray
+\definecolor{probcolor}{RGB}{70, 100, 120}  % Muted Steel/Navy for Problems
+\definecolor{execolor}{RGB}{110, 140, 110}  % Muted Olive / Soft Green
+\definecolor{warncolor}{RGB}{200, 120, 40}  % Muted Amber / Warning Orange
+\definecolor{propcolor}{RGB}{100, 90, 130}  % Muted Indigo / Deep Periwinkle
+
+
+\setlength{\parskip}{1.2ex plus 0.5ex minus 0.2ex}
+
+% --- Custom Box Styles ---
+
+% Theorem Box
+\newtcbtheorem[number within=section]{theorem}{Theorem}%
+{
+    colback=thmcolor!5,
+    colframe=thmcolor,
+    fonttitle=\bfseries,
+    arc=3pt,
+    outer arc=3pt,
+    boxrule=0.8pt,
+    % Optional: adds a slight emphasis to the left border
+    leftrule=3pt 
+}{thm}
+
+% Lemma Box
+\newtcbtheorem[use counter from=theorem]{lemma}{Lemma}%
+{
+    colback=lemcolor!5,
+    colframe=lemcolor,
+    fonttitle=\bfseries,
+    arc=3pt,
+    outer arc=3pt,
+    boxrule=0.8pt,
+    % Optional: adds a slight emphasis to the left border
+    leftrule=3pt 
+}{lem}
+
+% Corollary Box
+\newtcbtheorem[use counter from=theorem]{corollary}{Corollary}%
+{
+    colback=corcolor!5,
+    colframe=corcolor,
+    fonttitle=\bfseries,
+    arc=3pt,
+    outer arc=3pt,
+    boxrule=0.8pt,
+    % Optional: adds a slight emphasis to the left border
+    leftrule=3pt 
+}{cor}
+
+% Proposition Box
+\newtcbtheorem[use counter from=theorem]{proposition}{Proposition}%
+{
+    colback=propcolor!5,
+    colframe=propcolor,
+    fonttitle=\bfseries,
+    arc=3pt,
+    outer arc=3pt,
+    boxrule=0.8pt,
+    % Optional: adds a slight emphasis to the left border
+    leftrule=3pt 
+}{prop}
+
+% Definition Box
+\newtcbtheorem[use counter from=theorem]{definition}{Definition}%
+{
+    colback=defcolor!5,
+    colframe=defcolor,
+    fonttitle=\bfseries,
+    arc=3pt,
+    outer arc=3pt,
+    boxrule=0.8pt,
+    % Optional: adds a slight emphasis to the left border
+    leftrule=3pt 
+}{defn}
+
+% Example Box
+\newtcbtheorem[use counter from=theorem]{example}{Example}%
+{
+    colback=excolor!5,
+    colframe=excolor,
+    fonttitle=\bfseries,
+    arc=3pt,
+    outer arc=3pt,
+    boxrule=0.8pt,
+    % Optional: adds a slight emphasis to the left border
+    leftrule=3pt 
+}{ex}
+
+% Remark Box
+\newtcbtheorem[use counter from=theorem]{remark}{Remark}%
+{
+    colback=remcolor!5,
+    colframe=remcolor,
+    fonttitle=\bfseries,
+    arc=3pt,
+    outer arc=3pt,
+    boxrule=0.8pt,
+    % Optional: adds a slight emphasis to the left border
+    leftrule=3pt 
+}{rem}
+
+% Proof Box
+\newtcolorbox{proofbox}[1][]{
+    colback=white,
+    colframe=gray!30,
+    fonttitle=\bfseries\color{black}, % Keeps the base title font bold
+    title={Proof\ifstrempty{#1}{}{ \textmd{#1}}}, % Adds a space and un-bolds the extra text
+    arc=0pt,
+    outer arc=0pt,
+    boxrule=0.5pt,
+    toprule=2pt, 
+    enhanced,
+    breakable,
+    after upper={\hfill$\square$}
+}
+
+% Generic Neutral Box (Custom Title, No Numbering)
+\newtcolorbox{notebox}[1]{
+    colback=notecolor!5,
+    colframe=notecolor,
+    fonttitle=\bfseries,
+    title={#1}, % This takes whatever you type in the brackets
+    arc=3pt,
+    outer arc=3pt,
+    boxrule=0.8pt,
+    % Optional: adds a slight emphasis to the left border
+    leftrule=3pt 
+}
+
+% Dynamic Homework Box (Auto-numbered, customizable prefix)
+\newtcolorbox[auto counter]{problem}[3][Problem]{
+    colback=probcolor!5,
+    colframe=probcolor,
+    fonttitle=\bfseries,
+    arc=3pt,
+    outer arc=3pt,
+    boxrule=0.8pt,
+    % The logic below checks if a title was provided. 
+    % If empty, it hides the colon.
+    title={#1 \thetcbcounter\if\relax\detokenize{#2}\relax\else: #2\fi},
+    label={#3}
+    % Optional: adds a slight emphasis to the left border
+    leftrule=3pt 
+}
+
+% Exercise Box
+\newtcbtheorem[use counter from=theorem]{exercise}{Exercise}%
+{
+    colback=execolor!5,
+    colframe=execolor,
+    fonttitle=\bfseries,
+    arc=3pt,
+    outer arc=3pt,
+    boxrule=0.8pt,
+    % Optional: adds a slight emphasis to the left border
+    leftrule=3pt 
+}{exe}
+
+% Warning Box
+\newtcbtheorem{warning}{Warning}%
+{
+    colback=warncolor!5,
+    colframe=warncolor,
+    fonttitle=\bfseries,
+    arc=3pt,
+    outer arc=3pt,
+    boxrule=0.8pt,
+    leftrule=3pt,
+}{warn}
+
+% --- Math Commands ---
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\powerset}{\mathcal{P}}
+
+
+% --- General & Quality of Life ---
+\newcommand{\F}{\mathbb{F}}                 % Generic field (R or C)
+\newcommand{\eps}{\varepsilon}              % The "pretty" epsilon
+\newcommand{\vphi}{\varphi}                 % The "pretty" phi
+
+% --- Linear Algebra ---
+% (Using \DeclareMathOperator so spacing is handled perfectly)
+\DeclareMathOperator{\Span}{span}           % Span
+\DeclareMathOperator{\Ker}{ker}             % Kernel
+\DeclareMathOperator{\img}{im}              % Image (using \img to not break complex \Im)
+\DeclareMathOperator{\rank}{rank}           % Rank
+\DeclareMathOperator{\Tr}{Tr}               % Trace
+\DeclareMathOperator{\diag}{diag}           % Diagonal matrix
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}  % Norm ||v||
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}   % Absolute value |x|
+\newcommand{\inner}[2]{\left\langle#1, #2\right\rangle} % Inner product <u,v>
+
+% --- Analysis II (Multivariable) ---
+\newcommand{\dd}{\mathop{}\!\mathrm{d}}
+\newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}}               % First partial derivative
+\newcommand{\pdd}[2]{\frac{\partial^2 #1}{\partial #2^2}}          % Second partial derivative (same variable)
+\newcommand{\pddmix}[3]{\frac{\partial^2 #1}{\partial #2 \partial #3}} % Mixed partial derivative
+\newcommand{\eval}[3]{\left. #1 \right|_{#2}^{#3}}                  % Evaluation bar for integrals
+\newcommand{\interior}[1]{%
+  {\kern0pt#1}^{\mathrm{o}}%
+}
+
+\endinput % Good practice to end .sty files with this
