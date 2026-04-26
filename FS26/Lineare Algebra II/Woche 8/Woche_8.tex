@@ -1,0 +1,524 @@
+\documentclass[12pt]{article}
+\usepackage{seantex}
+
+% --- Document Info ---
+\title{Linear Algebra II: Week 8, Lecture 1}
+\author{Sean Findlay}
+\date{\today}
+
+% --- Start Document ---
+\begin{document}
+
+\maketitle
+
+\section{Euclidean and Hermitian (or unitary) spaces}
+
+\begin{definition}{Scalar product on $\R$}{}
+Let $V$ be a vector space over $R$. A \textbf{scalar product} or inner product is a function $V \times V \rightarrow \R, \, (v, w) \mapsto \langle v, w \rangle$ that satisfies:
+
+\begin{enumerate}
+    \item \textbf{Linearity in the first variable:}
+    \begin{align*}
+        \langle v_1 + v_2, w \rangle &= \langle v_1, w \rangle + \langle v_2, w \rangle \quad \forall v_1, v_2, w \in V \\
+        \langle \alpha v, w \rangle &= \alpha \langle v, w \rangle \quad \forall \alpha \in \mathbb{R}, v, w \in V
+    \end{align*}
+
+    \item \textbf{Linearity in the second variable}
+    \item \textbf{Symmetry}: $\langle v, w \rangle = \langle w, v \rangle \, \forall v, w \in V$
+    \item \textbf{Positivity}: $\forall 0 \neq v \in V, \, \langle v, v \rangle > 0$
+\end{enumerate}
+
+We call $(V, \langle \cdot, \cdot \rangle)$ a \textbf{Euclidean space}.
+\end{definition}
+
+\begin{definition}{Hermitian product on $\C$}{label}
+Let $V$ be a vector space over $\C$. A Hermitian product on $V$ is a function $V \times V \rightarrow \C, \, (v, w) \mapsto \langle v, w \rangle$ that satisfies:
+
+\begin{enumerate}
+    \item \textbf{Linearity in the first variable:}
+    \begin{align*}
+        \langle v_1 + v_2, w \rangle &= \langle v_1, w \rangle + \langle v_2, w \rangle \quad \forall v_1, v_2, w \in V \\
+        \langle \alpha v, w \rangle &= \alpha \langle v, w \rangle \quad \forall \alpha \in \mathbb{R}, v, w \in V
+    \end{align*}
+
+    \item \textbf{Complex antilinearity} (also called sesquilinearity)
+    \begin{align*}
+        \langle v, w_1+w_2 \rangle &= \langle v, w_1 \rangle + \langle v, w_2 \rangle \quad \forall v, w_1, w_2 \in V \\
+        \langle v, \alpha w \rangle &= \bar{\alpha} \langle v, w \rangle \quad \forall \alpha \in \mathbb{R}, v, w \in V
+    \end{align*}
+    where $\bar{\alpha}$ is the complex conjugate of $\alpha$.
+
+    \item \textbf{Symmetry}: $\langle v, w \rangle = \overline{\langle w, v \rangle} \, \forall \, v, w \in V$
+    \item \textbf{Positivity}: $\forall 0 \neq v \in V, \, \langle v, v \rangle \in \R and \langle v, v \rangle > 0$
+\end{enumerate}
+
+The pair $(V, \langle \cdot, \cdot \rangle)$ is called a \textbf{Hermitian} (or unitary) \textbf{space}.
+
+\end{definition}
+
+\begin{remark}{Complex conjugates}{}
+If $\alpha = a + ib$ with $a, b \in \R, i = \sqrt{-1}$, then
+$$
+\bar{\alpha} = a - ib
+$$
+
+This can be understood geometrically as mirroring across the real axis in the complex plane.
+\end{remark}
+
+\begin{remark}{Important properties of complex numbers}{}
+\begin{enumerate}
+    \item $\alpha \in \C$ is real $\iff \alpha = \bar{\alpha}$
+    \item $\forall \, \beta \in \C, \, \beta \cdot \bar{\beta} = |\beta|^2$ 
+    
+    (if $\beta = x + iy$, then $|\beta|^2 = x^2 + y^2$)
+\end{enumerate}
+\end{remark}
+
+\begin{lemma}{}{}
+Let $V$ be a Euclidean/Hermitian space. Then:
+
+\begin{enumerate}
+    \item $\forall \, v \in V, \, \langle 0, v \rangle = \langle v, 0 \rangle = 0$.
+    \item Let $w \in V$. If $\langle v, w \rangle = 0 \, \forall \, v \in V$, then $w = 0$.
+    \item Let $w_1, w_2 \in V$. If $\langle v, w_1 \rangle = \langle v, w_2 \rangle \, \forall v \in V$, then $w_1 = w_2$.
+\end{enumerate}
+\end{lemma}
+
+\begin{definition}{Norm, unit vector, distance, orthogonal}{}
+\begin{enumerate}
+    \item Let $V$ be a Euclidean or Hermitian space. $\forall \, V \in V$ define $\lVert v \rVert := \sqrt{\langle v, v \rangle} \in \R_{\geq 0}$. $\lVert \cdot \rVert$ is called the \textbf{norm} on V induced by $\langle \cdot, \cdot \rangle$.
+    \item A vector $u \in V$ is called a \textbf{unit vector} if $\lVert u \rVert = 1$. Note that $\forall \, v \in V$, the vector $v \cdot \frac{1}{\lVert v \rVert}$ is a unit vector which is positively proportional to $v$. $\frac{v}{\lVert v \rVert}$ is called the normalisation of $v$. 
+    \item $\forall v, w \in V$, we define the \textbf{distance} between $v, w$ as:
+    $$
+    \dd(v, w) := \lVert v - w \rVert
+    $$
+    \item Two vectors $u, v \in V$ are called \textbf{orthogonal} if $\langle v, w \rangle = 0$. In this case, we write $v \perp w$.
+    \item A subset of vectors $S \subset V$ is called an \textbf{orthogonal system} (informally just an orthogonal set) if $0 \notin S$ and for every two distinct elements $u, v \in S$, we have $u \perp v$.
+    \item An orthogonal system $S \subset V$ is called \textbf{orthonormal} if $\forall v \in S, \, \lVert v \rVert = 1$.
+\end{enumerate}
+\end{definition}
+
+\begin{theorem}{Pythagorean theorem}{22.a.5}
+Let $V$ be a Euclidean or Hermitian space. Let $u, v \in V$ such that $u \perp v$. Then, 
+$$
+\lVert u + v \rVert^2 = \lVert u \rVert^2 + \lVert v \rVert^2
+$$
+\end{theorem}
+
+\begin{proofbox}
+$$
+\lVert u + v \rVert^2 = (\sqrt{\langle u+v, u+v \rangle})^2 = \langle u+v, u+v \rangle = \langle u, u \rangle + \langle u, v \rangle + \langle v, u \rangle + \langle u, u \rangle
+$$
+$$
+= \langle u, u \rangle + 0 + 0 + \langle u, u \rangle = \lVert u \rVert^2 + \lVert v \rVert^2
+$$
+\end{proofbox}
+
+\begin{exercise}{}{}
+\begin{enumerate}
+    \item Let $V$ be a Euclidean space. Show that $\forall u, V \in V$, we have:
+    $$
+    \langle u, v \rangle = \frac{1}{2}\left(\lVert v+u \rVert^2 - \lVert u \rVert^2 - \lVert v \rVert^2\right)
+    $$
+    \item Does this formula hold if $V$ is a Hermitian space? Find a formula for this case.
+\end{enumerate}
+\end{exercise}
+
+\begin{example}{Examples of scalar products}{}
+    \begin{enumerate}
+        \item The standard scalar product on $\R^n$ (column vectors). $\forall u, v \in \R^n$,
+
+        $$
+        \langle u, v \rangle = u^Tv \in M_{1\times1}(\R) = \R
+        $$
+
+        $$
+        \langle 
+            \begin{pmatrix}
+                u_1 \\
+                \vdots \\
+                u_n
+            \end{pmatrix},
+             \begin{pmatrix}
+                v_1 \\
+                \vdots \\
+                v_n
+            \end{pmatrix}
+        \rangle
+        := u_1v_1 + \dots + u_nv_n
+        $$
+
+        $$
+            \left\lVert \begin{pmatrix}
+                v_1 \\
+                \vdots \\
+                v_n
+            \end{pmatrix} \right\rVert
+            = \sqrt{\sum_{k=1}^{n} v_k^2}
+        $$
+
+        \item The standard scalar product on $\C^n$. $\forall u, v \in \C^n$,
+        $$
+            \langle u, v \rangle := u^T v = \sum_{k = 1}^{n} u_k \overline{v_k} \in \C
+        $$
+
+        $$
+            \lVert v \rVert = \sqrt{\sum_{k=1}^{n} v_k\overline{v_k}}
+        $$
+
+        \item If $V$ is a Euclidean/Hermitian space, and $W \subset V$ is a subspace, then by restricting $\langle \cdot, \cdot \rangle$ from $V \times V$ to $W \times W$ we get a Euclidean/Hermitian structure on $W$.
+
+    \end{enumerate}
+\end{example}
+
+\begin{definition}{Symmetric matrices}{22.1.6}
+    A matrix $A \in M_{nxn}(K)$ is called symmetric if $A^T = A$ (i.e. $a_{ij} = a_{ji} \ \forall i, j$)
+\end{definition}
+
+\begin{definition}{Hermitian matrices}{22.a.7}
+    \begin{enumerate}
+        \item Let $A \in M_{nxn}(\C)$. Write $\overline{A}$ for the matrix where the entry at $(i, j)$ is $\overline{a_{ij}}$
+        \item Let $A \in M_{nxn}(\C)$. Define $A^* := (\overline{A})^T$. $A^*$ is called the \textbf{adjoint matrix} of $A$ (note: has \underline{nothing} to do with the classical adjoint $\mathrm{adj}A$ that we saw in determinants!)
+        \item $A \in M_{nxn}(\C)$ is called Hermitian, if $A^* = A$. This is equivalent to saying $A^T = \overline{A}$.
+    \end{enumerate}
+\end{definition}
+
+\begin{example}{Important example}{}
+    Let $A \in M_{n\times n}(\R)$.
+
+    Define $\langle \cdot, \cdot \rangle_A : \R^n \times \R^n \rightarrow \R$, $\langle v, w \rangle_A := v^T\cdot A \cdot w \in \R$.
+
+    Assume that $A$ is symmetric ($A^T = A$). Then, $\langle v, w \rangle_A = \langle w, v \rangle_A$. 
+    
+    Indeed, 
+    $$
+    \langle w, v \rangle_A = v^T\cdot A \cdot w = v^T\cdot A^T \cdot w = (v A w^T)^T = (\langle v, w \rangle_A)^T = \langle v, w \rangle_A
+    $$
+
+    \textbf{Q}: Is $\langle v, w \rangle_A$ a scalar product?
+
+    \textbf{A}: In general, no!
+
+    Counterexample: Let $A = \begin{pmatrix}
+        1 & 0 \\
+        0 & -1
+    \end{pmatrix}$
+
+    $$
+    \langle \begin{pmatrix} 0 \\ 1 \end{pmatrix}, \begin{pmatrix} 0 \\ 1 \end{pmatrix} \rangle_A = -1 < 0.
+    $$
+\end{example}
+
+\begin{exercise}{}{}
+    Show that $\langle \cdot, \cdot \rangle_A$ as defined above is bilinear (i.e. linear in both variables).
+\end{exercise}
+
+\begin{definition}{Positive definite matrix}{}
+    A symmetric matrix $A \in M_{n \times n}(\R)$ is called \textbf{positive definite}, if
+    $$
+        v^TAv > 0 \ \forall 0 \neq v \in \R^n
+    $$
+\end{definition}
+
+\begin{remark}{}{}
+    \begin{enumerate}
+        \item If $A$ is positive definite, then $\langle \cdot, \cdot \rangle_A$, is a scalar product on $\R^n$.
+        \item If $\langle \cdot, \cdot \rangle_A$ is a scalar product on $\R^n$, then $A$ is positive definite.
+    \end{enumerate}
+\end{remark}
+
+\begin{example}{}{}
+    Let $a_1, \dots, a_n > 0,  (a_k \in \R \forall k)$. Then 
+        $
+            D = \begin{pmatrix}
+                    a_{1} & \cdots & 0 \\
+                    \vdots & \ddots & \vdots \\
+                    0      & \cdots & a_{n}
+                \end{pmatrix}
+        $
+        is positive definite. Indeed, if $v = \begin{pmatrix} v_1 \\ \vdots \\ v_n \end{pmatrix} \in \R^n$, then $\langle v, v \rangle_D = v^T D v = a_1v_1^2 + \dots + a_nv_n^2$. If $v \neq 0$, then this sum is $> 0$.
+\end{example}
+
+\begin{exercise}{}{}
+    Let $A = \begin{pmatrix}
+        a & b \\
+        c & d
+    \end{pmatrix}$. Show that A is positive definite iff $a > 0$ and $\det A > 0$.
+\end{exercise}
+
+\begin{definition}{Positive definite for complex matrices}{}
+    Let $A \in M_{n \times n}(\C)$ be a Hermitian matrix. We say that $A$ is positive definite if $\forall 0 \neq v \in \C^n$ we have $v^T A \bar{v} > 0$.
+\end{definition}
+
+\begin{remark}{}{}
+    If $A$ is Hermitian, then 
+    $$
+        v^T A \overline{v} \in \R \ \forall v \in \C^n
+    $$
+\end{remark}
+
+\begin{proofbox}
+    $$
+        \overline{(v^T A \overline{v})} = \overline{v}^T A^T v = (\overline{v}^T\overline{A}v)^T = v^T\overline{A}^T\overline{v} = v^TA\overline{v} \implies v^TA\overline{v} \in \R 
+    $$
+\end{proofbox}
+
+\begin{remark}{}{}
+    Given a positive definite $A \in M_{n \times n}(\C)$, we define a Hermitian product on $\C^n$:
+
+    $$
+        \langle v, w \rangle_A := v^T A \overline{w}
+    $$
+
+    $\langle v, w \rangle_A$ is a Hermitian product iff $A$ is positive definite.    
+\end{remark}
+
+\begin{proofbox}
+    Let $A \in M_{m\times n}(\C)$, and assume $\langle v, w \rangle_A := v^T A \overline{w}$ is a Hermitian product. We'll show that $A$ must be positive definite.
+
+    We have 
+    $$
+        \forall v, w \in \C^n : \langle v, w \rangle_A = \overline{\langle w, v \rangle_A} \implies v^T A \overline{w} = \overline{v^T A \overline{w}}
+    $$
+
+    $$
+        \implies v^T A \overline{w} = \overline{w}^T \bar{A} v \implies v^T A \overline{w} = (\overline{w}^T \bar{A} v)^T = v^T \bar{A}^T \overline{w}
+    $$
+
+    Take $v = e_i,\ w = e_j$ (standard basis elements).
+    $$
+        e_i^T A \overline{e_j} = e_i^T \overline{A}^T e_j.
+    $$
+
+    Write
+    $$
+        A = \begin{pmatrix}
+                    a_{11} & \cdots & a_{1n} \\
+                    \vdots &  & \vdots \\
+                    a_{m1}     & \cdots & a_{mn}
+                \end{pmatrix}
+    $$
+
+    $e_i^T A e_j = \dots = a_{ij},\quad e_i^T \overline{A^T} e_j = \dots = \overline{a_{ji}}$
+
+    $A$ is also positive definite, because for Hermitian products we must have $\langle v, v \rangle_A > 0 \ \forall v \neq 0$.
+
+    $$
+        \implies v^T A \overline{v} > 0 \ \forall v \neq 0
+    $$
+\end{proofbox}
+
+\begin{exercise}{}{}
+    $A = \begin{pmatrix}
+            a & b \\
+            c & d
+        \end{pmatrix} \in M_{2 \times 2}(\C)
+    $ is positive definite iff $a \in \R$ and $\det A \in \R_{\geq 0}$
+\end{exercise}
+
+\section{Geometry}
+
+\begin{example}{}{}
+    $V = \R^2$, define two scalar products.
+    $$
+        \langle v, w \rangle := v_1w_1 + v_2w_2, \quad v = \begin{pmatrix} v_1 \\ v_2 \end{pmatrix},\ w = \begin{pmatrix} w_1 \\  w_2 \end{pmatrix}
+    $$
+
+    $$
+        A = \begin{pmatrix}
+            a_1 & 0  \
+            0 & a_2
+        \end{pmatrix}, \quad, a_1, a_2 > 0
+    $$
+
+    $$
+        \langle v, w \rangle' := \langle v, w \rangle_A = a_1v_1w_1 + a_2v_2w_2
+    $$
+
+    Unit sphere (circle) in $\R^2$: 
+    $$
+        S = \left\{v \in \R^2 \ |\ \lVert v \rVert = 1\right\}, \quad S' = \left\{v \in \R^2 \ |\ \lVert v \rVert' = 1\right\}
+    $$
+
+    where $\lVert \cdot \rVert'$ is the norm induced by $\langle \cdot, \cdot \rangle_A$
+
+    $$
+        S = \left\{\begin{pmatrix} v_1 \\ v_2 \end{pmatrix} \ \Big|\ v_1^2 + v_2^2 = 1\right\}, \quad S' = \left\{\begin{pmatrix} v_1 \\ v_2 \end{pmatrix} \ \Big|\ a_1v_1^2 + a_2v_2^2 = 1\right\}
+    $$
+
+    If $a^1 \neq a_2$, then $S'$ would actually look like an ellipse.
+\end{example}
+
+\begin{example}{}{}
+    $A = \begin{pmatrix}
+        1 & -1 \\
+        -1 & 2
+    \end{pmatrix}$ is positive definite. Compare $\langle \cdot, \cdot \rangle_{\text{std}}$ with $\langle \cdot, \cdot \rangle_A$:
+    $$
+        \langle \begin{pmatrix} 1 \\ 0 \end{pmatrix}, \begin{pmatrix} 0 \\ 1 \end{pmatrix} \rangle_{\text{std}} = 1, \quad \langle \begin{pmatrix} 1 \\ 0 \end{pmatrix}, \begin{pmatrix} 0 \\ 1 \end{pmatrix} \rangle_A = (0 \ 1) \begin{pmatrix}
+        1 & -1 \\
+        -1 & 2
+    \end{pmatrix} \begin{pmatrix} 1 \\ 1 \end{pmatrix} = \dots = 0
+    $$
+
+    So $\begin{pmatrix} 1 \\ 0 \end{pmatrix} \perp_A \begin{pmatrix} 0 \\ 1 \end{pmatrix}$ but they are not perpendicular under the standard inner product.
+\end{example}
+
+\begin{example}{From Analysis}{}
+    Let $V = C[a, b]$ be the space of continuous functions $f: [a, b] \rightarrow \R$, ($a, b \in \R$). Define the following scalar product on $V$:
+    $$
+        \langle f, g \rangle := \int_{a}^{b} f(x) \cdot g(x) \dd x
+    $$
+\end{example}
+
+\begin{exercise}{}{}
+    Show that $\langle f, g \rangle$ as defined above is a scalar product. 
+    
+     Here is the proof for positivity, we need to show that $\forall f \not\equiv 0$, we have $\int_{a}^{b} f(x)^2 \dd x$. Indeed, since $f \not\equiv 0,\ \exists x_0 \in (a, b)$ such that $f(x_0) \neq 0$. Since $f$ is continuous, also $f^2$ is continuous and $f(x_0)^2 \neq 0$. 
+    
+    $$
+        \implies \exists \delta > 0 \text{ such that } [x_0 - \delta, x_0 + \delta] \subseteq [a, b] \text{ and such that } f(x)^2 > 0 \ \forall x \in [x_0 - \delta, x_0 + \delta]
+    $$
+
+    $$
+        \implies \langle f, f \rangle = \int_{a}^{b} = f(x)^2 \dd x \geq \int_{x_0 - \delta}^{x_0 + \delta} f(x)^2 \dd x \geq 2 \delta \min\limits_{x \in [x_0 - \delta, x_0 + \delta]}f(x)^2 > 0
+    $$
+
+    According to this scalar product, we say on $C[-\pi, \pi]$, the functions $f(x) = \sin x,\ g(x) \equiv 1$ are $\perp$.
+\end{exercise}
+
+\section{Norms and angles}
+
+\begin{definition}{Norm}{}
+    Let $V$ be a vector space over $K$ (real or complex). A \textbf{norm} is a function $\lVert \cdot \rVert: V \rightarrow \R_{\geq 0}$ such that:
+    \begin{enumerate}
+        \item \textbf{Triangle inequality}: $\lVert u + v \rVert \leq \lVert u \rVert + \lVert v \rVert$
+        \item \textbf{Homogeneity}: $\lVert \alpha v \rVert = |\alpha| \cdot \lVert v \rVert \quad \forall v \in V, \alpha \in K$
+        \item \textbf{Non-degeneracy}: If $\lVert v \rVert = 0$, then $v = 0$.
+    \end{enumerate}
+\end{definition}
+
+\begin{remark}{Induced norm}{}
+    If $\langle \cdot, \cdot \rangle$ is an inner product on $V$, then $\lVert v \rVert := \sqrt{\langle v, v \rangle}$ is a norm.
+\end{remark}
+
+\begin{exercise}{}{}
+    Define two norms on $\R^2$:
+    $$
+        \lVert \begin{pmatrix} a \\ b \end{pmatrix} \rVert' := \max\left\{|a|, |b|\right\}, \quad \lVert \begin{pmatrix} a \\ b \end{pmatrix} \rVert'' := |a| + |b|
+    $$
+
+    Show that $\lVert \begin{pmatrix} a \\ b \end{pmatrix} \rVert'$ and $\lVert \begin{pmatrix} a \\ b \end{pmatrix} \rVert''$ are norms. What are the corresponding unit circles? Draw them.
+\end{exercise}
+
+\begin{exercise}{}{}
+    Show that neither of the two norms defined above come from a scalar product on $\R^2$.
+
+    Hint: If $\lVert \cdot \rVert$ is induced from a scalar product $\langle \cdot, \cdot \rangle$, then
+    $$
+        \langle u, v \rangle = \frac{1}{2}\left(\lVert u + V \rVert^2 - \lVert u \rVert^2 - \lVert v \rVert^2\right)
+    $$
+\end{exercise}
+
+\begin{theorem}{Cauchy-Schwarz inequality}{}
+    Let $(V, \langle \cdot, \cdot \rangle)$ be a vector space over $K$ (real or complex) endowed with an inner product $\langle \cdot, \cdot \rangle$. Then, $\forall u, v \in V$ we have:
+    $$
+        |\langle u, v \rangle| \leq \lVert u \rVert \cdot \lVert v \rVert
+    $$
+    with equality iff $u$ and $v$ are proportional ($\iff u, v$ linearly dependent).
+\end{theorem}
+
+\begin{proofbox}
+    If $u = 0$, the inequality becomes an obvious equality ($0 = 0$). So assume that $u \neq 0$. Put $w := v - \lambda u$, where $\lambda := \frac{\langle u, v \rangle}{\lVert u \rVert^2}$ (we are allowed to divide by $\lVert u \rVert^2$ because $u \neq 0$ so $\lVert u \rVert^2 \neq 0$).
+
+    We have:
+    $$
+        \langle w, u \rangle = \langle v, u \rangle - \lambda \cdot \langle u, u \rangle = \dots = 0
+    $$
+
+    We have 
+    $$
+        0 \leq \lVert w \rVert^2 = \langle w, w \rangle = \langle v-\lambda u, v - \lambda u \rangle = \langle v, v \rangle - \bar{\lambda}\langle v, u \rangle - \lambda \langle u, v \rangle + \lambda \cdot \bar{\lambda} \langle u, u \rangle
+    $$
+
+    Applying the definition of $w$, $\langle u, v \rangle = \lambda \cdot \lVert u \rVert^2$, so
+
+    $$
+        = \lVert v \rVert^2 - \bar{\lambda} \lambda \lVert u \rVert^2 - \lambda \bar{\lambda}\lVert u \rVert^2 + \lambda \bar{\lambda}\lVert u \rVert^2 = \lVert v \rVert^2 - |\lambda|^2 \lVert u \rVert^2
+    $$
+
+    Substitute $\langle u, v \rangle = \lambda \cdot \lVert u \rVert^2$ again:
+
+    $$
+        = \lVert v \rVert^2 - \frac{\langle u, v \rangle}{\lVert u \rVert^2}
+    $$
+
+    Finally,
+
+    $$
+        0 \leq \lVert v \rVert^2 - \frac{\langle u, v \rangle}{\lVert u \rVert^2} \implies |\langle u, v \rangle| \leq \lVert u \rVert \lVert v \rVert
+    $$
+
+    We have equality iff $\lVert w \rVert^2 = 0 \iff w = 0 \iff v = \lambda u$.
+\end{proofbox}
+
+\begin{corollary}{}{22.a.12}
+    Let $(V, \langle \cdot, \cdot \rangle)$ be a vector space over $R$ or $\C$ endowed with an inner product. Then
+    $$
+        V \ni v \mapsto \sqrt{\langle v, v \rangle} =: \lVert v \rVert
+    $$
+
+    is a norm.
+\end{corollary}
+
+\begin{proofbox}
+    Let's do the case over $\C$, and $\langle \cdot, \cdot \rangle$ being Hermitian.
+    
+    \begin{itemize}
+        \item \underline{(2) and (3)}: as exercise
+        \item \underline{(1) Triangle inequality}: Let $u, v \in V$.
+        $$
+            \lVert u + v \rVert^2 = \langle u + V, u + v \rangle = \langle u, u \rangle + \langle u, v \rangle + \langle v, u \rangle + \langle v, v \rangle
+        $$
+
+        $$  
+            \lVert u \rVert^2 + 2 \mathrm{Re} \langle u, v \rangle + \lVert v \rVert^2
+        $$
+
+        (Note that $\forall z \in \C$, $|\mathrm{Re}| = |x| \leq \sqrt{x^2+y^2} = |z|$)
+
+        So, 
+        $$
+             \lVert u \rVert^2 + 2 \mathrm{Re} \langle u, v \rangle + \lVert v \rVert^2 \leq \lVert u \rVert^2 + 2 |\langle u, v \rangle| + \lVert v \rVert^2 \leq \lVert u \rVert^2 + 2 \lVert u \rVert \lVert v \rVert + \lVert v \rVert^2
+        $$
+
+        $$
+            = \left(\lVert u \rVert + \lVert v \rVert\right)^2
+        $$
+
+        So $\lVert u + v \rVert^2 \leq \left(\lVert u \rVert + \lVert v \rVert\right)^2$. Since both $\lVert u + v \rVert$ and $\lVert u \rVert + \lVert v \rVert$ are $\geq 0$, we get
+        $$
+            \lVert u + v \rVert \leq \left(\lVert u \rVert + \lVert v \rVert\right)
+        $$
+
+        So the triangle inequality holds for this norm.
+    \end{itemize}
+\end{proofbox}
+
+\begin{exercise}{}{}
+    Prove the requirements (2) and (3) for the norm defined in the above corollary over $\C$ with a Hermitian inner product.
+\end{exercise}
+
+\begin{definition}{Angle}{}
+    Let $(V, \langle \cdot, \cdot \rangle)$ be a Euclidean space (so $V$ is a vector space over $\R$). Let $u, v \in V$ be two non-zero vectors. By Cauchy-Schwarz,
+    $$
+        -1 \leq \frac{\langle u, v \rangle}{\lVert u \rVert \cdot \lVert v \rVert} \leq 1
+    $$
+
+    Define the \textbf{angle} between $u$ and $v$ to be the unique number $\alpha \in [0, \pi]$ such that 
+    $$
+        \cos \alpha = \frac{\langle u, v \rangle}{\lVert u \rVert \cdot \lVert v \rVert} = \langle \frac{u}{\lVert u \rVert}, \frac{v}{\lVert v \rVert} \rangle
+    $$
+\end{definition}
+
+\end{document}

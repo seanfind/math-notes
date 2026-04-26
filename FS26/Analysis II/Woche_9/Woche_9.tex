@@ -1,0 +1,486 @@
+\documentclass[12pt]{article}
+\usepackage{seantex}
+
+% --- Document Info ---
+\title{Analysis II: Week 9}
+\author{Sean Findlay}
+\date{\today}
+
+% --- Start Document ---
+\begin{document}
+
+\maketitle
+
+Recall from last lecture:
+
+\begin{definition}{Volume}{}
+    Let $\Phi: V \subset \R^d \rightarrow \R^n$ be a parametrised submanifold (note that here the parametrisation allows us to represent it in a $d$-dimensional space with given parameters).
+
+    Assume $A \subset B$ Jordan measurable with $\overline{A} \subset C$. Then
+    $$
+        \mathrm{vol}_d(\Phi(A)) = \int_A \sqrt{\det \left(D \Phi^T(x) D \Phi(x)\right)} \dd x
+    $$
+\end{definition}
+
+We want this to have the following properties (and it turns out it does indeed have them):
+\begin{itemize}
+    \item \textbf{Re-parametrisation invariance}
+    \item \textbf{Invariance under rigid motion of $\R^n$}
+    \item \textbf{Additivity}: $\mathrm{vol_A(\Phi(A_1 \cup A_2))} = \mathrm{vol_A(\Phi(A_1))} + \mathrm{vol_A(\Phi(A_2))\quad}$ (if $A_1, A_2$ disjoint)
+    \item \textbf{Normalisation}: $[0, 1]^d \times \{0\}^{n-d} \subset \R^n$. We can check with this parametrisation: $\Phi(x_1,\dots,x_d) = (x_1,\dots,x_d,0,\dots,0) \subset \R^n$. Then,
+    $$
+        D \Phi(x) = \begin{pmatrix}
+                        1 &        &   \\
+                        & \ddots &   \\
+                        &        & 1 \\
+                        & \mathbf{0} & 
+                    \end{pmatrix},\quad
+        D \Phi^T(x) = \begin{pmatrix}
+                        1 &        &   & \\
+                        & \ddots &   & \mathbf{0} \\
+                        &        & 1 & 
+                    \end{pmatrix}
+    $$
+    $$
+        \implies D \Phi^T(x) D \Phi(x) = \begin{pmatrix}
+                        1 &        &   & \\
+                        & \ddots &   & \mathbf{0} \\
+                        &        & 1 & 
+                    \end{pmatrix}\begin{pmatrix}
+                        1 &        &   \\
+                        & \ddots &   \\
+                        &        & 1 \\
+                        & \mathbf{0} & 
+                    \end{pmatrix} = \mathbf{I}_d
+    $$
+    $$
+    \begin{aligned}
+         \implies \mathrm{vol_d}(\Phi\left((0, 1)^d\right)) &= \int_{(0, 1)^d} \sqrt{\det \mathbf{I}_d} \dd x \\
+                &= \mathrm{vol_d}(\Phi\left((0, 1)^d\right)) = \int_{(0, 1)^d} \sqrt{1} \dd x \mathrm{vol_d}(\Phi\left((0, 1)^d\right)) \\ 
+                &= \int_{0}^{1} \dots \int_{0}^{1} \dd x_1 \dots \dd x_d = 1^d = 1
+    \end{aligned}
+    $$
+\end{itemize}
+
+\subsection{Proof of invariance of volume under reparametrisation}
+
+Let $M^d \subset \R^n$ be a $d$-dimensional submanifold. Let $W_1, W_2 \subset \R^n$. Let $\Phi_1: V_1 \subset \R^d \rightarrow M \cap W_1,\ \Phi_2: V_2 \subset \R^d \rightarrow M \cap W_2$ be two parametrisations of $M$. The idea is that $\Phi_1$ parametrises a part of $M$ called $W_1 \subset \R^n$, and $\Phi_2$ parametrises a part of $M$ called $W_2 \subset \R^n$. Let $\tilde{M} := M \cap (W_1 \cap W_2) \neq \emptyset$ (i.e. the part of $M$ that both $\Phi_1$ and $\Phi_2$ parametrise).
+
+Let $\tilde{V}_1 \subset V_1$, $\tilde{V}_2 \subset V_2$ such that
+$$
+    \tilde{V}_1 := \Phi_1^{-1}(\tilde{M}),\ \tilde{V}_2 := \Phi_2^{-1}(\tilde{M})
+$$
+
+the preimages of $\Phi_1$ and $\Phi_2$ respectively. Then, we have that $\Phi_1: \tilde{V}_1 \rightarrow \tilde{M}$ and $\Phi_2: \tilde{V}_2 \rightarrow \tilde{M}$ are bijective.
+
+Define 
+$$
+    \Psi := \Phi_2^{-1} \circ \Phi_1: \tilde{V}_1 \rightarrow \tilde{V}_2 \quad\text{bijective of class } C^1
+$$
+
+The definition of invariance under reparametrisation is:
+$$
+    \boxed{\int_A \sqrt{\det\left( D\Phi^T D \Phi \right)} \dd x= \int_{\Psi} \sqrt{\det\left( D\left( \Phi \circ \Psi \right)^T D\left( \Phi \circ \Psi \right) \right)} \dd y}
+$$
+
+If we take $\Phi = \Phi_1$, $\Psi = \Phi_2^{-1} \circ \Phi_1 \implies \Phi \circ \Psi = \Phi_2 \circ \left( \Phi_2^{-1} \circ \Phi_1 \right) = \Phi_1$.
+
+Let us check if this definition holds.
+
+\begin{lemma}{Invariance of volume under volume invariance}{}
+    Given our definitions of $\Phi, \Psi$, the following holds (invariance under reparametrisation):
+    $$
+        \int_A \sqrt{\det\left( D\Phi^T D \Phi \right)} \dd x = \int_{\Psi} \sqrt{\det\left( D\left( \Phi \circ \Psi \right)^T D\left( \Phi \circ \Psi \right) \right)} \dd y
+    $$
+\end{lemma}
+
+\begin{proofbox}
+    By the chain rule,
+    $$
+        \begin{aligned}
+            D (\Phi \circ \Psi)(x) &= D \Phi(\Psi(x)) \cdot D\Psi(x) \\
+            D (\Phi \circ \Psi)^T(x) &= D \Psi^T(x) \cdot D \Phi^T(\Psi(x)) \\
+        \end{aligned}
+    $$
+
+    Then, the gram determinant is
+    $$
+        \begin{aligned}
+            \det\left( D \left( (\Phi \circ \Psi)^T D \left( (\Phi \circ \Psi) \right) \right) \right) &= \det\left( D \Psi^T \cdot (D \Phi) \circ \Psi^T \cdot D\Phi \circ \Psi \cdot D \Psi  \right) \\
+            &= \det\left( D \Psi^T \right) \det\left( (D \Phi) \circ \Psi^T \right) \det\left( (D\Phi) \circ \Psi \right) \det\left( D \Psi \right) \\
+            &= \left( \det\left( D \Psi \right)^2 \det\left( D \Phi D \Phi^T \right) \right) \circ \Psi
+        \end{aligned}
+    $$
+
+    Now, apply the change of variables formula, and in the second line substitute in the gram determinant as calculated above:
+    $$
+    \begin{aligned}
+        \int_A \sqrt{\det \left( D\Phi^T D \Phi \right)} \dd x &\overset{x = \Psi(y)} = \int_{\Psi^{-1}(A)} \sqrt{\det\left( D\Phi^T D \Phi \right)} (\Psi(y)) \left| \det \left( D \Psi(y)\right) \right| \dd y \\
+        &= \int_{\Psi} \sqrt{\det\left( D\left( \Phi \circ \Psi \right)^T D\left( \Phi \circ \Psi \right) \right)} \dd y
+    \end{aligned}
+    $$
+
+    And this is what we wanted to show.
+\end{proofbox}
+
+\subsection{Proof of invariance of volume under rigid motions}
+\begin{notebox}{Gram determinant}{}
+    We can only compute the determinant of a square matrix. But what if we want a determinant for non-square matrices? (which often occurs for parametrisations, as we map from a lower space, the parameter space, to the manifold). The Gram determinant comes to the rescue:
+
+    Let $L = D \Phi(x)$, a $n \times d$ matrix. Then, $L^T L$ is a $d \times d$ matrix. We can now take the determinant $\det(L^T L)$.
+
+    Note that if $R$ is a rotation
+    $$
+        \det((R L)^T RL) = \det(L^T R^T R L) = \det(L^T L)
+    $$
+
+    So the Gram determinant is rotation-invariant.
+\end{notebox}
+
+\subsubsection*{Intuition for the Gram determinant}
+
+Let $L$ be an $n \times d$ matrix. Let $H = L \R^d= \left\{ L x \ |\ x \in \R^d \right\}$ be the image of $L$. Note that $H$ is a $d$-dimensional linear subspace of $\R^n$. There exists a rotation $R \in O(n)$ (an orthogonal $n \times n$ matrix), such that
+$$
+    R L = \begin{pmatrix} \tilde{L} \\ 0 \end{pmatrix} \in M_{d \times n}(\R)
+$$
+Intuition: There is a rotation that "flattens" our matrix $L$. Note that
+$$
+    \sqrt{\det\left( (RL)^T (RL)\right)} = \sqrt{\det\left( \begin{pmatrix} \tilde{L}\ 0 \end{pmatrix} \begin{pmatrix} \tilde{L} \\ 0 \end{pmatrix} \right)} = \sqrt{\det \left( \tilde{L}^T \tilde{L}\right)} = \sqrt{\left(\det \tilde{L}\right)^2} = \det \tilde{L}
+$$
+
+This proves that the Gram determinant is just the square of the standard determinant of the matrix once you've rotated the subspace to be "flat." It bridges the gap between non-square matrices (which we can't take the determinant of), and square matrices, by showing they are essentially the same once you ignore the "empty" dimensions.
+
+Also
+$$
+\sqrt{\det\left( (RL)^T (RL)\right)} = \sqrt{\left(\det \tilde{L}\right)^2} = \mathrm{vol}_d(\tilde{L} [0, 1]^d) = \mathrm{vol}_d(L [0, 1]^d)
+$$
+
+\begin{definition}{Support of a function}{}
+    Let $f: V \subset \R \rightarrow \R^n$ be a continuous function with $V$ open. We define the \textbf{support} of $f$ as
+    $$
+        \mathrm{spt}(f) = \overline{\left\{ x \in V \ |\ f(x) \neq 0 \right\}}
+    $$
+
+    i.e. the closure of the set of all points in $V$ such that $f$ is not zero at that point.
+
+    We say that $f$ has compact support if
+    $$
+        \mathrm{spt}(f) \text{ is bounded}
+    $$
+
+    This is because the support is always closed (it is the closure) and it is over $\R$, so by Heine-Borel, we only require it to also be bounded.
+\end{definition}
+
+\begin{definition}{Integral over parametrised submanifold}{}
+    Suppose that $\Phi: V \rightarrow \R^n$ is a parametrised submanifold, and that $f: \Phi(V) \rightarrow \R$ is continuous and such that $\mathrm{spt}(f \circ \Phi) \subset V$ is compact. Let us call the manifold $M := \Phi(V) \subset \R^m$. Then, we define
+    $$
+        \int_{M} f(p) \dd \mathrm{vol}_M(p) = \int_{M} f \dd \mathrm{vol}_M := \int_{V} (f \circ \Phi) \underbrace{\sqrt{\det\left( D \Phi^T(x) D \Phi(x) \right)} \dd x}_{\dd \mathrm{vol}_M}
+    $$
+\end{definition}
+
+\textbf{Observation: The integral exists}. $\forall x \in \mathrm{spt}(f \circ \Phi) \subset V,\ \exists r_x > 0$ such that $B_{r_x}(x) \subset V$. Let us call $K := \mathrm{spt}(f \circ \Phi)$
+$$
+    \bigcup\limits_{x \in K} B_{r_{\frac{x}{2}}}(x) \xRightarrow{K cpt} \mathrm{spt}(f \circ \Phi) \subset \bigcup\limits_{j = 1}^{N} B_{r_{\frac{x_j}{2}}}(x_j) =: A
+$$
+
+Then $A$ is Jordan measurable, and $\mathrm{spt(f \circ \Phi)} \subset \overline{A} \subset V$, since $f \circ \Phi = 0$ for $V \setminus \overline{A}$. And the integral of a continuous function over a compact set which is Jordan measurable, so the integral is well-defined.
+
+\textbf{Computing the Gram determinant for graphical representations}. 
+
+$\Phi(x') = (x', g(x')), V\subset\R^{n-1}$ open (with $d = n-1$), $g: V \rightarrow \R$.
+$$
+    D \Phi(x') = \begin{pmatrix}
+                        \mathbf{I}_{n-1} \\
+                        \hline
+                        D g(x') 
+                    \end{pmatrix}
+$$
+
+Our goal is to compute $\det D\Phi^T \Phi$.
+
+\begin{lemma}{(from linear algebra)}{}
+    $w \in \R^{n-1}$ vector, $L = \begin{pmatrix}
+                        \mathbf{I}_{n-1} \\
+                        \hline
+                        w^T 
+                    \end{pmatrix}$, then,
+    $
+        \det(L^T L) = 1 + \lvert w \rvert^2
+    $
+\end{lemma}
+
+\begin{proofbox}
+    We will use the following trick. Take $R \in M_{(n-1) \times (n-1)}(\R)$ orthogonal matrix with $R w = e_1 |w|$. What is $R^TL$?
+    $$
+        LR^T 
+        =   \begin{pmatrix}
+                \mathbf{I}_{n-1} \\
+                \hline
+                w^T 
+            \end{pmatrix} R^T
+        =   \begin{pmatrix}
+                R^T \\
+                \hline
+                w^TR^T
+            \end{pmatrix}
+    $$
+
+    $$
+        RL^T 
+        =   \begin{pmatrix}
+                R\ \vline\ Rw
+            \end{pmatrix}
+        =   \begin{pmatrix}
+                R\ \vline\ |w| e_1^T
+            \end{pmatrix}
+    $$
+
+    $$
+        \implies RL^TLR^T = \begin{pmatrix} \mathbf{I_{n-1}}\end{pmatrix}+ |w|e_1||w|e_1^T 
+        =   \begin{pmatrix}
+                1 + |w|^2 &  & & 0 \\
+                 & 1 & &   \\
+                & & \ddots &  \\
+                0 & &  & 1
+            \end{pmatrix}
+    $$
+
+    $$
+        \det(Rl^TLR^T) = 1 + |w|^2 = (\det R)^2 \det(L^TL)
+    $$
+
+    Because $R$ is orthogonal, we have $\det(R) = \pm 1 \iff (\det R)^2 = 1$.
+    
+    So we have $\det(L^T L) = 1 + |w|^2$.
+\end{proofbox}
+
+\subsection{Divergence theorem}
+
+Setup: Let $g \in V \rightarrow \R$ be a $C^1$ domain ($\left\{x \in V \times \R \ |\ x_n < g(x) \right\}$). $\Omega := \mathrm{B}_r(0) \cap \left\{x:n < g(x')\right\}$, $\partial \Omega \subset \partial \mathrm{B}_R(0) \cup \left\{x_n = g(x')\right\}$. Let $\left\{x_n = g(x')\right\} =: M,\ 0 \in M$.
+
+Within this setup for $p \in M \cap \mathrm{B}_r(0)$, let 
+$$
+    \nu(p) := \frac{(-\nabla g(x'), 1)}{\sqrt{1 + \lvert \nabla g(x) \rvert^2}}
+$$
+
+\begin{lemma}{}{}
+    $\nu$ is $\perp$ to $M$ at $p$, $\lvert \nu \rvert = 1$, and $\nu$ is "pointing outwards", if
+    $$
+        p + h \nu(p) \notin \overline{\Omega} \quad \forall t > 0 \text{ small enough}
+    $$
+\end{lemma}
+
+\begin{proofbox}
+    $\Phi(x') = (x', g(x')),\ T_p M,\ p = \Phi(x')$,
+    $$
+        \partial_i \Phi = e_i + \partial_i g e_n, \quad i = 1,\dots,n-1
+    $$
+
+    We have
+    $$
+        \partial_i \Phi \nu = \frac{(e_i + \partial_i g e_n) \cdot ((-\nabla g, 0) + e_n)}{\sqrt{1 + \lvert \nabla g(x) \rvert^2}}
+    $$
+    $$
+        \iff \sqrt{1 + \lvert \nabla g(x) \rvert^2}\partial_i \Phi \nu = (e_i + \partial_i g e_n) \cdot ((-\nabla g, 0) + e_n)
+    $$
+
+    $$
+        = -\partial_ig(x') + \partial_ig(x') = 0
+    $$
+
+    $\implies \nu \text{ is} \perp \text{ to every vector of } T_pM \text{, hence it is normal}.$
+
+    How to prove $p + h \nu(p) \notin \overline{\Omega}$?
+
+    \dots
+\end{proofbox}
+
+\begin{definition}{$C^k$ functions with closed domain}{}
+    $A \subset \R^n$ set (not necessarily open), we say that $f: A \rightarrow \R^m$ is $C^k$ and write $f \in C^K(A, \R^m)$, if
+    $$
+        \exists U \subset A \text{ open, and } \tilde{f} \in C^k(U, \R^m) \text{, such that } f = \tilde{f}|_A
+    $$
+\end{definition}
+
+In the setup above we have the following:
+\begin{lemma}{Divergence theorem, reduced version}{}
+    Let $F = f e_n, \ f: \overline{\Omega} \rightarrow \R$ is a $C^1$ function. ($F$ is a vector field where all vectors point in the direction $e_n$). Assume that $\mathrm{spt}(f) \subset \overline{\Omega} \cap B_r(0)$ (note that on boundary points, this means $f$ can be $\neq 0$!!!). Let $M$ be the upper part of the boundary $\partial\Omega$ Then,
+    $$
+        \int_\Omega \partial_n f \dd x = \int_M f(p) \cdot \nu(p) \cdot e_n \dd \mathrm{vol}_M(p)
+    $$
+\end{lemma}
+
+\begin{proofbox}
+    Let $M = \phi(v),\ \phi(x') = (x', g(x'))$ (graphical representation of the submanifold). We have
+    $$
+        \int_M f(p) \cdot \nu(p) \cdot e_n \dd \mathrm{vol}_M(p) = \int_{V} f \circ \phi \underbrace{\frac{(- \nabla g(x'), 1)}{\sqrt{1 + \lvert \nabla g(x') \rvert^2}} \cdot e_n}_{\nu(p) \cdot e_n} \cdot \underbrace{\sqrt{1 + \lvert \nabla g(x') \rvert^2} \dd x}_{\dd \mathrm{vol}_M (p)}
+    $$
+    $$
+        = \int_V f(x', g(x_n)) \dd x' \overset{\text{Fubini}}= \int_V \int_{-c}^{g(x')} \partial_n f(x', x_n) \dd x_n \dd x'
+    $$
+    $$
+        = \int_V \Big[ f(x', \cdot) \Big]_{x_n = -x}^{x_n = g(x')} \dd x' = \int_V f(x', g(x')) \dd x
+    $$
+\end{proofbox}
+
+\textbf{Observation}: $\exists \eps > 0$ such that $\forall R$ orthogonal $n \times n$ matrix, $\lVert R - \mathbf{I}_n \rVert < \eps$, $\exists x \in (0, r)$
+\begin{itemize}
+    \item $R M \cap B_s(0)$ is still graphical $\{y_n < \tilde{g}(y')\}$
+    \item $R \overline{\Omega} \cap B_s(0) \supset \mathrm{spt}(f \circ R^T) \left( \iff \overline{\Omega} \cap B_s(0) \supset \mathrm{spt}(f)\right)$
+\end{itemize}
+
+\begin{lemma}{Divergence theorem, reduced part B}{}
+    $f: \overline{\Omega} \rightarrow \R$, $f \in C^1$, with $\mathrm{spt}f \subset \overline{\Omega} \cap B_r(0)$. Then, $\exists \eps > 0 \ \forall w \in \R^n$ such that $|w |= 1$ and $|w - e_n| < \eps$
+    $$
+        \int_\Omega \underbrace{\partial_w f}_{= D f(w) = \nabla f\cdot w} \dd x = \int_M f(p) w \cdot \nu(p) \dd \mathrm{vol}_M(p)
+    $$
+\end{lemma}
+
+\begin{proofbox}
+    (Physics style) Idea: we have the canonical coordinate frame, containing our manifold $M$. We rotate the frame slightly and get new coordinates $(y_1,y_2)^T$. We have a rotation (orthogonal matrix) $R$:
+    $$
+        R \begin{pmatrix} x_1 \\ x_2 \end{pmatrix} = \begin{pmatrix} y_1 \\ y_2 \end{pmatrix}
+    $$
+
+    The manifold in this new frame is:
+    $$
+        \tilde{M} = \left\{y_n = \tilde{g}(y')\right\},\ \tilde{\Omega} = \left\{y_n \leq \tilde{g}(y')\right\}
+    $$
+
+    and
+    $$
+        \tilde{f}(y) = f(x) \iff \tilde{f}(y) = f(Rx)
+    $$
+
+    Apply the first lemma (Divergence theorem, reduced part A) to $\tilde{M}, \tilde{\Omega}, \tilde{g}$, etc.
+    $$
+        \int_{\tilde{\Omega}} \partial_{y_n} \tilde{f} \dd y = \int_{\tilde{M}} \tilde{f} e_n \cdot \tilde{\nu} \, d\mathrm{vol}_{\tilde{M}}
+    $$
+
+    In our original frame:
+    $$
+        \int_{\Omega} \partial_w f \dd x = \int_M f w \cdot \nu \dd \mathrm{vol}_M \quad (\#)
+    $$
+
+    If (\#) holds $\forall w \text{ such that } |w - e_n| < \eps \implies (\#) \text{ holds } \forall w \in R^n$
+
+    \underline{linear in $w$}:
+    $$
+        \partial_{aw + bv} f = \nabla f \cdot (aw + bv) = a \partial_w f + b \partial_w f
+    $$
+
+    So $(\#)$ is linear in $w$ but it holds true $\forall w \in B_\eps(e_n) \cap \mathbb{S}^{n+1}$. So $(\#)$ holds $\forall w$.
+
+    \textbf{Conclusion}: This lemma holds even when we remove the assumption $|w| = 1$ and $|w - e_n| < \eps$.
+\end{proofbox}
+
+\begin{definition}{Divergence}{}
+    Let $F=(F_1,\dots,F_n)^T$ be a vector field. The \textbf{divergence} of $F$ is defined as
+    $$
+        \mathrm{div} F(x) = \sum_{i = 1}^{n} \partial_i F_i(x)
+    $$
+\end{definition}
+
+\begin{theorem}{Divergence theorem, local case}{}
+    Given the same setup as before, let $F \in C^1(\overline{\Omega}, \R^n)$ such that $\mathrm{spt}(F) \subset \overline{\Omega} \cap B_r(0)$. Then
+    $$
+        \int_{\Omega} \mathrm{div}(F) \dd x = \int_M F \cdot \nu \dd \mathrm{vol}_M
+    $$
+\end{theorem}
+
+\begin{proofbox}
+    Use Lemma B (without the unnecessary assumptions about $w$). $w = e_i,\ f = F_i,\ i = 1\dots,n$.
+    $$
+        \int_\Omega \partial_{w} f = \int_\Omega \partial_{e_i} F_i = \int_M f w  \cdot \nu \dd \mathrm{vol}_M = \int_M F_i e_i \cdot \nu \dd \mathrm{vol}_M
+    $$
+
+    Now, sum this from $i = 1$ to $n$. We get
+    $$
+        \int_{\Omega} \mathrm{div} F = \int_\Omega \left(\sum_{i = 1}^{n} F_i e_i\right) \cdot \nu \dd \mathrm{vol}_M = \int_\Omega F\cdot \nu \dd \mathrm{vol}_M
+    $$
+\end{proofbox}
+
+\textbf{Computing the integral over a manifold}
+
+For a piece of a manifold, we have:
+$$
+    \int_{M_p} f \dd \mathrm{vol}_{M_p} := \int_V f \circ \Phi \sqrt{D \Phi^T D \Phi} \dd x
+$$
+
+What if we want the whole thing?:
+$$
+    \int_{M} f \dd \mathrm{vol}_{M} =\ ?
+$$
+
+\underline{Try cutting $f$ into pieces}:
+$$
+    f = \sum_{l = 1}^{N} f_l \quad\text{where each } f_l \text{ is supported on a parametrised piece.}
+$$
+
+Then we should get:
+$$
+    \int_{M} f \dd \mathrm{vol}_{M} = \sum_{l = 1}^{N} \int_{M_l} f_l \dd \mathrm{vol}_{M_l}
+$$
+
+Idea: if we have a good definition, it should be linear, so that the integral of the sum is the sum of the integrals. The only possible definition is one that satisfies this. Take this as the definition.
+
+The question is: how to decompose our $f$? The answer is called the \textbf{partition of unity}.
+
+\begin{lemma}{Partition of unity}{}
+    $K \subset \R^n$ compact, $B_{p_l}(r_l),\ l = 1,\dots,\N$ open balls, such that $K \subset \bigcup\limits_{l = 1}^N B_{r_l}(p_l)$. Then, $\exists U$ open such that $K \subset U$, $\exists N$ functions $\eta_1,\dots,\eta_n : \R^n \rightarrow [0, \infty]$ and a single "background function" $\tilde{\eta}: \R^n \rightarrow [0, \infty]$, with all of these functions being $C^\infty$ such that
+    $$
+        1 = \sum_{l = 1}^{N} \eta_l(x) + \tilde{\eta}(x) \quad \forall x \in \R^n \quad  \text{and} \quad \mathrm{spt}(\eta_l) \subset B_{r_l}(p_l),\ \mathrm{spt}(\tilde{\eta}) \subset \R^n \setminus U
+    $$
+\end{lemma}
+
+TODO: insert sketch
+
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{img/partition_of_unity.pdf} % Use the converted filename
+%     \caption{Sketch}
+% \end{figure}
+
+\begin{proofbox}
+    Define:
+    $$
+    \begin{aligned}
+        \xi(x) =    \begin{cases}
+                        e^{-\frac{1}{1-|x|^2}} & x \in B_1(0) \\
+                        0 & x \in \R^n \setminus B_1(0) \\
+                    \end{cases} \\
+        \tilde{\xi}(x) =    \begin{cases}
+                        0 & x \in B_1(0) \\
+                        e^{-\frac{1}{1-|x|^2}} & x \in \R^n \setminus B_1(0) \\
+                    \end{cases}
+    \end{aligned}
+    $$
+    Note that $\mathrm{spt}(\xi)$ is $\overline{B_1(0)}$. Let $r > 0,\ p \in \R^n,\ \xi_{p, r}(x) := \xi(\frac{x - p}{r})$. $\mathrm{\xi_{p, r}} = \left\{x\ \big|\ |\frac{x-p}{R}| < 1\right\} = B_r(p)$.
+
+    Since $K$ compact, 
+    $$
+        K \subset \bigcup\limits_{\theta \in (0, 1)} \overbrace{\bigcup\limits_{l = 1}^N B_{\theta r_l}(p_l)}^{\text{open}} \implies \exists \theta \text{ such that } K \subset \bigcup\limits_{l = 1}^N B_{\theta r_l}(p_l)
+    $$
+
+    Take 
+    $$
+    \xi_l(x) = \xi(\frac{x - p_l}{\theta^{1/2}r_l}),\ \tilde{\xi}_l(x) = \tilde{\xi}(\frac{x - p_l}{\theta^{1/2}r_l})
+    $$
+
+    Then,
+    $$
+        \tilde{\xi}_0(x) = \prod_{i = 1}^{N} \tilde{\xi}_l(x)
+    $$
+
+    Define:
+    $$
+        S(x) := \sum_{l = 1}^{N} \xi_l(x) + \tilde{\xi}_0(x) \geq \delta
+    $$
+
+    for some $\delta > 0$. Importantly it is always non-zero. Take
+    $$
+        \eta := \frac{\xi_l(x)}{S(x)},\ \tilde\eta := \frac{\tilde\xi_0(x)}{S(x)}
+    $$
+\end{proofbox}
+
+\end{document}

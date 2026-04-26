@@ -1,0 +1,127 @@
+\documentclass[12pt]{article}
+\usepackage{seantex}
+
+% --- Document Info ---
+\title{Grundstrukturen ÜS: Woche 9}
+\author{Sean Findlay}
+\date{\today}
+
+% --- Start Document ---
+\begin{document}
+
+\maketitle
+
+\section{Lemma von Zorn}
+
+\begin{lemma}{Lemma von Zorn}{}
+    $(P, \leq)$ nicht-leere Partialordnung. Wenn jede Kette eine obere Schranke hat, dann hat $P$ bezüglich $\leq$ ein maximales Element.
+\end{lemma}
+
+\begin{exercise}{}{}
+    Sei $(P, \leq)$ eine Partialordnung. Sei $C_0 \subset P$ eine Kette. Zeige, dass es eine maximale Kette $C_{\text{max}} \subseteq P$ gibt, sodass $C_0 \subseteq C_{\text{max}}$.
+\end{exercise}
+
+\begin{proofbox}
+    Sei $K$ die Menge aller Ketten in $P$ die $C_0$ enthalten:
+    $$
+        K := \left\{ C \subset P \ |\ C \text{ Kette, } C_0 \subseteq C \right\}
+    $$
+    Die Teilmengenrelation $\subseteq$ auf Mengen ist immer eine Partialordnung $\implies (K, \leq)$ ist eine Partialordnung. Da $C_0 \in K$, gilt $K \neq \emptyset$. Also ist $(K, \leq)$ eine nicht-leere Partialordnung.
+
+    Sei $\mathcal{D}$ eine Kette bezüglich $\preceq$, sei
+    $$
+        U := \bigcup\limits_{D \in \mathcal{D}} D
+    $$
+
+    $U$ ist eine obere Schranke, weil $\forall D \in \mathcal{D}$ gilt, dass $D \subseteq U,\ D \preceq U$. Zeige, dass $U \in K$ ist. Das heisst, wir müssen zeigen, dass $U$ eine Kette ist, und dass $C_0 \in U$ ist.
+
+    \begin{itemize}
+        \item \underline{$C_0 \in U$}: $\forall D \in \mathcal{D} : C_0 \subseteq D \implies C_0 \subseteq U$
+        \item \underline{$U$ ist eine Kette}: Zeige, dass für alle $x, y \in U: x \leq y \text{ oder } y \leq x$ gilt.
+        
+        $x \in D_x, y \in D_y$, o.B.d.A. $D_x \subseteq D_y$.
+
+        $\implies x, y \in D_Y \xRightarrow{D_y \text{ Kette}} x \leq y \lor y \leq x \implies$ U ist eine Kette.
+    \end{itemize}
+
+    Wir können also für jede Kette eine obere Schranke finden. Somit gilt nach dem Lemma von Zorn, dass $K$ ein maximales Element $C_{\text{max}}$ besitzt.
+\end{proofbox}
+
+\begin{definition}{Ideal (nicht für diesen Kurs relevant)}{}
+    $I \subseteq R$ Ideal, wenn $\forall a, b \in I : a + b \in I$ und $\forall a \in I,\ r \in R : ar \in I$
+\end{definition}
+
+\begin{exercise}{}{}
+    $R$ kommutativer Ring mit $1 \neq 0$. Sei $I \varsubsetneq R$ echtes Ideal. Zeige:
+    $$
+        \exists \text{ Ideal } M \text{ von } R \text{ mit } I \subseteq M \varsubsetneq R \text{, das maximal unter allen echten Idealen ist.}
+    $$
+\end{exercise}
+
+\begin{proofbox}
+    Wir können dieselbe Beweisstruktur wie oben verwenden. Sei $K$ diesmal die Menge aller echten Ideale. Wir wissen, dass $K$ nicht leer ist, weil $I$ in $K$ ist. Sei $\mathcal{D}$ eine Kette, sei $U = \bigcup\limits_{D \in \mathcal{D}} D$. 
+    
+    Wir wollen zeigen: $U \in K$.
+    
+    Zeige: $\forall x, y \in U,\ r \in R : x + y \in U,\ rx \in U$. Da $x \in D_x, y \in D_y$, o.B.d.A $D_x \subseteq D_y$. Dann gilt $x, y \in D_y$. $D_y$ ist ein Ideal, also gilt $x + y \in D_y,\ rx \in D_y$. Und $D_y \subset U$. Also ist $x + y \in U,\ rx \in U$.
+
+    Zeige: $U \neq K$: \dots
+\end{proofbox}
+
+\begin{remark}{}{}
+    $\mathcal{F}$ hat endlichen Charakter $\implies \Big( C \text{ Kette} \implies \bigcup\limits_{A_i \in C} A_i \in \mathcal{F} \Big)$
+    
+    $\mathcal{F}$ hat keinen endlichen Charakter $\not\implies \Big( C \text{ Kette} \implies \bigcup\limits_{A_i \in C} A_i \in \mathcal{F} \Big)$
+\end{remark}
+
+\section{Mächtigkeit, Kardinalität, Kardinalzahlen}
+\begin{definition}{Mächtigkeit}{}
+    Mengen $A, B$ haben \textbf{dieselbe Mächtigkeit} $\iff |A| = |B| \iff \exists \text{ Bijektion } A \rightarrow B$
+
+    Dies ist eine Äquivalenzrelation (reflexiv, antisymmetrisch, transitiv).
+    
+    Die Mächtigkeit von $A$ ist \textbf{kleiner gleich} die von $B \iff |A| \leq |B| \iff \exists B' \subseteq B \text{, sodass } |A| = |B'| \iff \exists \text{ Injektion } A \rightarrow B \overset{\text{AC}}\iff \exists \text{ Surjektion } B \rightarrow A$
+
+    Diese Relation ist transitiv, reflexiv, und antisymmetrisch (nach Cantor-Bernstein).
+\end{definition}
+
+\begin{theorem}{Satz von Cantor}{}
+    Für alle Mengen $M$ gilt
+    $$
+        |M| < |\powerset(M)|
+    $$
+\end{theorem}
+
+\begin{definition}{Kardinalität}{}
+    Für alle Mengen $M$, $\exists \alpha \in \Omega : |M| = \alpha$. 
+    
+    Die Kardinalität von $M$ ist
+    $$
+        |M| = \bigcap \left\{\alpha \in \Omega : \exists f {}^\alpha M \ (\text{f ist bijektiv})\right\}
+    $$
+
+    $\alpha$ ist eine Kardinalzahl $\iff \alpha = |M|$ für eine Menge $M$
+\end{definition}
+
+\begin{remark}{}{}
+    Kardinalzahlen sind Ordinalzahlen, insbesondere sind sie die \textbf{kleinsten Ordinalzahlen}. Sie sind durch $\in$ wohlgeordnet.
+\end{remark}
+
+\begin{definition}{Kontinuumshypothese}{}
+    $\mathfrak{c} = |\R| = |\powerset(\omega)|$. Die Kontinuumshypothese besagt, dass $\mathfrak{c}$ die kleinste Kardinalzahl grösser als $\omega$ ist.
+
+    Diese Aussage lässt sich in ZFC weder beweisen noch widerlegen.
+\end{definition}
+
+\begin{exercise}{}{}
+    Zeige, dass jede natürliche Zahl eine Kardinalzahl ist. Verwende, dass $\forall m, n \in \omega : |m| = |n| \implies m = n$.
+\end{exercise}
+
+\begin{proofbox}
+    Sei $n \in \omega$ eine natürliche Zahl. Nach Definition ist $n$ eine Kardinalzahl, falls für alle Ordinalzahlen $\alpha < n$ gilt: $|\alpha| \neq |n|$.
+
+    Nehme als Widerspruch an, es gibt eine Ordinalzahl $\alpha$ mit $\alpha < n$, sodass $|\alpha| = |n|$. Wir wissen aber $|\alpha| = |n| \implies \alpha = n$, was aber ein Widerspruch ist. So muss gelten, dass $n$ eine Kardinalzahl ist.
+\end{proofbox}
+
+
+\end{document}

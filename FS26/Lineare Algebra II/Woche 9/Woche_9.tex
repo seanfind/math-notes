@@ -1,0 +1,458 @@
+\documentclass[12pt]{article}
+\usepackage{seantex}
+
+% --- Document Info ---
+\title{Linear Algebra II: Week 9}
+\author{Sean Findlay}
+\date{\today}
+
+% --- Start Document ---
+\begin{document}
+
+\maketitle
+
+\section{The Gram-Schmidt orthogonalisation process}
+
+\begin{theorem}{}{}
+    Let $(V, \langle \cdot, \cdot \rangle)$ be an inner product space.
+    \begin{enumerate}
+        \item If $S \subseteq V$ is an orthogonal system, then $S$ is linearly independent.
+        \item If $v_1,\dots,v_n$ is an orthogonal system and $v \in \Span(v_1\dots,v_n)$, and we write $v = a_1v_1 + \dots + a_nv_n$, then
+        $$
+            a_j = \frac{\langle v, v_j \rangle}{\langle v_j, v_j \rangle} \quad \forall 1 \leq j \leq n
+        $$
+    \end{enumerate}
+\end{theorem}
+
+\begin{proofbox}
+    Let us prove the second statement first. Let $1 \leq j \leq n$.
+    $$
+        \langle v, v_j \rangle = \sum_{k = 1}^{n} a_k \langle v_k, v_j \rangle = a_j \langle v_j, v_j \rangle \implies a_j = \frac{\langle v, v_j \rangle}{\langle v_j, v_j \rangle}
+    $$
+
+    Above, only $k = j$ gives a non-zero result, because all others have zero product (they are orthogonal).
+
+    Now, let us prove the first statement. Suppose $\sum_{k = 1}^{n} a_k v_k = 0$. Let $1 \leq j \leq n$. By the second statement,
+    $$
+        a_j = \frac{\langle 0, v_j \rangle}{\langle v_j, v_j \rangle} = 0 \implies a_j = 0.
+    $$
+
+    So the vectors must be linearly independent.
+\end{proofbox}
+
+\begin{proposition}{}{}
+    Let $V, W$ be vector spaces over $\R$ or $\C$ and $\langle \cdot, \cdot \rangle$ an inner product on $W$. Let $\mathcal{B} = (v_1,\dots,v_n)$ be a basis for $V$, and $\mathcal{C} = (w_1,\dots,w_n)$ be an orthonormal basis for $W$. Let $T: V \rightarrow W$ be a linear map. Write $\left[T\right]_{\mathcal{C}}^{\mathcal{B}} = (a_{ij})$. Then,
+    $$
+        a_{ij} = \langle T v_j, w_i \rangle
+    $$
+
+    In case $\mathcal{C}$ is only an orthogonal basis (not orthonormal), then
+    $$
+        a_{ij} = \frac{\langle T v_j, w_i \rangle}{\lVert w_i \rVert^2} = \frac{\langle T v_j, w_i \rangle}{\langle w_i, w_i \rangle}
+    $$
+\end{proposition}
+
+\begin{exercise}{}{}
+    Prove the above proposition. (Hint: apply the above theorem.)
+\end{exercise}
+
+\begin{theorem}{Gram-Schmidt orthogonalisation process}{}
+    Let $(V, \langle \cdot, \cdot \rangle)$ be an inner product space over $K = \R$ or $K = \C$, and $n := \dim V < \infty$. Let $(v_1,\dots,v_n)$ be a basis for $V$. Define new vectors $(w_1,\dots,w_n)$ by induction.
+    Let $w_1 := v_1$. Suppose we've already defined $w_1,\dots, w_{j-1}$. Then, define 
+    $$
+        w_j := v_j - \sum_{i = 1}^{j - 1} \frac{\langle v_j, w_i \rangle}{\langle w_i, w_i \rangle} w_i
+    $$
+    Then,
+    \begin{enumerate}
+        \item $(w_1,\dots,w_n)$ is an orthogonal basis for $V$.
+        \item $(\frac{w_1}{\lVert w_1 \rVert}, \dots, \frac{w_n}{\lVert w_n \rVert})$ is an orthonormal basis for $V$.
+        \item $\forall 1 \leq j \leq n,\ \Span(v_1,\dots,v_j) = \Span(w_1,\dots,w_j)$
+    \end{enumerate}
+\end{theorem}
+
+\begin{proofbox}
+    We claim that $\forall 1 \leq j \leq n,\ w_j$ is well-defined (i.e. $w_1,\dots,w_{j-1} \neq 0$, so that we never divide by zero), and $(w_1,\dots,w_j)$ is an orthogonal system with $\Span(w_1,\dots,w_j) = \Span(v_1,\dots,v_j)$
+    
+    Induction on $j$:
+    \begin{itemize}
+        \item \underline{$j = 1$}: $w_1 = v_1$ and $v_1 \neq 0$, because $v_1$ is part of a basis. Also, $\Span(w_1) = \Span(v_1)$. 
+        \item \underline{Let $2 \leq j \leq n$}, and assume our claim holds for $w_1,\dots,w_{j-1}$. Recall
+        $$
+            w_j = v_j - \sum_{i = 1}^{j - 1} \frac{\langle v_j, w_i \rangle}{\langle w_i, w_i \rangle} w_i \quad \text{with } w_i \neq 0\ \forall 1 \leq i \leq j - 1
+        $$
+        because of the induction hypothesis. So $w_j$ is well-defined. We'll show now that $w_j \neq 0$. Indeed, if $w_j = 0$, then 
+        $$
+            v_j = \sum_{i = 1}^{j - 1} \frac{\langle v_j, w_i \rangle}{\langle w_i, w_i \rangle} w_i \implies v_j \in \Span(w_1,\dots,w_{j-1}) = \Span(v_1,\dots,v_{j-1})
+        $$
+        which is impossible because $v_1,\dots,v_n$ are linearly independent. This shows that $w_j \neq 0$. We'll show now that $w_j \perp w_1,\dots,w_{j-1}$. Indeed, let $1 \leq k \leq j - 1$. We have
+        $$
+            \langle w_j, w_k \rangle = \langle v_j, w_k \rangle - \sum_{i = 1}^{j - 1} \frac{\langle v_j, w_i \rangle}{\langle w_i, w_i \rangle} \langle w_i, w_k \rangle = \langle v_j, w_k \rangle - \frac{\langle v_j, w_k \rangle}{\langle w_k, w_k \rangle} \cdot \langle w_k, w_k \rangle = 0
+        $$
+        for all $i \neq k$. This shows that $w_j \perp w_j \ \forall 1 \leq k \leq j - 1 \implies (w_1,\dots,w_j)$  is an orthogonal system.
+
+        It remains to show that $\Span(v_1,\dots,v_j) = \Span(w_1,\dots,w_j)$. Clearly, $w_j \in \Span(w_1,\dots,w_{j-1},v_j) = \Span(v_1,\dots,v_j)$
+
+        $$
+            \implies \Span(w_1,w_{j-1}, w_j) \subseteq \Span(v_1,\dots,v_j)
+        $$
+
+        These are two $j$-dimensional spaces, so we must have equality.
+    \end{itemize}
+
+    We have completed our proof by induction.
+\end{proofbox}
+
+\begin{corollary}{}{}
+    Every finite dimensional vector space has an orthonormal basis.
+\end{corollary}
+
+\textbf{Idea}: given a non-orthogonal basis, just take the orthogonal projection of one vector paired with another. $w_j = v_j - \underbrace{p_{r_{w_{j-1}}}(v_j)}_\text{projection} = \sum_{i = 1}^{j - 1} \frac{\langle v_j, w_i \rangle}{\langle w_i, w_i \rangle} w_i$
+
+\section{The orthogonal complement}
+
+Let $(V, \langle \cdot, \cdot \rangle)$ be an inner product space over $K = \R$ or $K = \C$.
+
+\begin{definition}{Orthogonal complement}{}
+    Let $\emptyset \neq S \subseteq V$ be a subset. Define the \textbf{orthogonal complement} of $S$:
+    $$
+        S^\perp := \left\{ v \in V \ |\ v \perp s \ \forall s \in S \right\} = \left\{ v \in V \ |\ \langle v, s \rangle = 0 \ \forall s \in S \right\}
+    $$
+    If $S = \left\{w\right\}$, we write $w^\perp := \left\{w\right\}^\perp$.
+\end{definition}
+
+\begin{lemma}{Properties of orthogonal complements}{22.b.2}
+    Let $\emptyset \neq S, T \subset V$. Then:
+    \begin{enumerate}
+        \item $S^\perp \subseteq V$ is a subspace.
+        \item $0^\perp = V$. $V^\perp = \left\{0\right\}$.
+        \item $S \cap S^\perp = \emptyset \lor S \cap S^\perp = \left\{0\right\}$
+        \item If $S \subseteq T$, then $S^\perp \supseteq T^\perp$
+        \item $\left(\Span(S)\right)^\perp = S^\perp$
+        \item $S \subseteq (S^\perp)^\perp$
+    \end{enumerate}
+\end{lemma}
+
+\begin{proofbox}
+    \begin{enumerate}
+        \item $0 \in S^\perp$ because $\langle v, 0 \rangle = 0 \ \forall s \in S$. So $S^\perp \neq \emptyset$. If $\alpha, \beta \in K,\ v, w \in S^\perp$, then $\forall s \in S,\ \langle \alpha v + \beta w, s \rangle = \alpha \langle v, s \rangle + \beta \langle w, s \rangle = 0 \implies \alpha v + \beta w \in S^\perp$. So $S^\perp$ is a linear subspace.
+        \item $0^T = V$ as exercise. 
+        
+        Let $v \in V^\perp \implies \langle v, w \rangle = 0 \implies v = 0 \implies V^\perp \subseteq \{0\}$ But also $0 \in V^\perp$.
+
+        \item If $S \cap S^\perp = \emptyset$ we are done. So assume $S \cap S^\perp \neq \emptyset$. 
+        
+        Take any $s \in S \cap S^\perp \implies \langle 0, 0 \rangle = 0 \implies s = 0 \implies S \cap S^\perp = \{0\}$.
+
+        \item (as exercise)
+        \item We have $S \subseteq \Span(S)$. By (4), $\Span(S)^\perp \subseteq S^\perp$. We'll show that $s^\perp \subseteq \Span(S)^\perp$. 
+        
+        Let $v \in S^\perp$. Let $u \in \Span(S)$. Write $u$ as
+        $$
+            u = \sum_{i = 1}^{k} \alpha_i u_i \quad \text{with } \alpha_1 \in K,\ v_i \in S
+        $$
+        $$
+            \langle v, u \rangle = \langle v, \sum_{i = 1}^{k} \alpha_i u_i \rangle = \sum_{i = 1}^{k} \overline{\alpha_i} \underbrace{\langle v, u_i \rangle}_{0 \text{, b.c. } v \in S^\perp} = 0
+        $$
+
+        \item Let $s \in S$. Then, $\forall v \in S^\perp$, we have $\langle v, s \rangle = 0 \implies \langle s, v \rangle = 0 \implies s \perp v \implies s \in (S^\perp)^\perp$. So $S \subseteq (S^\perp)^\perp$.
+    \end{enumerate}
+\end{proofbox}
+
+\begin{exercise}{}{}
+    \begin{itemize}
+        \item Show that $0^\perp = V$.
+        \item Show that $S \subseteq T \implies S^\perp \supseteq T^\perp$
+    \end{itemize}
+\end{exercise}
+
+\begin{theorem}{}{}
+    Let $(V, \langle \cdot, \cdot \rangle)$ be an inner product space ($\dim V = \infty$ is allowed). Let $U \subseteq V$ be a \underline{finite dimensional} subspace. Then, $U^\perp$ is a complement of $U$ in $V$ (i.e. $U + U^\perp = v$ and $U \cap U^\perp = \{0\}$)
+\end{theorem}
+
+In other words, the orthogonal complement is also a regular complement. So any finite dimensional space with an inner product has canonical complements! They are not unique, but we can define a canonical one. Hence
+$$
+    V \cong U \oplus U^\perp \quad \text{by a canonical iso!}
+$$
+
+\begin{proofbox}
+    By the lemma above, $U \cap U^\perp = \{0\}$. Put $r := \dim U$. Pick an orthonormal basis $(e_1,\dots,e_r)$ for $U$. Let $v \in V$. Define
+    $$
+        \tilde{P}_U(v) := \langle u, e_1 \rangle e_1 + \dots + \langle v, e_r \rangle e_r
+    $$  
+
+    This is the orthogonal projection of $v$ to $U$. We have $v = \tilde{P}_U(v) + (v - \tilde{P}_U(v))$. We claim that
+    $$
+        v - \tilde{P}_U(v) \in U^\perp
+    $$
+
+    Indeed,
+    $$
+        \langle v - \tilde{P}_U(v), e_i \rangle = \langle v, e_i \rangle - \sum_{k = 1}^{r} \langle v, e_k \rangle \underbrace{\langle e_k, e_i \rangle}_{0\ \forall k \neq 1} = \langle v, e_i \rangle - \langle v, e_i \rangle \underbrace{\langle e_i, e_i \rangle}_{= 1} = 0
+    $$
+
+    This proves $v - \tilde{P}_U(v) \in U^\perp \implies V = U + U^\perp$.
+\end{proofbox}
+
+\begin{notebox}{Digression: Projections}{}
+    Let $W$ be a vector space over any field $K$. Let $W_1 \subseteq V$ be a subspace and $W_2 \subseteq V$ a complement of $W_1$ in $V$. This means:
+    $$
+        W_1 + W_2 = V,\ W_1 \cap W_2 = \{0\}
+    $$
+    So, $\forall v \in V,\ \exists! $ a decomposition $v = w_1 + w_2$ with $w_1 \in W_1$ and $w_2 \in W_2$.
+
+    Define a map $P_{W_1}: V \rightarrow W_1$,
+    $$
+        P_{W_1}(v) := \text{the unique } w_1 \in  W_1 \text{ such that } v = w_1 + w_2,\ w_1 \in W_2,\ w_2 \in W_2
+    $$
+
+    Similarly, define $P_{W_2}: V \rightarrow W_2$.
+
+    \textbf{Claim}: $P_{W_1},\ P_{W_1}$ are linear, $\img P_{W_1} = W_1,\ \ker P_{W_1} = W_2$. 
+    
+    $\forall v \in W,\ v - P_{W_1}(v) \in W_2$. So $v = P_{W_1}(v) + P_{W_2}(v)$.
+\end{notebox}
+
+\begin{definition}{Orthogonal projection}{}
+    Let $(V, \langle \cdot, \cdot \rangle)$ be an inner product space over $\R$ or $\C$, and let $U \subseteq V$ be a finite dimensional subspace. We have seen that $U^\perp$ is a complement of $U$ in $V$. So $V \cong U \oplus U^\perp$ by a canonical isomorphism. Define a map $P_U: V \rightarrow U$ as follows:
+    $$
+        \forall v \in V,\ \exists! u \in U \text{ and } w \in U^\perp \text{ such that } v = u + w 
+    $$
+
+    Define $P_U(v) := u$. $P_U: V \rightarrow U$ is called the \textbf{orthogonal projection} to $U$.
+\end{definition}
+
+Example in $\R^2$: Take a subspace (line) $W$. We then have the perpendicular subspace (line) $W^\perp$. This then allows us to decompose each vector into the sum of two components, one in $W$, one in $W^\perp$.
+
+\begin{proposition}{}{}
+    $P_U$ satisfies:
+    \begin{enumerate}
+        \item $P_U: v \rightarrow U$ is linear.
+        \item $\img P_U = U,\ \ker P_U = U^\perp$.
+        \item $\forall v \in V,\ $
+        $$
+            v - P_U(v) \in U^\perp \quad \text{i.e. } P_U + P_{U^\perp} = \mathrm{id}_V
+        $$
+        \item $\forall u \in U,\ P_U(u) = u$.
+        \item If $e_1,\dots,e_r$ is an orthonormal basis for $U$, then
+        $$
+            P_U = \langle v, e_1 \rangle e_1 + \dots + \langle v, e_r \rangle e_r = \tilde{P}_{U}(v).
+        $$
+    \end{enumerate}
+\end{proposition}
+
+\begin{proofbox}
+    (1) through (4) follow from the digression on projections above.
+
+    (5): Let $v \in V$. Write
+    $$
+        v = \underbrace{\left( \sum_{i = 1}^{r} \langle v, e_i \rangle e_i \right)}_{=:\ (1)} + \underbrace{\left(v -  \sum_{i = 1}^{r} \langle v, e_i \rangle e_i \right)}_{=:\ (2)}
+    $$
+
+    Clearly, $(1) \in U$. We saw that $(2) \perp U$. So $2 \in U^\perp$. So, $(1)$ must be equal to $P_U(v)$.
+\end{proofbox}
+
+\begin{corollary}{}{}
+    Let $(V, \langle \cdot, \cdot \rangle)$ be an inner product space over $\R$ or $\C$, let $U \subseteq V$ be a finite-dimensional subspace. Then,
+    $$
+        \left(U^\perp\right)^\perp = U
+    $$
+\end{corollary}
+
+\begin{proofbox}
+    Take $v \in (U^\perp)^\perp$. By previous statements, $U \subseteq (U^\perp)^\perp$. We will show that $(U^\perp)^\perp \subset U$. We have that $V = U + U^\perp$ and that $U \cap U^\perp = \{0\}$. So we can write $v = u + w$ with $u \in U$ and $w \in U^\perp$. Since $u \in U \subseteq \left(U^\perp\right)^\perp$, and $v \in (U^\perp)^\perp$, it follows that $w = v - u \in (U^\perp)^\perp$.
+
+    But $w \in U^\perp$, and we know that $U^\perp \cap (U^\perp)^\perp = \{0\}$, so $w = 0 \implies v - u \in U$.
+\end{proofbox}
+
+\begin{corollary}{}{}
+    If $V$ is a finite-dimensional inner product space, and $U \subseteq V$ is a subspace, then,
+    $$
+        \dim U + \dim U^\perp = \dim V
+    $$
+\end{corollary}
+
+\section{Orthogonal and unitary matrices}
+
+\begin{definition}{Orthogonal matrices}{}
+    A matrix $A \in M_{n \times n}(\R)$ is called \textbf{orthogonal}, if its columns for an orthonormal basis for $\R^n$, with respect to the standard scalar product.
+    $$
+        A = \left[
+            \begin{array}{cccc}
+            | &  & | \\
+            \mathbf{v}_1& \cdots & \mathbf{v}_n \\
+            | &  & |
+            \end{array}
+            \right],\quad \langle v_i, v_j \rangle = \delta_{ij}
+    $$
+    The set of all orthogonal matrices $n \times n$ is denoted by $O(n)$. (Note: these matrices are called orthogonal, not orthonormal! There is no such thing as an orthonormal matrix!)
+\end{definition}
+
+\begin{definition}{Unitary matrices}{}
+    A matrix $A \in M_{n \times n}(\C)$ is called \textbf{unitary}, if its columns for an orthonormal basis for $\C^n$, with respect to the standard Hermitian product on $\C^n$. The set of unitary $n \times n$ matrices is denoted by $U(n)$.
+\end{definition}
+
+\begin{lemma}{Orthogonal matrices and their inverses}{}
+    $A \in M_{n \times n}(\R)$ is orthogonal $\iff A^T \cdot A = I_n \iff A \cdot A^T = I_n \iff A^{-1} = A^T$.
+\end{lemma}
+
+\begin{exercise}{}{}
+    Prove the above lemma.
+\end{exercise}
+
+\begin{lemma}{Unitary matrices and their inverses}{}
+    $A \in M_{n \times n}(\C)$ is unitary $\iff A^* \cdot A = I_n \iff A \cdot A^* = I_n \iff A^{-1} = A^* \iff A^T \cdot \overline{A} = I_n \iff \overline{A} \cdot A^T = I_n$.
+
+    Recall that $A^* = (\overline{A})^T$.
+\end{lemma}
+
+\begin{proofbox}
+    Write
+    $$
+        A = \left[
+                \begin{array}{cccc}
+                | &  & | \\
+                \mathbf{v}_1& \cdots & \mathbf{v}_n \\
+                | &  & |
+                \end{array}
+            \right],\quad v_k \in \C_\text{cols}^n,\ k=1\dots,n
+    $$
+
+    Then, 
+    $$
+        A^T A = \left[
+                \begin{array}{cccc}
+                | &  & | \\
+                \mathbf{v}_1& \cdots & \mathbf{v}_n \\
+                | &  & |
+                \end{array}
+            \right]^T 
+             \left[
+                \begin{array}{cccc}
+                | &  & | \\
+                \mathbf{v}_1& \cdots & \mathbf{v}_n \\
+                | &  & |
+                \end{array}
+            \right] = (v_i^T \cdot v_j)_{ij} = (\langle v_i, v_j \rangle)_{ij}
+    $$
+
+    The entry at $i, j$ of $A^T A$ is the inner product of $v_i$ and $v_j$.
+
+    $A$ is unitary, so by definition, the columns of $A$ are an orthonormal basis. This is equivalent to saying that $\langle v_i, v_j \rangle = \delta_{ij} \iff A^T \cdot A = I_n$
+\end{proofbox}
+
+\begin{corollary}{}{}
+    \begin{enumerate}
+        \item Let $A \in M_{n \times n}(\R)$. Then $A \in O(n) \iff A^T \in O(n)$.
+        \item Let $A \in M_{n \times n}(\C)$. Then $A \in U(n) \iff A^* \in U(n)$.
+    \end{enumerate}
+    
+    Both of these statements holds iff the \textbf{rows} of $A$ form an orthonormal basis for $\R^n$ or $\C^n$ respectively.
+\end{corollary}
+
+\section{QR decomposition}
+
+\begin{theorem}{QR decomposition}{}
+    \begin{enumerate}
+        \item Let $A \in \mathrm{GL}_n(\R)$. Then, $\exists Q \in O(n)$ and an upper triangular matrix $R \in M_{n \times n}(\R)$ such that
+        $$
+            A = QR
+        $$
+        \item Let $A \in \mathrm{GL}_n(\C)$. Then, $\exists Q \in U(n)$ and an upper triangular matrix $R \in M_{n \times n}(\C)$ such that
+        $$
+            A = QR
+        $$
+    \end{enumerate}
+\end{theorem}
+
+We could also call this the "orthogonal-upper-triangular decomposition". This decomposition is useful for computing inverses (mainly used in applied mathematics or computer science).
+
+\begin{proofbox}
+    Prove both statements together. Write
+    $$
+        A = \left[
+                \begin{array}{cccc}
+                | &  & | \\
+                \mathbf{v}_1& \cdots & \mathbf{v}_n \\
+                | &  & |
+                \end{array}
+            \right],\quad v_k \in K_\text{col}^n
+    $$
+
+    with $K = \R$ or $K = \C$. Since $A \in \mathrm{GL}_n{K}$, the cols of $v_1,\dots,v_n$ of $A$ form a basis for $K_\text{col}^n$.
+
+    Apply Gram-Schmidt to $v_1,\dots,v_n$ and obtain an orthonormal basis $e_1,\dots,e_n$ for $K_\text{col}^n$. Recall that $\forall 1 \leq j \leq n,\ \Span(v_1,\dots,v_j) = \Span(e_1,\dots,e_j)$ and we also have:
+    $$
+    \begin{aligned}
+        &v_1 = \langle v_1, e_1 \rangle e_1 \\
+        &v_2 = \langle v_2, e_1 \rangle e_1 + \langle v_2, e_2 \rangle e_2 \\
+        &\ \vdots \\
+        &v_j = \langle v_j, e_1 \rangle e_1 + \dots + \langle v_j, e_j \rangle e_j \\
+        &\ \vdots \\
+        &v_n = \langle v_n, e_1 \rangle e_1 + \dots + \langle v_n, e_n \rangle e_n
+    \end{aligned}
+    $$
+
+    So we can write:
+    $$
+        A = \left[
+                \begin{array}{cccc}
+                | &  & | \\
+                \mathbf{v}_1& \cdots & \mathbf{v}_n \\
+                | &  & |
+                \end{array}
+            \right]
+        =
+            \underbrace{\left[
+                \begin{array}{cccc}
+                | &  & | \\
+                \mathbf{e}_1& \cdots & \mathbf{e}_n \\
+                | &  & |
+                \end{array}
+            \right]}_{Q}
+            \underbrace{\begin{bNiceArray}{cccccc} % Changed from {cccc} to {cccccc}
+                \langle v_1, e_1 \rangle & \langle v_2, e_1 \rangle  & \cdots & \langle v_j, e_1 \rangle &  \cdots & \langle v_n, e_1 \rangle \\
+                0 & \langle v_2, e_2 \rangle & \cdots & \langle v_j, e_2 \rangle & \cdots &  \langle v_n, e_2 \rangle \\
+                \vdots & 0 & \cdots & \langle v_j, e_j \rangle & \cdots & \langle v_n, e_j \rangle \\
+                \vdots & & & & \ddots & \vdots \\
+                0 & 0 & \dots  & & 0 & \langle v_n, e_n \rangle \\
+            \end{bNiceArray}}_{R}
+    $$
+
+    We have that $Q$ is orthogonal or unitary, because $e_1,\dots,e_n$ form an orthogonal basis for $K_\text{col}^n$.
+\end{proofbox}
+
+\begin{notebox}{Extension of QR decomposition}{}
+    Let $A \in M_{n \times n}(K)$ with $K$ either the real or the complex numbers. $r := \mathrm{rank}(A)$. Then, $\exists$ matrices $Q \in O(n)$ or $Q \in U(n)$ and $R = \begin{bNiceArray}{c|c}
+C & * \\
+\hline
+0 & 0
+\end{bNiceArray}$, where $C \in M_{r \times r}(K)$, which is upper triangular, such that
+$$
+    A = QR
+$$
+
+A proof of this is not relevant to the course.
+\end{notebox}
+
+\section{Dual spaces and inner products}
+
+Let $V$ be a vector space over $K$. Recall: $V^* := \mathrm{Hom}(V, K) = $ the space of all linear maps (also known as functionals) $\vphi: V \rightarrow K$.
+
+Assume that $V = K_\text{col}^n$, and let $\vphi: K_\text{col}^n \rightarrow K$ be a functional. Then,
+$$
+    \exists! A = (a_1,\dots,a_n) \in M_{1 \times n}(K),\quad \text{such that } \vphi(v) = Av \ \forall v\in K_\text{col}^n
+$$
+
+Indeed, if $e_1,\dots,e_n$ is the standard basis for $K_\text{col}^n$, then define
+$$
+    a_1 := \vphi(e_1),\dots,a_n:=\vphi(e_n).
+$$
+
+Then, if $v = \begin{pmatrix} v_1 \\ \vdots \\ v_n \end{pmatrix} \in K_\text{col}^n$, then,
+$$
+    \vphi(v) = \vphi(v_1e_1 + \dots + v_ne_n) = v_1\vphi(e_1) + \dots + v_n \vphi(e_n) = a_1v_1 + \dots + a_nv_n = A v
+$$
+
+
+
+\end{document}

@@ -1,0 +1,448 @@
+\documentclass[12pt]{article}
+\usepackage{seantex}
+
+% --- Document Info ---
+\title{Analysis II: Serie 08}
+\author{Sean Findlay}
+\date{\today}
+
+% --- Start Document ---
+\begin{document}
+
+\maketitle
+
+\begin{problem}{Jordan-null set}{}
+    Let $X \subset \R$ be a Jordan-null set.
+
+    \begin{enumerate}[label=\alph*)]
+        \item Show rigorously that $X \times X \subset \R^2$ is also Jordan-null.
+        \item Show rigorously that $X \times [0, 1] \subset \R^2$ is also Jordan-null.
+    \end{enumerate}
+\end{problem}
+
+We have that $X \subset \R$ is Jordan null, so
+$$
+\mu_{\text{out}}(X) = \inf \{\mu(U) \ |\ X \subset U,\ U \text{ dyadic set}\} = 0
+$$
+
+\begin{enumerate}[label=\alph*)]
+    \item We want to show that:
+    $$
+        \mu_{\text{out}}(X \times X) = \inf \{\mu(U) \ |\ X \times X \subset U,\ U \text{ dyadic set}\} = 0
+    $$
+
+    Fix $\eps > 0$. Since $X$ is Jordan null, we can find a dyadic $U \in \R$ such that
+
+    $$
+        X \subset U \quad \text{and} \quad \mu(U) < \sqrt{\eps}
+    $$
+
+    Since $U$ is a 1-dimensional dyadic set, it can be written as the union of pairwise disjoint dyadic intervals:
+
+    $$
+        U = \bigcup\limits_{i = 1}^{n} I_i
+    $$
+
+    Note that because $X \subset U$, it follows that $X \times X \subset U \times U$.
+
+    We can then write:
+
+    $$
+        U \times U = \left(\bigcup\limits_{i = 1}^{n} I_i\right) \times \left(\bigcup\limits_{j = 1}^{n} I_j\right) = \bigcup\limits_{i = 1}^n \bigcup\limits_{j = 1}^n \left(I_i \times I_j \right)
+    $$
+
+    By Lemma 13.15 from the lecture notes,
+
+    $$
+        \mu_2(I_i \times I_j) = (b_i - a_i)(b_j - a_j) = \mu_1(I_i) \mu_1(I_j)
+    $$
+
+    So, for the measure of the Cartesian product, we have:
+
+    $$
+        \mu_2(U \times U) = \mu_2\left(\bigcup\limits_{i = 1}^n \bigcup\limits_{j = 1}^n \left(I_i \times I_j \right)\right) = \sum_{i = 1}^n \sum_{j = 1}^n \mu_2\left(I_i \times I_j \right) = \sum_{i = 1}^n \sum_{j = 1}^n \left( \mu_1(I_i) \mu_1(I_j) \right)
+    $$
+
+    $$
+        = \left( \sum_{i = 1}^{n} \mu_1(I_i) \right) \left( \sum_{j = 1}^{n} \mu_1(I_j) \right) = \mu_1(U) \mu_1(U) < \sqrt{\eps}\sqrt{\eps} = \eps
+    $$
+
+    So $U \times U$ is a dyadic set that covers $X \times X$ that can be made arbitrarily small. Therefore, $X \times X$ is Jordan null set. \qed
+
+
+    \item Fix $\eps > 0$. Since $X$ is a Jordan null set, we can find a dyadic $U \subset \R$ such that
+    
+    $$
+        X \subset U \quad \text{and} \quad \mu(U) < \eps 
+    $$
+
+    Again, write $U$ as the union of pairwise disjoint dyadic intervals:
+    $$
+        U = \bigcup\limits_{i = 1}^{n} I_i
+    $$
+
+    Note that because $X \subset U$, it follows that $X \times [0, 1] \subset U \times [0, 1]$.
+
+    We can then write:
+
+    $$
+        U \times [0, 1] = \left(\bigcup\limits_{i = 1}^{n} I_i\right) \times [0, 1] = \bigcup\limits_{i = 1}^n \left(I_i \times [0, 1] \right)
+    $$
+
+    By Lemma 13.15,
+
+    $$
+    \mu_2(I_i \times [0, 1]) = (b_i - a_i)(1 - 0) = \mu_1(I_i)
+    $$
+
+    So, for the measure of the Cartesian product, we have:
+
+    $$
+        \mu_2(U \times [0, 1]) = \mu_2\left(\bigcup\limits_{i = 1}^n \left(I_i \times [0, 1] \right)\right) = \sum_{i = 1}^n \mu_2\left(I_i \times [0, 1] \right) = \sum_{i = 1}^n \mu_1(I_i) = \mu_1(U) < \eps
+    $$
+
+    So $U \times [0, 1]$ is a dyadic set covering $X \times [0, 1]$ that can be made arbitrarily small. Therefore, $X \times [0, 1]$ is Jordan null set. \qed
+
+\end{enumerate}
+
+\begin{problem}{}{}
+    \begin{enumerate}
+    \item A bounded countable set is always Jordan-null.
+    
+    \item A countable set is always Lebesgue-null.
+    
+    \item Let $D \subset [0, 1]$ be a dense set (i.e., $\overline{D} = [0, 1]$). Then $\mu_{out}(D) = 1$. ($\mu_{out}$ was defined in Definition 13.7).
+    
+    \item Let $X, Y \subset [0, 1]$ Jordan measurable sets such that $\mu(X) > 1/2$ and $\mu(Y) > 1/2$. Then $X \cap Y \neq \emptyset$.
+    
+    \item Let $X, Y \subset [0, 1]$ such that $\mu_{out}(X) > 1/2$ and $\mu_{out}(Y) > 1/2$. Then $X \cap Y \neq \emptyset$.
+\end{enumerate}
+\end{problem}
+
+\begin{enumerate}
+    \item \textbf{False}. Take the set $[0, 1] \cap \Q$. This set is countable and bounded, but is not Jordan measurable, so it is not true that it is a Jordan null set. So the implication does not hold and the statement is false.
+    \item \textbf{True}. A set $E$ is Lebesgue null if for all $\eps > 0$ there exist countably many dyadic cubes $Q_i$ such that
+    $$
+        E \subset \bigcup\limits_{i \in I} Q_i \quad \text{and} \quad \sum_{i \in I} \mu(Q_i) < \eps
+    $$
+
+    Fix $\eps > 0$. Let $X = \left\{x_1, x_2, x_3, \dots\right\}$ be a countable set. Cover each point $x_i \in X$ with a dyadic cube $Q_i$ of measure $\mu(Q_i) < \frac{\eps}{2^i}$. Then
+    $$
+        \sum_{i = 1}^{\infty} \mu(Q_i) < \sum_{i = 1}^{\infty} \frac{\eps}{2^i} = \eps \sum_{i = 1}^{\infty} \frac{1}{2^i} = \eps.
+    $$
+
+    So $X$ is Lebesgue null. Because $X$ arbitrary, any countable set is Lebesgue null. So the statement holds.
+    \item \textbf{True}.
+    \item \textbf{False}. Here, $X, Y$ are not required to be Jordan measurable. So, if $X$, is a set of disconnected points, such that the distance between the largest and smallest point in $X$ is greater than $\frac{1}{2}$, then $\mu_{\text{out}}(X) > \frac{1}{2}$. Now, choose $Y$ to also be a set of disconnected points with distance between largest and smallest point in $Y$ greater than $\frac{1}{2}$, but so that no point in $X$ is also in $Y$ and no point in $Y$ is also in $X$. Then, $\mu_{\text{out}}(X) > \frac{1}{2}, \mu_{\text{out}}(Y) > \frac{1}{2}$, but $X \cap Y = \emptyset$. So we have found a counterexample.
+\end{enumerate}
+
+\newpage
+
+\begin{problem}{Fat Boundary}{}
+    Construct an open subset $U \subset \R$ for which the boundary $\partial U$ is not a null set.
+\end{problem}
+
+Fix $\eps > 0$. Consider the set $Q = [0, 1] \cap \Q$. This set is countable. Let $\{q_1, q_2, \dots\}$ be the list of all points in $Q$. Now, construct the open set $U$ in the following way: Let $I_1$ be an open set centred around $q_1$ such that $\mu(I_1) < \frac{\eps}{2}$. Let $I_2$ be an open set centred around $q_2$ such that $\mu(I_2) < \frac{\eps}{4}$. Continue this so that $I_i$ is the open interval centred around $q_i$ such that $\mu(I_i) < \frac{\eps}{2^i}$.
+
+Now, define
+$$
+    U = \bigcup\limits_{i = 1}^{\infty} I_i
+$$
+
+We have that
+$$
+    \mu(U) < \sum_{i = 1}^{\infty} \frac{\eps}{2^i} = \eps \sum_{i = 1}^{\infty} \frac{1}{2^i} = \eps
+$$
+
+The boundary of U is defined as $\partial U := \overline{U} \setminus \interior{U}$. Because $U$ is open, $\interior{U} = U$. $U$ contains every rational number in $[0, 1]$, and because the rationals are dense over $\R$, the closure $\overline{U}$ must contain the entire interval $[0, 1]$.
+
+So the measure of the boundary is:
+$$
+    \mu(\partial U) = \mu(\overline{U} \setminus \interior{U}) = \mu(\overline{U} \setminus U) = \mu(\overline{U}) - \mu(U) \geq 1 - \eps
+$$
+
+$$
+    \implies \mu(\partial U) \geq 1 - \eps
+$$
+
+Let $\eps = \frac{1}{2}$ for instance (because $\eps > 0$ can be chosen arbitrarily). It then follows that
+$$
+\implies \mu(\partial U) \geq 1 - \frac{1}{2} = \frac{1}{2}
+$$
+
+So the boundary $\partial U$ is \textbf{not} a null set. \qed
+
+\newpage
+
+\begin{problem}{}{}
+    Let $U \subset \mathbb{R}^n$ be a nonempty, open subset, $f: U \to \mathbb{R}^m$ a function, and $N \subset U$ a Jordan null set. In which of the following cases is the image $f(N) \subset \mathbb{R}^m$ necessarily a null set?
+
+\begin{enumerate}
+    \item If $f$ is uniformly continuous.
+    \item If $f$ is uniformly continuous and $m \geq n$.
+    \item If $f$ is locally Lipschitz continuous.
+    \item If $f$ is locally Lipschitz continuous and $m \geq n$.
+\end{enumerate}
+\end{problem}
+
+\textbf{Only in case 4}. Since $N$ is a Jordan null set, it is bounded by definition. Then $\overline{N}$ must be bounded and is closed by definition, so $\overline{N} \subset \R^n$ is compact.
+
+Assume $f$ is locally Lipschitz.
+
+Find a slightly larger compact set $\overline{N} \subset K \subset U$. Then, $f|_K$ is globally Lipschitz with Lipschitz constant $L \geq 0$.
+
+Fix $\eps > 0$. Assume WLOG that $\eps < 1$. Because $N$ is Jordan null, we can find a finite collection of dyadic cubes $Q_i$ inside $K$ that cover $N$, such that
+$$
+    \sum_{i = 1}^{k}\mu(Q_i) < \eps
+$$
+
+For any two points $x_i, y_i \in Q_i$, it holds that
+$$
+    \lVert x-y \rVert \leq 2^{-p_i} \sqrt{n}
+$$
+where $p_i$ is the pixel size of the dyadic cube $Q_i$. Applying the Lipschitz condition, we get that:
+$$
+    \lVert f(x)- f(y) \rVert \leq L \lVert x - y \rVert \leq L 2^{-p_i} \sqrt{n}
+$$
+
+Because $x, y \in Q_i$ arbitrary, we have shown that the maximum distance between two points in the image $f(Q_i) \subset \R^m$ is $L 2^{-p_i} \sqrt{n}$. So we can construct an $m$-dimensional cube $P_i$ with side length $L 2^{-p_i} \sqrt{n}$ such that $f(Q_i) \subset P_i$. The volume of $P_i$ is
+$$
+    \mu_m(P_i) = (L 2^{-p_i} \sqrt{n})^m = L^m (2^{-p_i})^m \sqrt{n}^m
+$$
+
+Since $2^{-p_i}$ is the side length of the dyadic cube $Q_i$, it follows that $\mu_n(Q_i) = (2^{-p_i})^n \iff 2^{-p_i} = \mu_n(Q_i)^{1/n}$
+
+
+So we can rewrite:
+$$
+    \mu_m(P_i) = (L \sqrt{n})^m \mu_n(Q_i)^{m/n}
+$$
+
+Compute the sum of the volumes of all $P_i$:
+$$
+    \sum_{i = 1}^{k} \mu_m(P_i) = (L \sqrt{n})^m \sum_{i = 1}^{k} \mu_n(Q_i)^{m/n}
+$$
+
+
+Assume $m \geq n \iff \frac{m}{n} \geq 1$. Then, 
+$$
+    \mu_n(Q_i) < \eps < 1 \implies \mu_n(Q_i)^{m/n} < \mu_n(Q_i)
+$$
+
+In that case:
+$$
+    \implies \sum_{i = 1}^{k} \mu_m(P_i) < (L \sqrt{n})^m \sum_{i = 1}^{k} \mu_n(Q_i) < (L \sqrt{n})^m \eps
+$$
+
+So if we assume $f$ locally Lipschitz and $m \geq n$, then we can guarantee that $f(N)$ can be covered with a finite number of cubes of arbitrarily small volume. So only given these assumptions is $f(N)$ guaranteed to be a null set. \qed
+
+\begin{problem}{Change of variables and Jacobians}{}
+    For each of the following domains and change of variables find the Jacobian and the appropriate transformed domain. There is no need to actually compute the integrals!
+
+\begin{enumerate}
+    \item $A := \{(x_1, x_2) \in \mathbb{R}^2 : x_1 > 0, x_2 < x_1, 1 < x_1^2 + x_2^2 < 4\}$ and $x_1 = r \cos \theta, x_2 = r \sin \theta$. Using the change of variables formula, complete the dots in the following formula
+    \[
+    \int_{A} x_1^2 \sin(x_2) \, dx_1 dx_2 = \int_{\dots} \dots \, dr d\theta
+    \]
+
+    \item $B := \{(x, y) \in \mathbb{R}^2 \mid 1 < xy < 2, x^2 < y < 2x^2\}$ and $u := xy, v := x^2$. Using the change of variables formula, complete the dots in the following formula
+    \[
+    \int_{B} y^2 e^{-xy} \, dx dy = \int_{\dots} \dots \, du dv
+    \]
+
+    \item $C := \{(x, y, z) \in \mathbb{R}^3 \mid 1 < z - 2y < 2, 0 < z < 1, -2 < 3x + y + z < 0\}$ and $u := z, v := z - 2y, w := 3x + y + z$. Using the change of variables formula, complete the dots in the following formula
+    \[
+    \int_{C} xyz \, dx dy dz = \int_{\dots} \dots \, du dv dw.
+    \]
+\end{enumerate}
+\end{problem}
+
+\begin{enumerate}
+    \item We have the constraint 
+    $$
+        1 < x_1^2 + x_2^2 < 4 \iff 1 < r^2 \cos^2 \theta + r^2 \sin^2 \theta < 4 \iff 1 < r^2 < 4 \iff r \in (1, 2)
+    $$
+    We also have the constraints 
+    $$
+        x_1 > 0 \land x_2 < x_1 \iff \frac{x_2}{x_1} < 1 \iff \frac{r \sin \theta}{r \cos \theta} = \tan \theta < 1 \iff \theta < \arctan 1 = \frac{\pi}{4}
+    $$ 
+
+    We also have 
+    $$
+        x_1 > 0 \iff r \cos \theta > 0 \xRightarrow{r > 0} \cos \theta > 0 \iff \theta > -\frac{\pi}{2}
+    $$
+
+    So it follows:
+    $$
+        r \in (1, 2),\ \theta \in \left(-\frac{\pi}{2}, \frac{\pi}{4}\right)
+    $$
+
+    So, we have the transformation
+    $$
+        \Phi: A \rightarrow (1, 2) \times \left(-\frac{\pi}{2}, \frac{\pi}{4}\right), \quad (x_1, x_2) \mapsto (r, \theta) = (\sqrt{x_1^2 + x_2^2},\ \arctan{x_2/x_1})
+    $$
+
+    The Jacobian of the inverse $\Phi^{-1}$ is
+    $$
+        J \Phi^{-1}(r, \theta) = \begin{pmatrix}
+            \cos \theta & \sin \theta \\
+            -r\sin \theta & r \cos \theta
+        \end{pmatrix} \implies \det J\Phi^{-1}(r, \theta) = r \cos^2 \theta + r \sin^2 \theta = r
+    $$
+    $$
+        \implies \det J\Phi(r, \theta) = \frac{1}{\det J^{-1}\Phi(r, \theta)} = \frac{1}{r}
+    $$
+
+    So the new integral is:
+    $$
+        \int_{A} x_1^2 \sin(x_2) \, dx_1 dx_2 = \int_{\Phi(A)} (r \cos \theta)^2 \sin(r \sin \theta) \cdot r\ dr d\theta
+    $$
+
+    \item We have the constraint 
+    $$
+        1 < xy < 2 \iff u \in (1, 2)
+    $$
+    and (if $x \neq 0$)
+    $$
+        x^2 < y < 2x^2 \iff 1 < \frac{u}{x^2} < 2 \iff 1 < \frac{u/x}{x^2} < 2 \iff 1 < \frac{u}{x^3} < 2
+    $$
+
+    $v = x^2 \iff x = v^{1/2} \iff x^3 = v^{3/2}$, so we can rewrite:
+    $$
+        1 < \frac{u}{x^3} < 2 \iff 1 < \frac{u}{v^{3/2}} < 2 \implies v^{3/2} < u \land u < 2v^{3/2} \iff v < u^{2/3} \land \left(\frac{u}{2}\right)^{2/3} < v
+    $$
+
+    $$
+        \iff v \in \left(\left(\frac{u}{2}\right)^{2/3}, u^{2/3}\right)
+    $$
+
+    So, we have the transformation
+    $$
+        \Phi: B \rightarrow (1, 2) \times \left(\left(\frac{u}{2}\right)^{2/3}, u^{2/3}\right), \quad (x, y) \mapsto (u, v) = (xy, x^2)
+    $$
+
+    The Jacobian of $\Phi$ is
+    $$
+        J \Phi^(x, y) = \begin{pmatrix}
+            y & x \\
+            2x & 0
+        \end{pmatrix} \implies \det J \Phi(x, y) = -2x^2 = -2v
+    $$
+
+    So the new integral is
+    $$
+        \int_{B} y^2 e^{-xy} \, dx dy = \int_{\Phi(B)} \frac{u^2/v e^{-u}}{2v} \, du dv = \int_{\Phi(B)} \frac{u^2}{2v^2e^u} \, du dv
+    $$
+
+    \item We have the constraint
+    $$
+        1 < z - 2y < 2 \iff v \in (1, 2)
+    $$
+    and
+    $$
+        0 < z < 1 \iff u \in (0, 1)
+    $$
+    and
+    $$
+        -2 < 3x + y + z < 0 \iff w \in (-2, 0)
+    $$
+
+    and the transformation
+    $$
+        \Phi: C \rightarrow (0, 1) \times (1, 2) \times (-2, 0), \quad (x, y, z) \mapsto (u, v, w) = (z,\ z - 2y,\ 3x + y + z)
+    $$
+
+    The Jacobian of $\Phi$ is:
+    $$
+        J \Phi(x, y, z) = \begin{pmatrix}
+            0 & 0 & 1 \\
+            0 & -2 & 1 \\
+            3 & 1 & 1
+        \end{pmatrix} \implies \det J \Phi(x,y,z) = 3 \cdot \det \begin{pmatrix}
+            0 & 1 \\
+            -2 & 1
+        \end{pmatrix} = -6
+    $$
+
+    So the new integral is:
+    $$
+        \int_{C} xyz \, dx dy dz = \int_{\Phi(C)} \frac{w + \frac{1}{2}v - \frac{3}{2}u}{3} \cdot \frac{u-v}{2} \cdot u \cdot \frac{1}{6} \, du dv dw
+    $$
+\end{enumerate}
+
+\begin{problem}{The Cantor set}{}
+Let $X \subset [0, 1]$ be the set of all real numbers whose decimal expansion does not contain the digit 8. Show that:
+
+\begin{enumerate}
+    \item $X$ is a Lebesgue null set,
+    \item $X$ is uncountable,
+    \item $X \times X \subset [0, 1]^2$ is a Lebesgue null set.
+    \item Show that $X$ is compact.
+    % Note: The decimal expansion is not always unique. For example, 0.8 = 0.79999 . . .. Whenever x has at least
+    % one decimal expansion not containing 8, we rule that x belongs to X, so for example 0.32579 ∈ X,
+    % 0.32589 ∈ X
+\end{enumerate}
+\end{problem}
+
+$X \subset [0, 1]$ is the set of all real numbers who have at least one decimal expansion not containing the digit 8.
+
+\begin{enumerate}
+    \item Fix $\eps > 0$. We want to show that there exists a countable collection of cubes $Q_i$ such that
+    $$
+        X \subset \bigcup\limits_{i \in \N} Q_i \quad \text{ and } \quad \sum_{i \in \N} \mu(Q_i) < \eps
+    $$
+
+    Start with $[0, 1]$. Remove numbers with an 8 in the first decimal place. We are left with $X_1$, covered by:
+    \[ [0, 0.8) \cup [0.9, 1] \]
+    The measure of this cover is $\mu(X_1) = \frac{9}{10}$. Note that $X \subset X_1$.
+
+    Remove numbers from $X_1$ with an 8 in the second decimal place to get $X_2$. Using the same principle as before, we can cover each of the remaining nine intervals making up $X_1$:
+    \[ [0, 0.1), [0.1, 0.2), \dots, [0.7, 0.8), [0.9, 1] \]
+    The measure is $\mu(X_2) = \frac{9}{10} \cdot \frac{9}{10} = (\frac{9}{10})^2$.
+
+    We can continue like this for each $X_n$, the measure of each of these sets always being
+    $$
+        \mu(X_n) = (\frac{9}{10})^n
+    $$
+    due to the recursive strategy of removing $\frac{1}{10}$ of each $\frac{1}{10}$ of the preceding set. Note that for each $X_n$ we have that $X \subset X_n$ (this follows from the definition of $X$). Also note that $X_n$ consists of $9^n$ intervals.
+
+    What happens as we allow $n \rightarrow \infty$? If we simply pass to the limit, we get that
+    $$
+        \lim_{n \rightarrow \infty} \mu(X_n) = \lim_{n \rightarrow \infty} (\frac{9}{10})^n = 0
+    $$
+
+    By definition of the limit, there exists $N > 0$ such that
+    $$
+        \mu(X_n) < \eps \quad \forall n \geq N
+    $$
+
+    Thus, we have a countable set of intervals $X_N$ such that $X \subset X_N$ and $\mu(X_N) < \eps$. So we have shown that $X$ is Lebesgue null. \qed
+
+    \item Every $x \in X$ corresponds to an infinite sequence $0.d_1d_2d_3\dots$ where $d_i \in \{0, 1,\dots,7,9\}$. We can construct a bijection between $X$ and the set of all such infinite sequences $\left\{d_n\right\}_{n = 1}^{\infty}$. The bijection works because of the additional rule from the footnote which ensures unique decimal expansions. Because the set of all sequences $\left\{d_n\right\}_{n = 1}^{\infty}$ is uncountable, $X$ must also be uncountable. \qed
+    \item Fix $\eps > 0$. Using the result from (1), we can find $X_n$ covering $X$ such that $\mu(X_n) < \eps$. $X_n$ is made up of $9^n$ distinct intervals, which is a finite number. Therefore, $X$ is actually also Jordan measurable, so $X$ is a Jordan null set.
+    
+    Using the result from 8.1., we know that the Cartesian product of a Jordan null set with itself is also a Jordan null set. So $X \times X$ is a Jordan null set.
+
+    Since every Jordan null set is also a Lebesgue null set, it follows that $X \times X$ is a Lebesgue null set.
+
+    \item $X \subset [0, 1] \subset \R$ is a bounded subset of the real numbers, so if we can show that it is also a closed set, then it follows from the Heine-Borel theorem that $X$ is compact. So we want to show that $X$ is closed.
+    
+    We want to show that for every convergent sequence $\{x_n\}_{n = 0}^{\infty}$ in $X$ with $x_n \in X$ for all $n \in \N$, then the limit also lies in $X$.
+
+    So let $\{x_n\}_{n = 0}^{\infty}$ be an arbitrary convergent sequence in $X$ with $x_n \in X$ for all $n \in \N$. This means that $x_n$ has no 8 in its decimal expansion for all $n \in \N$.
+
+    Assume by contradiction that $\bar{x} = \lim\limits_{n \rightarrow \infty} x_n$ has an 8 in its decimal expansion. By the convention in the footnote, this means that \textbf{every} decimal expansion of $\bar{x}$ contains an 8.
+
+    Let $k$ be the index of the decimal position in $\bar{x}$ where the first unavoidable 8 occurs. Because the 8 is unavoidable, we cannot have that $\bar{x}$ is some number on the boundary, like $0.8$ (because $0.8 = 0.7999\dots \in X$). Therefore, $\bar{x}$ must lie inside some forbidden open interval entirely outside of $X$.
+    
+    Let $I_k$ be this "forbidden" open interval containing $\bar{x}$. Since $\bar{x}$ is strictly inside $I_k$, there exists some $\delta > 0$ between $\bar{x}$ and the endpoints of $I_k$.
+
+    Since $x_n \rightarrow \bar{x}$, we can choose an $N$ such that for all $n \geq N$, $|x_n - \bar{x}| < \delta$. This implies that for all $n \geq N$, $x_n \in I_k$. But then these $x_n$ have an 8 in their decimal expansions and are thus not in $X$, thus contradicting our assumption that $x_n \in X \ \forall n \in \N$.
+
+    So $\bar{x} = \lim\limits_{n \rightarrow \infty} x_n$ cannot have an 8 in its decimal expansion, and thus $\lim\limits_{n \rightarrow \infty} x_n \in X$.
+
+    So $X$ is closed. By Heine-Borel, $X$ is a compact set. \qed
+\end{enumerate}
+
+
+\end{document}

@@ -1,0 +1,164 @@
+\documentclass[12pt]{article}
+\usepackage{seantex}
+
+% --- Document Info ---
+\title{Grundstrukturen: Woche 8}
+\author{Sean Findlay}
+\date{\today}
+
+% --- Start Document ---
+\begin{document}
+
+\maketitle
+
+\section{Repetition}
+
+\subsection{Auswahlaxiom}
+
+\begin{theorem}{Auswahlaxiom}{}
+$\forall \mathcal{F} (\emptyset \notin \mathcal{F} \rightarrow \exists f (f: \mathcal{F} \rightarrow \mathcal{F} \text{ and } \forall x \in \mathcal{F}(f(x) \in x)))$
+
+Oder: jede Familie von nicht-leeren Mengen hat eine Auswahlfunktion. Hier ist $f$ diese Auswahlfunktion.
+
+Oder äquivalent: Das cartesische Produkt nicht-leerer Mengen ist nicht leer.
+\end{theorem}
+
+\subsection{Ordinalzahlen}
+\begin{definition}{Ordinalzahlen}{}
+Eine Menge $\alpha$ ist eine \textbf{Ordinalzahl}, falls $\alpha$ \underline{transitiv} ist und durch die Relation $\in$ wohlgeordnet ist.
+\end{definition}
+
+\begin{example}{Natürliche Zahlen}{}
+$$
+0 := \emptyset, 1 = \{{\emptyset}\}, 2 = \{\emptyset, \{\emptyset\}\}, \dots
+$$
+
+Aber auch $\omega$:
+
+$$
+\omega + 1 := \{\omega, \{\omega\}\}
+$$
+\end{example}
+
+\begin{remark}{Limes- und Nachfolderordinalzahlen}{}
+    Falls $\alpha$ Ordinalzahl, so gilt entweder $\alpha = \cup \alpha$ ($\alpha$ ist Limesordinalzahl) oder es gibt $\beta$ sodass $\alpha = \beta + 1$ ($\alpha$ ist Nachfolgerordinalzahl).
+\end{remark}
+
+\begin{theorem}{Wohlordnungsprinzip}{}
+Jede Menge kann wohlgeordnet werden.
+\end{theorem}
+
+Gesehen: AC $\iff$ WOP.
+ 
+Gesehen im Beweis: Für jede Menge M gibt es eine Ordinalzahl $\lambda$ und eine Bijektion $\omega_\lambda: \lambda \rightarrow M$.
+
+\section{Transfinite Induktion und Rekursion}
+
+\begin{remark}{Transfinite Induktion}{}
+Sei $\lambda \in \Omega$ ($\Omega$ ist hier die Klasse der Ordinalzahlen) und $\phi$ eine Formel, sodass:
+
+Für jedes $\alpha \in \lambda$ gilt: falls für jedes $\beta \in \alpha$ die Formel $\phi(\beta)$ gilt, dann gilt $\phi(\alpha)$.
+
+Dann gilt $\phi(\alpha)$ für jedes $\alpha \in \lambda$.
+\end{remark}
+
+\begin{remark}{Transfinite Rekursion}{}
+Sei $A$ eine Menge, $\lambda \in \Omega$, und $f: \bigcup\limits_{\beta \in \lambda}{} A \rightarrow A$. Dann gibt es eine eindeutige Funktion $a: \lambda \rightarrow A$ sodass $a_\beta := a(\beta) = \zeta(a\restriction_{b})$ für alle $\beta \in \lambda$.
+\end{remark}
+
+\begin{example}{Fibonacci}{}
+$\lambda = \omega$, $A = \omega$. Fibonacci-Folge $a: \omega \rightarrow \omega$. $F_0 := F(0) = 0, F_1 := 1, F_n := F_{n-2} + F_{n-1}$ für $n \geq 2$.
+
+Nach obigem Satz: ein solches $a$ existiert.
+\end{example}
+
+\begin{example}{Jeder Vektorraum hat eine Basis}{}
+Es existiert eine Ordinalzahl $\lambda \in \Omega$ und eine Bijektion $\lambda \rightarrow V$, d.h. wir können schreiben $V = \{v_\beta : \beta \in \lambda\}$.
+
+Sprich: wir wählen soviele linear unabhängige Vektoren in V, bis wir eine Basis haben. Formal machen wir dies mit der transfinite Rekursion.
+
+Sei $f: {}^{\beta}\bigcup\limits_{\beta \in \lambda} \powerset(V) \rightarrow \powerset(V)$, $t: \beta \rightarrow \powerset(V)$.
+
+$$
+f(t) = \begin{cases}
+    \emptyset & \text{ falls } \beta = 0 \\
+    t(\delta) \cup {v_\delta} & \text{ falls } \beta = \delta + 1 \\
+    t(\delta) & \text{falls} \beta = \delta + 1 \text{ und } t(\delta) \cup {v_\delta} \text{ ist linear abhängig} \\
+    \bigcup\limits_{\delta \in \beta} t(\delta) & \text{ falls } \beta \text{ Limesordinalzahl} \\
+\end{cases}
+$$
+
+Gemäss transfiniter Rekursion existiert ein $a: \lambda \rightarrow \powerset(V)$ sodass $a(\beta) = f(a\restriction_b)$. Sei $A_\beta := a(\beta)$ und $B = \bigcap\limits_{\beta \in \lambda} A_\beta$.
+
+\end{example}
+
+\begin{proofbox}
+    Zeige: $B$ ist eine Basis.
+
+    \underline{$B$ ist linear unabhängig}: jede endliche Teilmenge von $B$ ist enthalten in einem $A_\beta$. Die $A_\beta$ sind linear unabhängig.
+
+    \underline{$B$ erzeugt $V$}: Falls nicht: sei $v_\delta \notin \text{sp}(v) \implies v_\delta \notin B$ und somit $v_{\delta+1}$, d.h. aber, dass $A_\delta \cup \{v_\delta\}$ sind linear unabhängig $\implies v_\delta \in \text{sp}(B) \quad \lightning$
+\end{proofbox}
+
+\section{Kuratowski-Zorn-Lemma}
+
+\begin{lemma}{Kuratowski-Zorn-Lemma}{kzl}
+Sei $(P, \leq)$ eine nicht-leere partial geordnete Menge, sodass jede Kette $C \subset P$ eine obere Schranke hat in $P$, so hat $P$ ein maximales Element.
+\end{lemma}
+
+Dieses Lemma bietet eine andere Möglichkeit zu zeigen dass jeder Vektorraum eine Basis hat (anstatt mit tranfiniter Rekursion wie oben).
+
+
+\section{Teichmüller-Prinzip}
+
+\begin{definition}{endlicher Charakter}{label}
+Eine Familie $M$ von Mengen hat \textbf{endlichen Charakter}, falls für jede Menge $x$ gilt: $$ x \in M \iff \text{jede endliche Teilmenge von } x \text{ ist in } M $$
+\end{definition}
+
+Zum Beispiel: jede Teilmenge einer linear unabhängigen Menge ist linear unabhängig.
+
+\begin{definition}{Teichmüller-Prinzip}{teichmüllerprinzip}
+Ist $\mathcal{F}$ eine nicht-leere Familie von Mengen mit endlichem Charakter, so hat $\mathcal{F}$ ein maximales Element bezüglich $\in$.
+\end{definition}
+
+\section{Äquivalenz zum Auswahlaxiom}
+
+\begin{theorem}{Äquivalenz zum Auswahlaxiom}{}
+    Die folgenden Aussagen sind äquivalent zum AC:
+    \begin{enumerate}[label=\alph*)]
+        \item WOP
+        \item KZL
+        \item TP
+    \end{enumerate}
+\end{theorem}
+
+\begin{proofbox}
+    \underline{AC $\iff$ WOP}: \checkmark
+
+    \underline{WOP $\implies$ KZL}: Sei $(P, \leq)$ eine nicht-leere Partialordnung und sei $P = \{p_\beta : \beta \in \lambda\}$ für $\lambda \in \Omega$. Sei $f: \bigcup{}^\beta\powerset(P) \rightarrow \powerset(P)$ für $t: \beta \rightarrow -> \powerset(P)$, definiere:
+
+    $$
+    f(t) = \begin{cases}
+        \emptyset & \text{ falls } \beta = 0 \\
+        t(\delta) & \beta = \delta + 1 \text{ und } t(\delta) \text{ ist keine Kette} \\
+        t(\delta) & \beta = \delta + 1 \text{ und } t(\delta) \text{ ist eine Kette}, p_\delta \text{ ist keine obere Schranke von } t(\delta) \\
+        t(\delta) \cup \{p_\delta\} & \beta = \delta + 1 \text{ und } t(\delta) \text{ ist eine Kette}, p_\delta \text{ ist obere Schranke von } t(\delta) \\
+        \bigcup\limits_{\delta < \beta} & \beta Limesordinalzahl \\
+    \end{cases}
+    $$
+
+    $\implies $ es existiert (transfinite Rekursion) $a: \lambda \rightarrow \powerset(P)$ mit $a(\beta) = f(a\restriction_b)$ für alle $\beta \in \lambda$. Sei $A_\beta := a(\beta), A_\lambda := \bigcup\limits_{\beta \in \lambda} A_\beta$.
+
+    Bemerkung: die $A_\beta$ sind Ketten (folgt mit transfiniter Induktion).
+
+    \underline{$A_\lambda$ ist Kette}: Seien $x, y \in A_\lambda$, d.h. $x \in A_\beta, y \in A_\gamma$ für $\beta, \gamma \in \lambda$, o.B.d.A $\beta \leq \gamma \implies x, y \in A_\gamma$ und $A_\lambda$ ist Kette.
+
+    \underline{Jede obere Schranke von $A_\lambda$ ist maximal}: Sei $m$ eine obere Schranke von $A_\lambda$, nehme an, es gibt $p_\delta \in P$ mit $m < p_\delta$ für ein $\delta \in \lambda$. $\implies p_\delta$ ist obere Schranke von $A_\delta \subseteq A_\lambda \implies p_\delta \in A_{\delta+1} \subseteq A_\lambda$. $\lightning$ zu $m$ obere Schranke.
+
+    \underline{KZL $\implies$ TP}: Sei $\mathcal{F}$ eine nicht-leere Familie von Mengen mit endlichem Charakter. $(F, \leq)$ ist nicht-leere Partialordnung. Jede Kette $C$ hat die obere Schranke $\cup C \overset{\text{KZL}}{\implies} $ F hat eine maximales Element bzgl. $\subseteq$. 
+
+    \underline{TP $\implies$ AC}: $\mathcal{F}$ Familie von nicht-leeren Mengen. Sei 
+
+\end{proofbox}
+
+\end{document}

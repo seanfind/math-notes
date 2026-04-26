@@ -1,0 +1,268 @@
+\documentclass[12pt]{article}
+\usepackage{seantex}
+
+% --- Document Info ---
+\title{Grundstrukturen: Woche 9}
+\author{Sean Findlay}
+\date{\today}
+
+% --- Start Document ---
+\begin{document}
+
+\maketitle
+
+\section{Kardinalzahlen}
+
+\begin{definition}{Mächtigkeit}{}
+    Zwei Menge $A$ und $B$ haben dieselbe Mächtigkeit, falls es eine Bijektion $f: A \rightarrow B$ gibt. Schreibe: $|A| = |B|$.
+\end{definition}
+
+\begin{example}{}{}
+    Wir haben die Ordinalzahl $\omega + \omega$. Es gilt $|\omega + \omega| = |\omega|$. Wir haben die Bijektion:
+    $$
+        f: \omega + \omega \rightarrow \omega, \quad f(\alpha) = \begin{cases}
+            \beta + \beta & \text{für } \alpha = \omega + \beta \\
+            \alpha + \alpha + 1 & \text{sonst} \\
+        \end{cases}
+    $$
+\end{example}
+
+\begin{remark}{Reflexivität, Symmetrie, und Transitivität von Mächtigkeiten}{}
+    Es gilt:
+    \begin{itemize}
+        \item $|A| = |A|$.
+        \item Falls $|A| = |B|$, so gilt $|B| = |A|$.
+        \item Falls $|A| = |B|$ und $|B| = |C|$, so gilt $|A| = |C|$ (wir können die Bijektionen verknüpfen).
+    \end{itemize}
+\end{remark}
+
+\begin{remark}{$\leq$ für Mächtigkeiten}{}
+    Falls es eine Injektion $f: B \rightarrow A$ gibt, so schreiben wir $|B| \leq |A|$ (d.h. falls $B$ gleich mächtig ist wie eine Teilmenge von $A$).
+
+    Falls $|B| \leq |A|$ aber $|B| \neq |A|$, schreibe $|B| < |A|$.
+\end{remark}
+
+\begin{theorem}{Cantor-Bernstein-Schröder Theorem}{}
+    Seien $A, B$ Mengen, sodass $|A| \leq |B|$ und $|B| \leq |A|$, dann gilt $|A| = |B|$
+\end{theorem}
+
+\begin{proofbox}
+    Seien $f: A \rightarrow B$ und $g: B \rightarrow A$ Injektionen. Sei $E_0 := A \setminus g(B)$. Sei $E_1 := g \circ f(E_0)$. Definiere allgemein:
+    $$
+        E_{n + 1} := g \circ f (E_n)
+    $$
+    Sei nun
+    $$
+        E := \bigcup\limits_{n = 0}^{\infty} E_n
+    $$
+
+    Definiere $h: A \rightarrow B$,
+    $$
+        h(x) := \begin{cases}
+            f(x) & \text{falls } x \in E \\
+            g^{-1}(x) & \text{falls } x \notin E \\
+        \end{cases}
+    $$
+
+    \begin{itemize}
+        \item \underline{$h$ ist wohldefiniert}: wohldefiniert auf $E$: falls $x \in E$, so ist $x \notin E_0 = A \setminus g(B) \implies x \in g(B)$ und g ist injektiv $\checkmark$
+        \item \underline{$h$ ist injektiv}: Einschränkung von $h$ aud $E$ und $A \setminus E$ ist injektiv. Nehme an, dass $f(x_1) = g^{-1}(x_2)$ für ein $x_1 \in E$ und $x_2 \notin E$. Nehme an, $x_1 \in E_n$.
+        $$
+            \implies g(f(x_1)) = x_2 \in E_{n + 1} \ \lightning
+        $$
+
+        Wir haben einen Widerspruch. Also ist $h$ injektiv.
+
+        \item \underline{$h$ ist surjektiv}: Sei $y \in B$. Falls $y = f(x)$ für $x \in E$, so sind wir fertig. Ansonsten ist $y \neq f(x)$ für alle $x \in E \implies g(y) \neq g(f(x))$ für alle $x \in E \implies g(y) \notin E_{n+1}, n = 0,1,\dots$ und $g(y) \notin E_0 = A \setminus g(B)$
+        
+        $\implies g(y) \notin E \implies h(g(y)) = y$
+    \end{itemize}
+
+    Wir haben also eine Bijektion zwischen $A$ und $B$ gefunden.
+\end{proofbox}
+
+\begin{proposition}{}{}
+    $|\Q| = |\omega|$
+\end{proposition}
+
+\begin{proofbox}
+    \begin{itemize}
+        \item $|\omega| \leq |\Q|$: klar, $\omega \rightarrow \Q,\ n \mapsto \frac{n}{1}$ ist injektiv.
+        \item $|\omega| \leq |\Q|$: Sei $f: \Q \rightarrow \omega$,
+        $$
+            f(\frac{p}{q}) := \begin{cases}
+                0 & \text{für } p = 0 \\
+                2^p3^q & \text{für } p, q > 0,\ \mathrm{ggT}(p, q) = 1 \\
+                2^p5^{|q|} & \text{für } p > 0,\ q > 0,\ \mathrm{ggT}(p, q) = 1 \\
+            \end{cases}
+        $$
+
+        Diese Funktion ist injektiv (gemäss Eindeutigkeit der Primfaktorzerlegung)
+    \end{itemize}
+\end{proofbox}
+
+\begin{proposition}{}{}
+    $\lvert \R \rvert = \lvert \powerset(\omega) \rvert $
+\end{proposition}
+
+\begin{proofbox}
+    $\lvert \R \rvert \leq \lvert \powerset(\omega) \rvert$, da
+    $$
+        \lvert \R \rvert \leq \lvert \powerset(\Q) \rvert = \lvert \powerset(\omega) \rvert  
+    $$
+
+    Wir haben hier $\R$ als Dedekind-Schnitte verwendet.
+
+    $\lvert \powerset(\omega) \rvert \leq \lvert \R \rvert$: Sei $f: \powerset(\omega) \rightarrow \R$, $f(\emptyset) := 0$ und für $x \subset \omega,\ x \neq \emptyset$ definieren wir
+    $$
+        f(x) := \sum_{n \in x} \frac{1}{3^n}
+    $$
+
+    Diese Summe konvergiert immer, und $f(x) = f(y) \iff x = y$
+\end{proofbox}
+
+\begin{theorem}{Satz von Cantor}{}
+    Für jede Menge $M$ gilt
+    $$
+        \lvert M \rvert < \lvert \powerset(M) \rvert 
+    $$
+\end{theorem}
+
+\begin{proofbox}
+    Falls $M = \emptyset$, so ist $\powerset(M) = {\emptyset}$, das heisst $\lvert \powerset(M) \rvert > \lvert M \rvert$ (1 vs. 0 Elemente)
+
+    Sei $M \neq \emptyset$. Zeige
+    \begin{itemize}
+        \item \underline{$\lvert M \rvert \leq \lvert \powerset(M) \rvert$}: Sei $f: M \rightarrow \powerset(M),\ x \mapsto \{x\}$. Diese Funktion ist injektiv.
+        \item \underline{$\lvert M \rvert \neq \lvert \powerset(M) \rvert$}: Sei $g: M \rightarrow \powerset(M)$ eine Abbildung. Wir zeigen: $g$ ist nicht surjektiv. Sei 
+        $$
+            \Gamma := \{x \in M : x \notin g(x)\}
+        $$
+
+        Nehme an, es gibt ein $x_0 \in M$, sodass $g(x_0) = \Gamma$. Dann gilt: 
+        $$
+            x_0 \in \Gamma \iff x_0 \notin f(x_0) \iff x_0 \notin \Gamma \ \lightning
+        $$
+
+        Das heisst $\Gamma$ ist nicht im Bild von $g$.
+    \end{itemize}
+
+    Aus $\lvert M \rvert \leq \lvert \powerset(M) \rvert$ und $\lvert M \rvert \neq \lvert \powerset(M) \rvert$ folgt, dass $\lvert M \rvert < \lvert \powerset(M) \rvert$
+\end{proofbox}
+
+\subsection{Kardinalzahlen in ZFC}
+
+Gemäss WOP gibt es für jede Menge $M$ ein $\alpha \in \Omega$ mit $\lvert M \rvert  = \lvert \alpha \rvert$
+
+\begin{definition}{Kardinalität}{}
+    Die \textbf{Kardinalität} $\lvert M \rvert$ von $M$ ist die kleinste Ordinalzahl $\alpha_0$, sodass $\lvert \alpha_0 \rvert = \lvert M \rvert $
+
+    Formale Definition:
+    $$
+        |M| := \bigcap \left\{ \alpha \in \Omega : \exists f \in {}^\alpha M : (f \text{ bijektiv}) \right\}.
+    $$
+\end{definition}
+
+\begin{definition}{Kardinalzahlen}{}
+    $\alpha \in \Omega$ ist eine Kardinalzahl, falls $\alpha = |M|$ für eine Menge $M$.
+\end{definition}
+
+\begin{remark}{}{}
+    Es gibt keine Menge der Kardinalzahlen, nur die \textbf{Klasse} der Kardinalzahlen. Sonst könnte man sich fragen, was die Menge der Kardinalzahlen für eine Kardinalität hat, was aber zu einem Widerspruch führen würde.
+\end{remark}
+
+\begin{remark}{}{}
+    \begin{itemize}
+        \item Falls $X$ Kardinalzahl ist, so gilt $X = |X|$.
+        \item Kardinalzahlen sind wohlgeordnet durch $\in$.
+    \end{itemize}
+\end{remark}
+
+\begin{example}{}{}
+    \begin{itemize}
+        \item Elemente in $\omega$ sind Kardinalzahlen.
+        \item $\omega$ ist Kardinalzahl.
+        \item $\omega + 1$ ist keine Kardinalzahl, da $|\omega + 1| = |\omega|$ (wie oben gezeigt).
+    \end{itemize}
+\end{example}
+
+\begin{notebox}{Notation}{}
+    $\omega$ ist die kleinste unendliche Kardinalzahl. Oft schreibt man $\omega_0 := \omega$. Die kleinste Kardinalzahl die grösser ist als $\omega_0$, wird mit $\omega_1$ bezeichnet, die nächste mit $\omega_2$, usw.
+
+    Dann kommen $\omega_\omega, \omega_{\omega + 1}, \dots$
+
+    \underline{Allgemein:} $\omega_\alpha$ existiert für jedes $\alpha \in \Omega$. Oft schreibt man $\aleph_\alpha$ anstatt $\omega_\alpha$
+\end{notebox}
+
+\begin{remark}{Welche Ordinalzahlen sind auch Kardinalzahlen?}{}
+    Wir haben $|\alpha| = |\alpha + 1|$  für $\alpha \in \Omega$, gegeben durch die Bijektion $f: \alpha + 1 \rightarrow \alpha$, definiert als:
+    $$
+        f(\beta) := \begin{cases}
+            0 & \text{für } \beta = \alpha + 1 \\
+            \beta + 1 & \text{für } \beta \in \omega \\
+            \beta & \text{sonst}
+        \end{cases}
+    $$
+
+    Das heisst, falls $\kappa \in \Omega$ eine Kardinalzahl ist, so ist $\kappa$ eine Limesordinalzahl oder $\kappa \in \omega$.
+\end{remark}
+
+\subsection{Die Kontinuumshypothese}
+
+Gesehen: $\omega < |\powerset(\omega)| = |\R|$. Sei $\mathfrak{c} := |\R|$.
+\begin{definition}{Cantor's Kontinuumshypothese (CH)}{}
+    $\mathfrak{c}$ ist die kleinste Kardinalzahl $> \omega$.
+\end{definition}
+
+\begin{remark}{}{}
+    CH ist unabhängig von ZFC (man kann in ZFC weder CH beweisen noch widerlegen).
+\end{remark}
+
+\subsection{Kardinalzahlarithmetik}
+
+\begin{definition}{}{}
+    Seien $\kappa,\ \lambda$ Kardinalzahlen. Definiere
+
+    \begin{itemize}
+        \item $\kappa + \lambda := \lvert \left(\kappa \times \{0\}\right) \cup \left(\lambda \times \{1\}\right) \rvert\quad \text{(die Mächtigkeit der disjunkten Vereinigung)}$
+        \item $\kappa \cdot \lambda := \lvert \kappa \times \lambda \rvert$
+        \item $\kappa^\lambda := |{}^\lambda \kappa| = \lvert \{\text{Abbildungen von } \kappa \text{ nach } \lambda\} \rvert$
+    \end{itemize}
+\end{definition}
+
+\begin{example}{}{}
+    Gesehen in Übung: $\lvert {}^A 2 \rvert = \lvert \powerset{A} \rvert$.
+
+    Somit ist $2^\kappa = \lvert \powerset(\kappa) \rvert$.
+\end{example}
+
+\begin{proposition}{}{}
+    Addition und Multiplikation sind assoziativ, kommutativ, und distributiv. Es gilt
+    $$
+    \begin{aligned}
+        \kappa^{\lambda + \mu} &= \kappa^\lambda \cdot \kappa^\mu \\
+        \kappa^{\lambda \cdot \mu} &=  \left(\kappa^\lambda\right)^\mu \\
+        \left( \kappa \cdot \lambda \right)^\mu &= \kappa^\mu \cdot \kappa^\mu
+    \end{aligned}
+    $$
+\end{proposition}
+
+\begin{theorem}{}{}
+    Für $\alpha, \beta \in \Omega$ gilt
+    $$
+        \omega_\alpha + \omega_\beta = \omega_\alpha \cdot \omega_\beta = \omega_{\alpha \cup \beta} = \max\left\{\omega_\alpha, \omega_\beta\right\}
+    $$
+
+    Insbesondere gilt für unendliche Kardinalzahlen $\kappa$, dass $\kappa^2 = \kappa$.
+\end{theorem}
+
+\begin{corollary}{}{}
+    Ist $\kappa$ eine unendliche Kardinalzahlen, so gilt
+    \begin{enumerate}[label=\alph*)]
+        \item Für alle $n \in \omega$ ist $\kappa^{n + 1} = \kappa$
+        \item $\sum_{n \in \omega} \kappa^n = \kappa$
+        \item $\kappa^\kappa = 2^\kappa$
+    \end{enumerate}
+\end{corollary}
+
+\end{document}

@@ -1,0 +1,409 @@
+\documentclass[12pt]{article}
+\usepackage{seantex}
+
+% --- Document Info ---
+\title{Grundstrukturen: Serie 8}
+\author{Sean Findlay}
+\date{\today}
+
+% --- Start Document ---
+\begin{document}
+
+\maketitle
+
+\begin{problem}[Aufgabe]{}{a1}
+
+Seien (A) und (B) die folgenden Aussagen:
+
+    
+    \begin{enumerate}[label=(\Alph*)]
+        \item Jedes Erzeugendensystem eines Vektorraums $V$ enthält eine Basis von $V$.
+        \item Jeder Vektorraum besitzt eine Basis.
+    \end{enumerate}
+    
+    Zeigen Sie die Aussagen (A) und (B) jeweils
+    
+    \begin{enumerate}[label=(\alph*)]
+        \item mit dem Kuratowski-Zorn Lemma,
+        \item und mit dem Teichmüller Prinzip.
+    \end{enumerate}
+
+\end{problem}
+
+\begin{enumerate}[label=(\alph*)]
+    \item Mit dem Kuratowski-Zorn Lemma: 
+    
+    Wir nehmen also an: für jede nicht-leere Partialordnung $(P, \subseteq)$, in welcher jede Kette $C \subseteq P$ eine obere Schranke hat, hat $P$ ein maximales Element.
+    
+    \begin{enumerate}[label=(\Alph*)]
+    \item Sei $E \subseteq V$ ein beliebiges Erzeugendensystem von einem $K$-Vektorraum $V$ (nicht unbedingt endlich). Wir suchen eine Basis $B$, die in $V$ liegt.
+
+    Betrachte die Menge aller linear unabhängigen Teilmengen von $E$:
+
+    $$
+        P = \{U \subseteq E\ |\ U \text{ ist linear unabhängig}\}
+    $$
+
+    $\subseteq$ auf $P$ ist eine Halbordnung (Reflexivität, Antisymmetrie, und Transitivität gelten notwendigerweise nach Definition von $\subseteq$). Zeige nun die Bedingungen für das ZKL:
+
+    \begin{itemize}
+        \item Zeige, dass $P$ nicht leer ist: die leere Menge $\emptyset$ ist linear unabhängig (nach Konvention), also ist $\emptyset \in P$.
+        \item Zeige, dass jede Kette $C \subseteq P$ eine obere Schanke hat: Sei $C \subseteq P$ eine beliebige Kette. Suche eine obere Schranke $S$ für $C$. Probiere z.B. die Vereinigung aller Mengen in der Kette:
+        $$
+            S := \bigcup\limits_{U \in C} U
+        $$
+        Für $S$ gilt es, dass jedes Element in $C$ in $S$ enthalten ist. Also ist $S$ eine obere Schranke, solange $S$ auch in $P$ ist. Dafür muss $S$ linear unabhängig sein.
+
+        Zeige also, dass $S$ linear unabhängig ist:
+
+        Nehme eine beliebige Linearkombination von Vektoren aus $S$:
+
+        $$
+            a_1v_1+\dots+a_kv_k = 0,\ v_1,\dots,v_k \in S,\ a_1,\dots,a_k \in K
+        $$
+
+        Jeder der Vektoren $v_i$ liegt in der Vereinigung $S$, also gibt es für jedes $v_i$ eine Menge $U_i \in C$, sodass $v_i \in U_i$. Da $C$ eine Kette ist, können wir alle $U_i \in C$ mit $\subseteq$ ordnen. Somit gibt es ein $\bar{U}$, sodass $U_i \in \bar{U} \ \forall i \in \{1, \dots, k\} \iff v_i \in \bar{U} \ \forall i \in \{1, \dots, k\}$.
+
+        Da $\bar{U} \in C \subseteq P$, und alle Elemente von $P$ linear unabhängige Mengen sind, sind die Vektoren in $\bar{U}$ linear unabhängig, bzw. für die Koeffizienten in der obigen Linearkombination gilt $a_1 = \dots = a_k = 0$.
+
+        $S$ ist linear unabhängig und somit eine Teilmenge von $P$. $S$ ist also eine obere Schranke für $C$. Da $C$ beliebig, hat jede Kette in $P$ eine obere Schranke.
+
+    \end{itemize}
+
+    Wir können also das KZL anwenden: $P$ besitzt ein maximales Element $B$.
+
+    $B \subseteq E$ ist nach Konstruktion linear unabhängig. $B$ ist das maximale Element nach $\subseteq$, das heisst $B$ ist die maximale linear unabhängige Teilmenge von $P$ nach $\subseteq$.
+
+    Zeige, dass $\Span(B) = V$ gilt: Wenn $\Span(B) \neq V$, dann gibt es einen Vektor $v \in E$, sodass keine Linearkombination von Vektoren aus $B$ gleich $v$ ist. Dann wäre $B \cup \{v\}$ linear unabhängig. Dies ist aber ein Widerspruch dazu, dass $B$ das maximale Element von $P$ war.
+
+    Also erzeugt $B$ den Vektorraum $V$ und ist damit eine Basis von $V$, die in $E$ enthalten ist. \qed
+
+    \item Zeige mit dem KZL, dass jeder Vektorraum eine Basis besitzt.
+    
+    Jeder Vektorraum $V$ ist ein Erzeugendensystem von sich selbst ($\Span(V) = V$). Wir können also die bereits bewiesene Aussage (A) hier auf $V$ anwenden, und bekommen dann, dass $V$ eine Basis besitzt. \qed
+
+\end{enumerate}
+
+\item Mit dem Teichmüller Prinzip:
+
+Wir nehmen an: ist $\mathcal{F}$ eine nicht-leere Familie von Mengen mit endlichem Charakter, so hat $\mathcal{F}$ ein bezüglich $\subseteq$ maximales Element.
+
+\begin{enumerate}[label=(\Alph*)]
+    \item Sei $E$ ein beliebiges Erzeugendensystem eines $K$-Vektorraums $V$. Sei $P$ wieder die Menge aller linear unabhängigen Teilmengen von $E$.
+    
+    Zeige, dass $P$ endlichen Charakter hat: wir wollen zeigen, dass für jede Menge $U \in P$ gilt: $ U \in P \iff \text{jede endliche Teilmenge von } U \text{ ist in } P $.
+
+    Wenn $U \in P$, dann ist $U$ linear unabhängig. Das heisst, dass jede endliche Teilmenge von $U$ auch linear unabhängig ist. Also ist jede endliche Teilmenge von $U$ auch in $P$. 
+    Wenn jede endliche Teilmenge von $U$ in $P$ ist, dann ist jede endliche Teilmenge von $U$ linear unabhängig. Dann ist $U$ auch linear unabhängig. Also ist $U \in P$.
+
+    Somit hat $P$ endlichen Charakter. Nach dem Teichmüller Prinzip hat also $P$ ein maximales Element $B$ nach $\subseteq$. Nach dem gleichen Prinzip wie in der Teilaufgabe (a) ist $B$ eine Basis von $V$. \qed
+
+    \item Identisch wie mit dem KZL (wende einfach (A) an). \qed
+\end{enumerate}
+
+\end{enumerate}
+
+\newpage
+
+\begin{problem}[Aufgabe]{}{a2}
+Sei $V$ der Vektorraum $\R$ über dem Körper $\Q$. Zeige, dass es eine lineare Funktion $f: V \rightarrow V$ gibt, welche nirgends stetig ist.
+\end{problem}
+
+Sei $B = \{a_\lambda : \lambda \in \Lambda\}$ eine Basis des Vektorraums $V$. Definiere $f: V \rightarrow V$ mit $f(a_\lambda) = 1$ für alle $\lambda \in \Lambda$.
+
+Zeige, dass $f$ nirgends stetig ist  $\iff \forall x \in V, \ \forall \text{ Folgen } \left\{x_n\right\}_{n \geq 0} \text{ mit } x_n \rightarrow x \\ \text{ und } f(x_n) \nrightarrow f(x)$
+
+Seien $a_1, a_2 \in B$ zwei Basisvektoren. Da $a_1$ und $a_2$ linear unabhängig sind, gibt es keine Zahl $q \in \Q$, sodass $q \cdot a_2 = a_1$ gilt. Somit ist die Zahl $\bar{q} := \frac{a_1}{a_2}$ nicht in $\Q$. Sei 
+
+$\Q$ ist dicht über $\R$: wir können für jedes nicht-leere offene Intervall $(a, b), \ a, b \in \R$ ein Element $q \in \Q$ finden, sodass $q \in (a, b)$ gilt. Somit können wir für alle $\eps > 0$ ein $q \in \Q$ finden, sodass $q \in (\bar{q}, \bar{q} + \eps)$ gilt. Somit existiert eine konvergente Folge $\{q_n\}_{n \geq 0}$ in $\Q$ mit Grenzwert $\bar{q}$.
+
+Sei $\{y_n\}_{y \geq 0}$ jetzt die Folge definiert durch $y_n := q_n \cdot a_2$. Der Grenzwert dieser Folge ist $\lim_{n \rightarrow \infty} y_n = \frac{a_1}{a_2} \cdot a_2 = a_1$
+
+Für jedes $y_n$ gilt im Allgemeinen $f(y_n) \neq 1$. Für den Grenzwert gilt jedoch $f(a_1) = 1$. $f$ ist somit bei $a_1$ unstetig.
+
+
+Sei $x \in \R$. Wir suchen nun eine Folge $\{x_n\}_{n \geq 0}$ mit $x_n \rightarrow x$, für welche gilt $f(x_n) \nrightarrow f(x)$. Wir können einfach unsere bereits gefundene Folge $\{y_n\}_{y \geq 0}$ verschieben: definiere $x_n := y_n + (x - a_1)$.
+
+Da $y_n \rightarrow a_1$, gilt, dass $\lim_{n \rightarrow \infty} x_n = \lim_{n \rightarrow \infty} y_n + (x - a_1) = a_1 + (x - a_1) = x$. Da $f$ linear ist, gilt: $f(x_n) = f(y_n + x - a_1) = f(y_n) + f(x) - f(a_1)$.
+
+$$
+\lim_{n \rightarrow \infty} f(y_n) = \lim_{n \rightarrow \infty} f(q_n \cdot a_2) = \lim_{n \rightarrow \infty} q_n \cdot f(a_2) = f(a_2) \cdot \lim_{n \rightarrow \infty} q_n = 1 \cdot \bar{q} = \bar{q}
+$$
+
+$$
+\implies \lim_{n \rightarrow \infty} f(x_n) = \lim_{n \rightarrow \infty} f(y_n) + f(x) - f(a_1) = \bar{q} + f(x) - 1
+$$
+
+$\bar{q} \notin \Q$, also gilt $\bar{q} \neq 1$. Wir können daraus schliessen, dass
+
+$$
+\implies \lim_{n \rightarrow \infty} f(x_n) \neq f(x)
+$$
+
+Wir können also für jedes $x \in V$ eine Folge $\{x_n\}_{n \geq 0}$ finden, sodass $x_n \rightarrow x$ und $f(x_n) \nrightarrow f(x)$. Somit ist $f$ eine lineare Funktion die nirgends stetig ist. \qed
+
+
+\begin{problem}[Aufgabe]{ZF $\vdash$ AC $\rightarrow$ WOP}{}
+    Sei $A \neq \emptyset$ eine Menge und $f: \powerset(A) \setminus \{\emptyset\}$ eine Auswahlfunktion. Wir definieren eine $f$-Menge als ein Paar $\langle \beta, w \rangle$, wobei $\beta$ eine Ordinalzahl ist eine $w: \beta \rightarrow A$ eine injektive Funktion ist, sodass für jedes $\gamma \in \beta$ gilt: $w(\gamma) = f(A \setminus \{\delta \in \gamma\})$.
+
+    Wir definieren $S := \{f\text{-Menge} \langle \beta, w \rangle\}$
+
+    $$
+        \alpha := \bigcup\limits_{\langle \beta, w \rangle \in S} \beta,
+    $$
+    $$
+        v := \bigcup\limits_{\langle \beta, w \rangle \in S} w,
+    $$
+
+    Zeige:
+
+    \begin{enumerate}[label=(\alph*)]
+        \item $v$ ist eine Funktion von $\alpha$ nach A.
+        \item $v$ ist injektiv.
+        \item $v$ ist surjektiv.
+    \end{enumerate}
+\end{problem}
+
+\begin{enumerate}[label=(\alph*)]
+    \item Zeige: $v$ ist eine Funktion von $\alpha$ nach $A$. Dafür wollen wir zeigen, dass $v$ linkstotal und rechtseindeutig ist.
+    
+    \begin{itemize}
+        \item \underline{$v$ ist linkstotal}: z.z.: $\forall x \in \alpha : \exists a \in A : \langle x, a \rangle \in v$.
+        
+        Sei $x \in \alpha$ beliebig. Finde ein $a \in A$, sodass $\langle x, a \rangle \in v$. Per Definition von $\alpha$ gibt es ein $\langle \beta, w \rangle \in S$, sodass $x \in \beta$. Da $w: \beta \rightarrow A$, gibt es ein $a \in A$, sodass $w(x) = a$. Das bedeutet $\langle x, a \rangle \in w$. Da $v$ die Vereinigung aller $w$ mit $\langle \beta, w \rangle \in S$ ist, gilt $\langle x, a \rangle \in w \implies \langle x, a \rangle \in v$. Wir haben also gezeigt, dass $v$ linkstotal ist.
+
+        \item \underline{$v$ ist rechtseindeutig}: z.z: $\forall x \in \alpha : \left(\langle x, a \rangle \in v \land \langle x, a' \rangle \in v \implies a = a'\right)$.
+        
+        Sei $x \in \alpha$ beliebig. Da $v$ linkstotal ist, wissen wir, dass ein $a \in A$ existiert, sodass $\langle x, a \rangle \in v$. Zeige, dass dieses $a \in A$ eindeutig ist.
+
+        Seien $\gamma, a, a'$, sodass $\langle \gamma, a \rangle, \langle \gamma, a' \rangle \in v.$ Wähle $\langle \beta, w \rangle, \langle \beta', w' \rangle \in S$, sodass 
+
+        $$
+            \langle \gamma, a \rangle \in w, \quad \langle \gamma, a' \rangle \in w'
+        $$
+
+        Betrachte die Fälle $\beta \leq \beta'$ und $\beta > \beta'$. Dies sind laut der Trichotomie der Ordinalzahlen (da sie wohlgeordnet sind) die einzig möglichen Fälle. Wir können o.B.d.A. annehmen, dass $\beta \leq \beta'$ gilt. (wenn nicht, dann können wir einfach die Namen von $\beta$ und $\beta'$ vertauschen, da die beliebig gewählt sind).
+        
+        Seien $\langle \beta, w \rangle, \langle \beta', w' \rangle$  $f$-Mengen. Falls $\beta \leq \beta'$, dann gilt $w'|_\beta = w$. Da $\langle \gamma, a \rangle \in w$, gilt $\gamma \in \beta$ (wenn $\beta$ die Domain von $w$ ist). Da $w'|_\beta = w$ gilt, muss gelten, dass $w'(\gamma) = w(\gamma)$. Da $w(\gamma) = a$ und $w'(\gamma) = a'$, können wir schliessen, dass $a = a'$. 
+
+        Wir haben also gezeigt: $\forall \ \gamma, a, a'$, sodass $\langle \gamma, a \rangle, \langle \gamma, a' \rangle \in v$, gilt, $a = a'$. Somit ist v rechtseindeutig.
+        
+    \end{itemize}
+
+    Da $v$ rechtseindeutig und linktotal ist, können wir folgern, dass $v$ eine Funktion von $\alpha$ nach $A$ ist.
+
+    \item Zeige: $v$ ist injektiv.
+    
+    Seien $\gamma, \gamma', a$ so, dass 
+    
+    $$
+        \langle \gamma, a \rangle, \langle \gamma', a \rangle \in v.
+    $$
+
+    Wir wählen $\langle \beta, w \rangle, \langle \beta', w' \rangle \in S$, sodass
+
+    $$
+        \langle \gamma, a \rangle \in w, \quad \langle \gamma', a \rangle \in w'.
+    $$
+
+    Um Injektivität zu zeigen, wollen wir hieraus beweisen, dass $\gamma = \gamma'$ gelten muss.
+
+    Betrachte die Fälle $\beta \leq \beta'$ und $\beta > \beta'$. Wir können wieder o.B.d.A. annehmen, dass $\beta \leq \beta'$ gilt $\implies w'|_\beta = w$. Es gilt $\langle \gamma, a \rangle \in w$, also gilt $\gamma \in \beta$, und
+    
+    $$
+        \langle \gamma, a \rangle \in w \implies w(\gamma) = a \xRightarrow{w'|_\beta = w} w'(\gamma) = a
+    $$
+    
+    $\langle \gamma', a \rangle \in w'$, also gilt $w'(\gamma') = a$.
+
+    $$
+        w(\gamma) = a \land w'(\gamma') = a \implies w(\gamma) = w'(\gamma')
+    $$
+    
+    Per Definition ist $w': \beta' \rightarrow A$ eine injektive Funktion. Also impliziert $w'(\gamma) = w'(\gamma')$, dass $\gamma = \gamma'$ gilt. Wir haben also gezeigt, dass $v$ injektiv ist.
+
+    \item Zeige: $v$ ist surjektiv. Nehme widersprüchlicherweise an, dass $v$ nicht surjektiv ist. 
+    
+    Erweitere $\langle \alpha, v \rangle$ zu einem grösseren Element von $S$. Betrachte $s(\alpha)$.
+
+    Wenn $v$ nicht surjektiv ist, dann ist $A \setminus \mathrm{Bild}(v)$ eine nicht-leere Menge. Wir können dann mit der Auswahlfunktion $f$ ein Element von $A \setminus \mathrm{Bild}(v)$ auswählen.
+
+    Um nun das grössere Element von $S$ zu konstruieren, betrachten wir die Funktion $v'$. Für alle $\gamma \in \alpha$, sei $v'(\gamma) := v(\gamma)$. Sei $v'(\alpha) = f(A \setminus \mathrm{Bild}(v))$. Wir haben also nun die grössere $f$-Menge $\langle s(\alpha), v' \rangle$. Per Definition von $S$ gilt $\langle s(\alpha), v' \rangle \in S$. Aber $\alpha$ ist per Definition die Menge aller $\beta$ aus einer $f$-Menge in $S$. Dann müsste also gelten 
+    
+    $$
+        s(\alpha) \subseteq \alpha
+    $$
+
+    Da $\alpha \in s(\alpha)$ gilt, würde dies $\alpha \in \alpha$ implizieren, was aber ein Widerspruch ist (Fundierungsaxiom). Also muss $v$ surjektiv sein. \qed
+\end{enumerate}
+
+\begin{problem}[Aufgabe]{}{}
+    Betrachten Sie die folgende Knobelaufgaben mit Hüten. Entwickeln Sie Lösungsstrategien für die folgenden Rätselszenarien.
+    \begin{enumerate}[label=(\alph*)]
+        \item Es gibt 2 Personen. Beide Personen bekommt einen Hut aufgesetzt, der entweder rot oder blau ist (sie haben keine Kenntnis von der Farbe ihres Hutes). Die Personen müssen gleichzeitig raten, welche Farbe ihr Hut hat.
+        
+        Finden Sie eine Strategie, sodass mindestens eine der beiden Personen richtig rät.
+        
+        \item Verallgemeinern Sie die vorherige Aufgabe auf $n$ Personen und $n$ verschiedene Farben.
+        
+        \item Betrachten Sie dieselbe Frage, diesmal mit abzählbar unendlich vielen Personen und abzählbar unendlich vielen Farben.
+        
+        Zeigen Sie, dass es mit dem Auswahlaxiom AC möglich ist, dass alle bis auf endlich viele die richtige Antwort geben.
+    \end{enumerate}
+\end{problem}
+
+\begin{enumerate}[label=(\alph*)]
+    \item Seien $P_0, P_1$ die beiden Personen. Sei ein blauer Hut äquivalent zum Wert $0$, sei ein roter Hut äquivalent zum Wert $1$. $P_1$ geht immer davon aus, dass die Summe der beiden Hüte ungerade ist, $P_2$ geht davon aus, dass die Summe gerade ist.
+    
+    \begin{itemize}
+        \item \underline{$P_0$ hat roten Hut, $P_1$ hat roten Hut}: $P_0$ zählt $1$, um auf gerade Summe zu kommen, muss $P_0$ einen roten Hut raten. $P_0$ rät richtig. $\checkmark$
+        \item \underline{$P_0$ hat blauen Hut, $P_1$ hat roten Hut}: $P_1$ zählt $0$, um auf ungerade Summe zu kommen, muss $P_1$ einen roten Hut raten. $P_1$ rät richtig. $\checkmark$
+        \item \underline{$P_0$ hat roten Hut, $P_1$ hat blauen Hut}: $P_1$ zählt $1$, um auf ungerade Summe zu kommen, muss $P_1$ einen blauen Hut raten. $P_1$ rät richtig. $\checkmark$
+        \item \underline{$P_0$ hat blauen Hut, $P_1$ hat blauen Hut}: $P_0$ zählt $0$, um auf gerade Summe zu kommen, muss $P_0$ einen blauen Hut raten. $P_0$ rät richtig. $\checkmark$
+    \end{itemize}
+
+    Mit dieser Strategie rät immer mindestens eine Person richtig.
+
+    \item Seien alle Farben und Personen durch $\{0, \dots, n-1\}$ nummeriert. Sei $x_i$ die Farbe, die von der Person $P_i$ getragen wird.
+    
+    Die Zahl $S_i = \sum_{i \neq j} x_j \ \mathrm{mod}\ n$ ist die Summe, welche $P_i$ zählt. $P_i$ geht davon aus, dass $S + x_i = i$ gilt. Also sollte $P_i$ die Farbe $i - S_i \ \mathrm{mod} \ n$ raten.
+
+    Die wahre Summe der Hüte ist $S_{\text{wahr}} := \sum_{j = 0}^{n-1} x_j \ \mathrm{mod}\ n \in \{0,\dots,n-1\}$. Die Menge aller geratenen Farben aller Personen ist
+
+    $$
+        F = \left\{i - S_i \ \mathrm{mod} \ n \ |\ \forall i \in \{0,\dots,n-1\} \right\}
+    $$
+
+    Da $S_{\text{wahr}} \in \{0,\dots,n-1\}$, gibt es eine Person $P_k$ mit $k = S_{\text{wahr}}$. Diese Person $P_k$ rät 
+    $$
+        k - S_k \ \mathrm{mod}\ n = S_{\text{wahr}} - (S_{\text{wahr}} - x_k) \ \mathrm{mod}\ n = x_k \ \mathrm{mod}\ n = x_k
+    $$
+
+    Also rät $P_k$ tatsächlich richtig. Also rät mit dieser Strategie immer mindestens eine Person richtig.
+
+    \item Betrachte die Äquivalenzklassen von Mengen von Folgen, die sich nur an endlich vielen Stellen unterscheiden. Zwei Folgen sind in derselben Äquivalenzklasse, wenn sie sich nur an endlich vielen Stellen unterscheiden. Sei $A$ die Menge aller dieser Äquivalenzklassen. Diese Menge ist nicht leer, da z.b. die Folge $x:= (0, 0, \dots)$ zu einer Äquivalenzklasse $[x] \in A$ gehören muss.
+    
+    Somit existiert nach dem AC eine Auswahlfunktion $f$, mithilfe welcher wir aus jeder Äquivalenzklasse in $A$ genau eine Folge auswählen können. Sei $L$ die Liste all dieser "Repräsentanten".
+    
+    Wenn das Spiel beginnt, und Person $i$ die Augen öffnet, sieht diese Person unendlich viele Hüte, ausser ihren eigenen. Person $i$ kann sich nun eine beliebige Farbe raten, welche sie trägt, um diese unendliche Folge von Hüten zu vervollständigen. Wenn $P_i$ falsch geraten hat, dann unterscheidet sich die Folge, die diese Person im Kopf hat nur an einer Stelle von der tatsächlich Folge. Somit ist die geratene Folge in derselben Äquivalenzklasse wie die korrekte Folge. 
+    
+    Jetzt kann die Person in der Liste $L$ nachschauen gehen, in welcher Äquivalenzklasse sich die geratene Folge befindet, die sie im Kopf hat. Sie findet dann die Folge $r \in L$, der Repräsentant dieser Äquivalenzklasse. Person $i$ rät dann die Farbe, die an der $i$ten Stelle in $r$ liegt.
+
+    Die Menge aller geratenen Farben ist dann
+
+    $$
+        \left\{r_i \ |\ \forall i \in \{1,2,3 \dots \}\right\}
+    $$
+
+    Weil sich die Folge $r$ nur an endlich vielen Stellen von der wahren Folge unterscheidet, werden nur endlich viele Personen eine falsche Aussage zu ihrer eigenen Hutfarbe treffen.
+    
+\end{enumerate}
+
+\newpage
+
+\begin{problem}[Aufgabe]{}{}
+    Sei $\leqslant$ eine Partialordnung auf einer Menge $A$. Wir sagen, dass eine weitere Partialordnung $\preceq$ auf $A$ die Partialordnung $\leqslant$ verfeinert, falls gilt:
+\[
+\forall a, b \in A : a \leqslant b \longrightarrow a \preceq b.
+\]
+Falls $\preceq$ dazu noch verschieden von $\leqslant$ ist, so sagen wir, dass sie $\leqslant$ echt verfeinert.
+
+\begin{enumerate}
+    \item[(a)] Seien $x, y \in A$ mit $y \nleqslant x$ und $x \nleqslant y$. Zeigen Sie, dass
+    \[
+    a \preceq b := a \leqslant b \vee (a \leqslant x \wedge y \leqslant b)
+    \]
+    eine Partialordnung auf $A$ definiert, welche $\leqslant$ echt verfeinert.
+    
+    \item[(b)] Beweisen Sie mit dem Zornschen Lemma, dass jede Partialordnung auf einer Menge $A$ zu einer Totalordnung auf $A$ verfeinert werden kann.
+\end{enumerate}
+\end{problem}
+
+\begin{enumerate}[label=(\alph*)]
+    \item Zeige zuerst, dass $\preceq$ eine Partialordnung auf $A$ definiert.
+    \begin{itemize}
+        \item \underline{Reflexivität}: z.z.: $\forall a \in A : a \preceq a$.
+        $$
+            a \preceq a \iff a \leq a \lor (a \leq x \land y \leq a)
+        $$
+
+        und dies gilt, da $a \leq a$ gilt. ($\leq$ ist reflexiv).
+        
+        \item \underline{Antisymmetrie}: z.z: $\forall a, b \in A : a \preceq b \land b \preceq a \implies a = b$.
+        $$
+            a \preceq b \land b \preceq a \iff \left(a \leq b \lor (a \leq x \land y \leq b)\right) \land \left(b \leq a \lor (b \leq x \land y \leq a)\right)
+        $$
+
+        $$
+            \implies \begin{cases}
+                a \leq b \land b \leq a & \implies a = b \\
+                a \leq b \land (b \leq x \land y \leq a) & \implies a \leq x \land y \leq a \implies y \leq x \ \lightning \\
+                b \leq a \land (a \leq x \land y \leq b) & \implies b \leq x \land y \leq b \implies y \leq x \ \lightning \\
+                (a \leq x \land y \leq b) \land (b \leq x \land y \leq a) & \implies y \leq x \ \lightning \\
+            \end{cases}
+        $$
+
+        Es kann also nur der Fall $a \leq b$ eintreten, in welchem auch gilt, dass $a = b$ sein muss. Also gilt die Antisymmetrie.
+
+        \item \underline{Transitivität}: z.z.: $\forall a, b, c \in A : a \preceq b \land b \preceq c \implies a \preceq c$.
+        
+        $$
+            a \preceq b \land b \preceq c \iff \left(a \leq b \lor (a \leq x \land y \leq b)\right) \land \left(b \leq c \lor (b \leq x \land y \leq c)\right)
+        $$
+
+        $$
+            \implies \begin{cases}
+                a \leq b \land b \leq c & \implies a \leq c \\
+                a \leq b \land (b \leq x \land y \leq c) & \implies a \leq x \land y \leq c \\
+                b \leq c \land (a \leq x \land y \leq b) & \implies a \leq x \land y \leq c \\
+                (a \leq x \land y \leq b) \land (b \leq x \land y \leq c) & \implies a \leq x \land y \leq c \\
+            \end{cases}
+        $$
+
+        Also gilt in jedem Fall:
+
+        $$
+            a \leq c \lor a \leq x \land y \leq c \iff a \preceq c
+        $$
+
+        Wir haben also Transitivität gezeigt.
+    \end{itemize}
+
+    Zeige als nächstes, dass $\preceq$ zudem $\leq$ echt verfeinert. z.z.: $\forall a, b \in A : a \leq b \rightarrow a \preceq b$.
+
+    Seien $a, b \in A$ mit $a \leq b$. Dann gilt $a \leq b \lor (a \leq x \land y \leq b)$, also gilt $a \preceq b$.
+
+    $\preceq$ und $\leq$ sind verschieden, da z.b. x $\preceq$ y gilt aber x $\leq$ y nicht.
+
+    $\preceq$ ist also eine echte Verfeinerung von $\leq$. \qed
+
+    \item Sei $(A, \leq)$ eine Partialordnung. Sei $P$ die Menge aller Partialordnungen auf $A$, die $\leq$ verfeinern. Dann ist $(P, \subseteq)$ eine Partialordnung.
+    
+    $(P, \subseteq)$ ist nicht leer, da die ursprüngliche Ordnung $\leq$ in $P$ liegt.
+    
+    Sei $C \subseteq P$ eine Kette. Definiere nun
+    
+    $$
+        S = \bigcup\limits_{U \in C} U
+    $$
+
+    Da $C$ eine Kette ist, erhält die Vereinigung $S$ die Reflexivität, Antisymmetrie und Transitivität, und ist somit auch eine Partialordnung. Somit gilt $S \in P$.
+    
+    Dann gilt $U \subseteq S \ \forall U \in C$, also ist $S$ eine obere Schranke $C$. Da $C$ beliebig, hat jede Kette in $P$ eine obere Schranke.
+
+    Nach dem Zornschen Lemma gilt dann, dass $P$ ein maximales Element $M$ besitzt. Dieses $M$ ist die maximale Partialordnung auf $A$, welche $\leq$ verfeinert, sprich, sie kann nicht weiter verfeinert werden.
+    
+    Nun wollen wir nur noch zeigen, dass $M$ eine Totalordnung ist. Nehme als Widerspruch an, dass $M$ keine Totalordnung ist. Dann gilt:
+
+    $$
+        \exists x, y \in A : (x, y) \notin M \land (y, x) \notin M
+    $$
+
+    Verwende nun die Konstruktion aus Aufgabe (a): Es gilt $(x, y) \notin M \land (y, x) \notin M$. $a \preceq b := (a, b) \in M \lor \left((a, x) \in M \land (y, b) \in M\right)$ ist (wie oben gezeigt) dann eine Partialordnung auf $A$, welche $M$ verfeinert. Aber dies widerspricht der Tatsache, dass $M$ die maximale Partialordnung auf $A$ ist, welche $\leq$ verfeinert.
+
+    Also muss gelten, dass $M$ eine Totalordnung ist. \qed
+
+
+\end{enumerate}
+
+\end{document}

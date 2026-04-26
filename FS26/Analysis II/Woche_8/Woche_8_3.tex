@@ -1,0 +1,152 @@
+\documentclass[12pt]{article}
+\usepackage{seantex}
+
+% --- Document Info ---
+\title{Analysis II: Week 8, Lecture 2}
+\author{Sean Findlay}
+\date{\today}
+
+% --- Start Document ---
+\begin{document}
+
+\maketitle
+Recall from very first lecture:
+\begin{theorem}{Divergence theorem}{}
+    $\Omega \subset \R^n$ open and bounded, $\partial \Omega$ a $C^1$ submanifold, $F \in C^n(\overline{\Omega}, \R^n)$. Then:
+    $$
+        \int_{\Omega} \sum_{i = 1}^{n} \partial_i F_i \dd x = \int_{\partial \Omega} F \cdot \nu \dd S
+    $$
+
+    where $\nu$ is a unit vector normal to $\partial \Omega$.
+\end{theorem}
+
+\textbf{Goal for this lecture}: Measure volumes over parametrized submanifolds of dimension d.
+
+Let $d = 1$. A parametrized submanifold of dimension is called a curve. We now need to introduce a definition of \textbf{length}.
+
+Take a parametrized submanifold of dimension 1: $V \subseteq \R$ open. Let $\Phi: V \rightarrow \R^n$ be a parametrization which is injective and has $\Phi'(t) \neq 0$.
+
+\begin{definition}{Length of a curve}{}
+    $[a, b] \subset V$, then:
+
+    $$
+        L(\Phi([a, b])) = \int_{a}^{b} \left|\Phi'(t)\right| \dd t
+    $$
+\end{definition}
+
+What properties must the length satisfy?
+
+\begin{enumerate}
+    \item \textbf{Independent of chosen parametrization}: no matter which $\Phi$ we choose, we expect the same length.
+    \item \textbf{Additivity}: if a curve is the sum of two smaller curves, then the length of this curve should be the sum of the lengths.
+    \item \textbf{Invariance under Euclidean isometry}: moving it around in space shouldn't change the length.
+    \item \textbf{Normalization}: if the curve is in $\R$, then the length should be what we expect, for example $[0, 1] \times {0}$ should have length 1.
+\end{enumerate}
+
+Here they are stated formally:
+
+\begin{exercise}{Length is independent of chosen parametrization}{}
+    $\psi: [c, d] \rightarrow [a, b]$ bijective, $C^1$ with $C^1$ inverse, show that:
+
+$$
+    \int_{c}^{d} \left|(\Phi \circ \psi)'(s)\right|\dd s = \int_{a}^{b} \left|\Phi'(t)\right| \dd t
+$$
+\end{exercise}
+
+\begin{remark}{Additivity of length}{}
+    $$
+        L(\Phi([a, b])) = L(\Phi([a, c])) + L(\Phi([c, b])) \ \forall c \in (a, b)
+    $$
+\end{remark}
+
+\begin{remark}{Invariance of length under Euclidean isometry}{}
+    $F$ rigid motion / Euclidean isometry (i.e. $F(x) = Rx + b$, $R$ orthogonal, $b \in R^n$),
+
+    $$
+        \int_{a}^{b} \left|(F \circ \Phi)'\right| \dd t = \int \left|\Phi'(t)\right| \dd t
+    $$
+
+    where 
+    $$
+    (F \circ \Phi)'(t) = \mathrm{D}(F \circ \Phi)(t) = \mathrm{D}F(\Phi(t)) \cdot \mathrm{D}\Phi(t)
+    $$
+
+    and
+    $$
+        \left|(F \circ \Phi)'\right|^2 = \left|\mathrm{D}\Phi^T \cdot \mathrm{D}F^T \cdot \mathrm{D}F \cdot \mathrm{D}\Phi\right| = \left|\mathrm{D} \Phi\right|^2
+    $$
+\end{remark}
+
+\begin{definition}{$d$-volume on parametrized submanifold}{}
+    $V \subset \R^n$ open, $\Phi: V \rightarrow \R^n$ parametrized submanifold, $E \subset \R^n$ Jordan measurable with $\overline{E} \subset V$
+    $$
+        \mathrm{vol}_d(\Phi(E)) = \int_E \sqrt{\det(\mathrm{D} \Phi(x)^T \cdot \mathrm{D} \Phi(x))} \dd x
+    $$
+
+    $\det(\mathrm{D} \Phi(x)^T \cdot \mathrm{D} \Phi(x))$ is called the \textbf{Gram determinant}.
+\end{definition}
+
+\begin{remark}{Gram determinant}{}
+    $L$ is a $n \times d$ matrix, $d \leq n$.
+
+    $$
+        L^T L \rightarrow d \times x \cdot n \times d \rightarrow \text{ we get a } d \times d \text{ matrix of full rank.}
+    $$
+
+    $$
+        \sqrt{\det L^T L} \text{ is called the Gram determinant.}
+    $$
+\end{remark}
+
+\begin{lemma}{}{}
+    $3 \times 2$ matrix $(v, w)$, with $v, w \in \R^3$ column vectors.
+    $$
+        \det(L^T L) = \left|v \times w\right|^2 = \left|v\right|^2 \cdot \left|w\right|^2 - (v \cdot w)^2
+    $$
+
+    In particular, if $\Phi: V \subset \R^2 \rightarrow \R^3$ is a parametrized surface, $E \subset V$ Jordan measurable, $\overline{E} \subset V, \mathrm{D} \Phi(x_1, x_2) = \begin{pmatrix} \partial_1 \Phi\ \big|\ \partial_2 \Phi \\\end{pmatrix}$ then:
+    $$
+        A(\Phi(E)) := \mathrm{vol}_2(\Phi(E)) = \int_E \left|\partial_1 \Phi \times \partial_2\Phi\right|\dd x_1 \dd x_2
+    $$
+\end{lemma}
+
+\begin{example}{$A$ of the unit sphere}{}
+    $$
+        \Psi(\theta, \phi) = \begin{pmatrix} \cos\phi \cdot \cos\theta \\ \sin\phi\cdot\cos\theta \\ \sin\theta \end{pmatrix}
+    $$ 
+    $$
+        A(\Psi\left((0, 2\pi) \times (-\frac{\pi}{2}, \frac{\pi}{2})\right)) = \int_{0}^{2\pi} \int_{-\frac{\pi}{2}}^{\frac{\pi}{2}} \sqrt{\det(\mathrm{D}\Psi^T \cdot \mathrm{D}\Psi(\theta, \psi))} \dd \theta \dd \phi
+    $$
+
+    $$
+        \mathrm{D}\Psi^T \cdot \mathrm{D}\Psi = \begin{pmatrix}
+            1 & 0 \\
+            0 & \cos\theta^2
+        \end{pmatrix} = \int_{0}^{2\pi} \int_{-\frac{\pi}{2}}^{\frac{\pi}{2}} \cos \theta \dd \theta \dd \phi = \boxed{4\pi}
+    $$
+
+\end{example}
+
+\section*{Concrete shells}
+
+$$
+    \Psi(x, y, t) = \phi(x, y) + t \nu(x, y) \quad (x, y, t) \in D \times (-\eps, \eps)
+$$
+
+$$
+    \mathrm{J}\Psi(x, y, t) = (\partial_x \phi(x, y),\ \partial_y \phi(x, y),\ \nu(x, y) ) + O(t)
+$$
+
+$$
+    \mathrm{vol}_3(\Psi(D \times (-\eps, \eps))) = \int_{D} \int_{-\eps}^{\eps} \left|\det \mathrm{J}\Psi(x, y, t)\right| \dd x \dd y \dd t
+$$
+
+$$
+    \int_{D} \int_{-\eps}^{\eps} \left( \left|\det (\partial_x \phi(x, y),\ \partial_y \phi(x, y),\ \nu(x, y) ) \right| + O(t) \right) \dd x \dd y \dd t
+$$
+
+$$
+= 2 \eps \int_{D} \left|\partial_x \phi \times \partial_y \phi\right| + O(\eps^2)
+$$
+
+\end{document}

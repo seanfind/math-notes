@@ -1,0 +1,24 @@
+\documentclass{report}
+\usepackage[utf8]{inputenc}
+\usepackage{subfiles} % Optional, but helpful for modularity
+\usepackage{seantex}
+\usepackage{standalone}
+
+% The "Magic" to skip \maketitle
+\renewcommand{\maketitle}{} 
+
+\begin{document}
+
+\title{Linear Algebra II: Lecture Notes}
+\author{Your Name}
+\maketitle
+
+\tableofcontents
+
+\chapter{Week 8}
+\input{Woche 8/Woche_8.tex}
+
+\chapter{Week 9}
+\input{Woche 9/Woche_9.tex}
+
+\end{document}

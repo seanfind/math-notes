@@ -1,0 +1,358 @@
+\documentclass[12pt]{article}
+\usepackage{seantex}
+
+% --- Document Info ---
+\title{Grundstrukturen: Serie 9}
+\author{Sean Findlay}
+\date{\today}
+
+% --- Start Document ---
+\begin{document}
+
+\maketitle
+
+\begin{problem}[Aufgabe]{}{}
+    Sei $(G, \circ)$ eine Gruppe. Sei $S \subseteq G$. Wir definieren die von $S$ erzeugte Untergruppe von $G$ als die Menge
+    $$
+        \langle S \rangle := \left\{ g_n \dots g_1 \ |\ n \in \omega, \forall i \in {1,\dots,n} : g_i \in S \lor g_i^{-1} \in S \right\}
+    $$
+
+    Diese Menge ist eine Untergruppe von $G$. Die Menge $S$ heisst Erzeugendensystem von $G$ g.d.w. $\langle S \rangle = G$. Die Gruppe $G$ heisst endlich erzeugt, falls sie ein endliches Erzeugendensystem besitzt. Zeige:
+    \begin{enumerate}[label=\alph*)]
+        \item In ZFC besitzt jede nichttriviale endlich erzeugte Gruppe eine maximale Untergruppe.
+        \item $\Q$ zusammen mit Addition besitzt keine maximale Untergruppe.
+    \end{enumerate}
+\end{problem}
+
+\begin{enumerate}[label=\alph*)]
+    \item Sei $U$ die Menge aller Untergruppen von $G$, die nicht gleich $G$ sind. Wir können diese Menge mit $\subseteq$ ordnen.
+    
+    $(U, \subseteq)$ ist eine nicht-leere Partialordnung, da die Inklusion $\subseteq$ von Teilmengen grundsätzlich reflexiv, antisymmetrisch, und transitiv ist, und weil aufgrund der Nichttrivialität $\{e\} \neq G$ gilt, was bedeutet, dass $\{e\} \in U$, also gilt $U \neq \emptyset$.
+
+    Sei $C \subseteq U$ eine beliebige Kette. Zeige, dass $C$ eine obere Schranke in $U$ besitzt. Sei
+    $$
+        V = \bigcup\limits_{H \in C} H
+    $$
+
+    Zeige, dass $V$ eine obere Schranke für $C$ ist, und in $U$ ist. Zeige zuerst, dass $V \in U$ gilt. Dafür müssen wir zeigen, dass $V$ eine Untergruppe ist und ungleich $G$ ist.
+
+    \begin{itemize}
+        \item \underline{$e \in V$}: Zeige, dass das neutrale Element $e$ in $V$ ist. $C$ ist nicht leer, also nehme ein beliebiges $H \in C$. Da $H \in C$, ist $H \subset V$ und $H$ ist eine Untergruppe. Also ist $e \in H$. $H \subset V$ impliziert dann $e \in V$. Also ist das neutrale Element in $V$.
+        \item \underline{$x \in V \implies x^{-1} \in V$}: Nehme ein beliebiges $x \in V$. Es muss dann nach Definition von $V$ gelten, dass $x$ aus einem $H_x \in C$ stammt. Da dieses $H_x$ eine Untergruppe ist, gilt, dass $x^{-1} \in H_x$ ist. Da $H_x \in C$ ist, ist $H_x \subset V$. Also ist $x^{-1} \in V$.
+        \item \underline{$x, y \in V \implies x \circ y \in V$}: Seien $x, y \in V$. Es muss dann gelten, dass $x \in H_x$ und $y \in H_y$ für $H_x, H_y \in C$. Da $C$ eine Kette ist, gilt entweder $H_x \subseteq H_y$ oder $H_y \subseteq H_x$. Nehme o.B.d.A. an, dass $H_x \subseteq H_y$ gilt. Dann gilt $x, y \in H_y$. Da $H_y$ eine Untergruppe ist, gilt, dass $x \circ y \in H_y$. Da $H_y \subset V$, gilt, dass $x \circ y \in V$.
+    \end{itemize}
+
+    Es fehlt nur noch zu zeigen, dass $V$ ungleich $G$ ist. Nehme als Widerspruch an, dass $V = G$ gilt. Da $G$ von einem endlichen System $E$ erzeugt wird, und $V = G$ ist, müssen alle diese Erzeuger $e_i$ in $V$ liegen. Nach Definition der Vereinigung gilt, dass wenn $e_i \in V$, dann gilt $e_i \in H_i$ für ein $H_i \in C$. Da $C$ eine Kette ist, ist sie totalgeordnet und es existiert demnach ein Element $H_\text{max}$, welches alle $e_i$ enthält. Dann ist aber $H_\text{max} = V = G$, da $H_\text{max}$ $G$ erzeugt. Aber wir haben $H_\text{max} \in U$, was ein Widerspruch ist, da $U$ nur Untergruppen enthält, die ungleich $G$ sind. Also muss gelten: $V \neq G$.
+
+    $V$ ist also eine Untergruppe von $G$, welche ungleich $G$ ist. Somit ist $V \in U$.
+
+    Zeige, dass $V$ eine obere Schranke für $C$ ist: für jedes $H \in C$ gilt per Definition der Vereinigung, dass $H \subseteq V$ ist. Somit ist $V$ eine obere Schranke für $C$ bezüglich $\subseteq$.
+
+    Wir haben also eine nicht-leere Partialordnung $(U, \subseteq)$, in welcher jede Kette eine obere Schranke hat. Nach dem Zornschen Lemma haben wir also ein in $U$ maximales Element $M$. Dieses $M$ ist die maximale Untergruppe von $G$. Da $G$ beliebig gewählt, hat jede endlich erzeugte, nichttriviale Gruppe in ZFC eine maximale Untergruppe. \qed
+
+    \item Nehme an, dass $(\Q, +)$ eine maximale Untergruppe $M$ besitzt. Da $M$ eine maximale Untergruppe ist, gilt $M \neq (\Q, +)$. Es muss dann mindestens ein Element $x \in \Q$ geben, für welches gilt $x \notin M$.
+    
+    Wenn wir dieses $x$ zu $M$ hinzufügen, müssen wir dann also die ganze Gruppe $(\Q,+)$ bekommen. Da unsere Operation einfach die Addition ist, muss dann gelten:
+    $$
+        \forall q \in \Q,\ \exists m \in M,\ \exists k \in \Z :  q = m + k \cdot x
+    $$
+
+    Betrachte $\frac{x}{2} \in \Q$. Es muss dann ein $m \in M$ und ein $k \in \Z$ geben, sodass
+    $$
+        \frac{x}{2} = m + k \cdot x \iff x = 2m + 2kx \iff x - 2kx = 2m \iff x(1 - 2k) = 2m
+    $$
+
+    Da $M$ eine Untergruppe ist, ist sie abgeschlossen unter Addition. Das heisst, $m + m = 2m \in M$. Also gilt $2m = x(1-2k) \in M$.
+
+    $(1 - 2k) \in \Z$ ist einfach eine ganze Zahl, insbesondere aber nicht null, da $1 = 2k$ nicht gelten kann für $k \in \Z$. Sei $a = (1 - 2k) \in \Z$. Wir können also die ursprüngliche Gleichung nochmals aufstellen, mit $\frac{x}{a} \in \Q$. Es muss dann $m' \in M$ und $k' \in \Z$ geben, sodass:
+    $$
+        \frac{x}{a} = m' + k' x \iff x = am' + ak'x 
+    $$
+
+    Es gilt $am' \in M$, da $M$ unter Addition abgeschlossen ist und $a \in \Z$. Es gilt $ak'x = k'(ax) \in M$, da $ax = (1-2k)x \in M$ wie oben gezeigt, und $k' \in \Z$ liegt. Wir haben also $x$ als Summe von zwei Elementen in $M$ geschrieben, und da $M$ unter Addition abgeschlossen ist, haben wir gezeigt, dass $x \in M$ liegt. Dies ist aber ein Widerspruch zu unserer Annahme, dass $x \notin M$ gilt. Also war die Annahme, dass $(\Q, +)$ eine maximale Untergruppe besitzt falsch. $(\Q, +)$ besitzt also keine maximale Untergruppe. \qed
+
+\end{enumerate}
+
+\begin{problem}[Aufgabe]{Jede natürliche Zahl ist kleiner als ihr Nachfolger}{}
+    Sei $n \in \omega$. Der Nachfolger von $n$ ist $s(n) := n \cup \{n\}$. Zeige, dass in ZF gilt, dass $n < s(n)$, das heisst $n \leq s(n)$ und $|n| \neq |s(n)|$.
+\end{problem}
+
+Sei $n \in \omega$. Wir wollen als erstes zeigen, dass $n \leq s(n)$ gilt. Es gilt $n \subseteq n \cup \{n\}$, also gilt $n \leq s(n)$.
+
+Zeige nun, dass $|n| \neq |s(n)|$ gilt. Wir müssen also zeigen, dass es keine Bijektion zwischen $s(n)$ und $n$ gibt. Zeige dies per Induktion über $n$.
+
+\begin{itemize}
+    \item Induktionsverankerung: sei $n = 0 = \emptyset$. $s(n) = 0 \cup \{0\} = \{\emptyset\}$. Da der Wertebereich leer ist, existiert hier keine Funktion, insbesondere auch keine Bijektion von $s(n)$ nach $n$. $\checkmark$
+    \item Induktionsschritt: Nehme an, es existiert keine Bijektion von $s(n)$ nach $n$. Zeige, dass auch keine Bijektion von $s(s(n))$ nach $s(n)$ gibt. 
+    
+    Nehme als Widerspruch an, es gibt eine Bijektion $f$ von $s(s(n))$ nach $s(n)$:
+    $$
+    \begin{aligned}
+        f: s(s(n)) \rightarrow s(n) &\iff f: s(n) \cup \{s(n)\} \rightarrow s(n) \\
+    \end{aligned}
+    $$
+
+    Versuche, aus dieser Bijektion eine Bijektion von $s(n)$ nach $n$ zu konstruieren. Betrachte das Element $s(n)$ im Definitionsbereich. Worauf wird $s(n)$ abgebildet?
+    \begin{itemize}
+        \item \underline{Fall 1: $s(n)$ wird auf $n$ abgebildet}: Wenn das "neuste" Element auf das vorherige  "neuste" Element abgebildet wird, dann können wir einfach unsere Bijektion $f$ auf den Definionsbereich $\left(s(n) \cup \{s(n)\}\right) \setminus \{ s(n) \} = s(n)$ beschränken. Wir bekommen dann eine Funktion:
+        $$
+        \begin{aligned}
+            g := f|_{s(n)} : s(n) \rightarrow s(n) \setminus \{n\} &\iff g : s(n) \rightarrow \left(n \cup \{n\}\right) \setminus \{n\} \\
+            &\iff g : s(n) \rightarrow n \\
+        \end{aligned}
+        $$
+
+        Da $f$ eine Bijektion ist, und wir lediglich ein Element jeweils aus dem Definition- und Wertebereich entfernt haben, bleibt $g$ eine Bijektion. Dies widerspricht aber unserer Annahme, dass es keine solche Bijektion gibt. Somit war unsere Annahme falsch, dass es eine Bijektion von $s(s(n))$ nach $s(n)$ gibt.
+
+        \item \underline{Fall 2: $s(n)$ wird nicht auf $n$ abgebildet}: Nehme an, dass statt auf $n$, es auf etwas anderes $f(s(n)) = x \in n$ abgebildet wird. Da $f$ surjektiv ist, muss es ein anderes Element $y \in s(n)$ geben, sodass $f(y) = n$ gilt.
+        
+        Definiere nun eine neue Funktion, die einfach diese Paare einfach "umleitet":
+        $$
+            g: s(n) \rightarrow n,\quad g(a) = \begin{cases}
+                f(a) & \text{für } a \neq y, \\
+                x & \text{für } a = y \\
+            \end{cases}
+        $$
+
+        Nun haben wir die Paare $\langle s(n), x \rangle$ und $\langle y, b \rangle$ aus $f$ "herausoperiert", und durch das Paar $\langle y, x \rangle$ ersetzt, und es bleibt die Funktion $g$. Diese Funktion $g$ muss bijektiv sein, da wir aus der bijektiven Funktion lediglich ein Element aus dem Definitionsbereich und ein Element aus dem Wertebereich entfernt haben. Wir haben eine Bijektion zwischen $s(n)$ und $n$ gefunden, und dies ist derselbe Widerspruch wie im vorherigen Fall. Deswegen kann es auch in diesem Fall nicht sein, dass es eine Bijektion von $s(s(n))$ nach $s(n)$ gibt.
+    \end{itemize}
+
+    So haben wir gezeigt, dass wenn es keine Bijektion von $s(n)$ nach $n$ gibt, dann gibt es auch keine Bijektion von $s(s(n))$ nach $s(n)$. $\checkmark$
+\end{itemize}
+
+Wir haben also per Induktion gezeigt, dass es für alle $n$ keine Bijektion zwischen $s(n)$ und $n$ gibt. So gilt: $|n| \neq |s(n)|$.
+
+Insgesamt haben wir also gezeigt, dass $n < s(n)$ für alle natürlichen Zahlen $n$ gilt. \qed
+
+\begin{problem}[Aufgabe]{Jede natürliche Zahl ist kleiner als $\omega$}{}
+    Sei $n \in \omega$. Zeige, dass in ZF gilt, dass $n \leq \omega$.
+\end{problem}
+
+Da $\omega$ eine Ordinalzahl ist, ist $\omega$ transitiv. Für transitive Mengen gilt $a \in A \implies a \subseteq A$. Also haben wir $n \in \omega \implies n \subseteq \omega$. Nach Definition von $\leq$ auf Ordinalzahlen folgt aus $n \subseteq \omega$, dass $n \leq \omega$ gilt. Da $n \in \omega$ beliebig, gilt dies für alle natürlichen Zahlen.
+
+\begin{problem}[Aufgabe]{}{}
+    Sei $V$ ein unendlichdimensionaler $K$-Vektorraum. Beweise:
+    $$
+        |V| = \max \left\{|K|, \dim_K(V)\right\}
+    $$
+\end{problem}
+
+Sei $B$ eine Basis von $V$. Da in dieser Aufgabe von $\dim_K(V)$ gesprochen wird, und die Dimension über die Basis definiert ist, wir implizit angenommen, dass wir hier mit ZFC arbeiten. Also hat $V$ tatsächlich eine Basis.
+
+Alle Vektoren in $V$ können als Linearkombination endlich vieler Basisvektoren geschrieben werden. Sei $P_\text{end}(B)$ die Menge aller endlichen Teilmengen von $B$. So können wir schreiben:
+$$
+    V = \bigcup_{F \in P_\text{end}(B)} \Span(F)
+$$
+
+Dann haben wir die folgende obere Schranke für Kardinalität von $|V|$:
+$$
+    |V| \leq |P_\text{end}(B)| \cdot \sup_{F \in P_\text{end}(B)} |\Span(F)|
+$$
+
+Sei $F \in P_\text{end}(B)$ eine endliche Teilmenge von $B$ mit $n$ Elementen. Es gilt
+$$
+    |\Span(F)| = \left| \left\{ c_1b_1 + \dots + c_nb_n \ |\ c_1,\dots,c_n \in K,\ b_1,\dots,b_n \in F \right\} \right| = |K|^n
+$$
+
+da wir für jeden Basisvektor $|K|$ verschiedene Skalare zur Auswahl haben. Also gilt:
+$$
+    |\Span(F)| = |K|^n \quad\forall F \in P_\text{end}(B)\text{, wobei } n \text{ die Anzahl Vektoren in } F \text{ ist.}
+$$
+
+Für $P_\text{end}(B)$ gilt:
+$$
+    P_\text{end}(B) = \bigcup_{n \in \omega} P_n(B) 
+$$
+
+wobei $P_n(B)$ die Menge aller endlichen Teilmengen von $B$ mit genau $n$ Elementen ist. 
+
+Um $n$ Elemente aus $B$ auszuwählen, nehmen wir $n$ mal das cartesische Produkt:
+$$
+    P_n(B) = \overbrace{B \times \dots \times B}^{n \text{ mal}}
+$$
+
+Es gilt also für für die Kardinalität der Vereinigung:
+$$
+    |P_\text{end}(B)| \leq \sum_{n \in \omega} |B|^n
+$$
+
+Da $|B|$ eine unendliche Kardinalzahl ist, gilt $\sum_{n \in \omega} |B|^n = |B|$. Also haben wir:
+$$
+    |P_\text{end}(B)| \leq |B|
+$$
+
+Wir können zeigen, dass $|B| \leq |P_\text{end}(B)|$ gilt: bilde einfach jedes $b \in B$ auf $\{b\} \in P_\text{end}(B)$ ab. Wir haben eine Injektion von $B$ nach $|P_\text{end}(B)|$ gefunden, also gilt $|B| \leq |P_\text{end}(B)|$.
+
+Nun gilt nach Cantor-Bernstein-Schröder:
+$$
+    |P_\text{end}(B)| = |B| = \dim_K(V)
+$$
+
+Wir können also schreiben:
+$$
+    |V| \leq |P_\text{end}(B)| \cdot \sup_{F \in P_\text{end}(B)} |\Span(F)| = \dim_K(V) \cdot \sup_{F \in P_\text{end}(B)} |K|^{n_F}
+$$
+
+wobei $n_F$ die Anzahl Elemente in einem gegebenen $F$ ist. Wir haben nun zwei mögliche Fälle:
+\begin{itemize}
+    \item \underline{$K$ ist endlich}: Dann ist $|K|^{n_F}$ für jedes $F \in P_\text{end}(B)$ einfach eine endliche Zahl. Das Supremum ist dann einfach die kleinste unendliche Kardinalzahl $\aleph_0$.
+    $$
+        \sup_{F \in P_\text{end}(B)} |K|^{n_F} = \aleph_0
+    $$
+
+    Für die Kardinalität von $V$ gilt dann:
+    $$
+        |V| \leq \dim_K(V) \cdot \aleph_0 = \max\{\dim_K(V),\aleph_0\}
+    $$
+
+    Es gilt $\dim_K(V) \geq \aleph_0$, also haben wir $\max\{\dim_K(V),\aleph_0\} = \dim_K(V)$.
+
+    So gilt:
+    $$
+        |V| \leq \max\{\dim_K(V),\aleph_0\} = \dim_K(V)
+    $$
+
+    Da $K$ endlich ist, haben wir $|K| < |\dim_k(V)|$. Also gilt:
+    $$
+        \dim_K(V) = \max\{\dim_K(V), |K|\}
+    $$
+
+    Wir haben also die obere Schranke
+    $$
+        |V| \leq \max\{\dim_K(V), |K|\}
+    $$
+
+    \item \underline{$K$ ist unendlich}: Dann haben wir nach der Kardinalzahlarithmetik:
+    $$
+        |K|^{n_F} = |K|
+    $$
+
+    Das Supremum ist dann
+    $$
+        \sup_{F \in P_\text{end}(B)} |K|^{n_F} = \sup_{F \in P_\text{end}(B)} |K| = |K|
+    $$
+
+    Dann gilt für die Kardinalität von $V$:
+    $$
+        |V| \leq \dim_K(V) \cdot |K| = \max\{\dim_K(V), |K|\}
+    $$
+\end{itemize}
+
+Wir bekommen also in allen Fällen die obere Schranke
+$$
+    |V| \leq \max\{\dim_K(V), |K|\}
+$$
+
+Zeige als nächstes, dass $|V| \geq \max\{\dim_K(V), |K|\} = \max\{|B|, |K|\}$ gilt. Wir suchen also eine Injektion $f: B \rightarrow V$ und eine Injektion $g: K \rightarrow V$.
+\begin{itemize}
+    \item \underline{Injektion $f: B \rightarrow V$}: Sei $b \in B$. Wir können $b$ einfach auf $b \in V$ abbilden, da alle Basisvektoren auch in $V$ sind.
+    \item \underline{Injektion $g: K \rightarrow V$}: Sei $\alpha \in K$. Nehme $b \in B$. Wir können $\alpha$ auf $\alpha b \in V$ abbilden, da alle $b \in B$ in $V$ sind und $V$ unter Linearkombination abgeschlossen ist. $b \neq 0$, weil $b$ ein Basisvektor ist.
+\end{itemize}
+
+Egal ob $|B|$ oder $|K|$ grösser ist, wir können in beiden Fällen eine Injektion von $B$ nach $V$ respektive von $K$ nach $V$ finden. Also gilt:
+$$
+    \max\{|B|, |K|\} = \max\{\dim_K(V), |K|\} \leq |V|
+$$
+
+Wir können also nach Cantor-Bernstein-Schröder folgern, dass
+$
+    |V| = \max\{\dim_K(V), |K|\}
+$
+
+gilt. \qed
+
+\begin{problem}[Aufgabe]{Cantor-Bernstein-Schröder}{}
+    Zeige, dass in ZF gilt, dass $|\R \setminus \{0\}| = |\R|$.
+\end{problem}
+
+Wir wollen als erstes zeigen, dass $|\R \setminus \{0\}| \leq |\R|$ gilt. Dafür suchen wir eine Injektion von $\R \setminus \{0\}$ nach $\R$. 
+
+Sei $x \in \R \setminus \{0\}$. Wir können $x$ einfach auf $x \in \R$ abbilden. Diese Funktion ist injektiv. Es gilt also $|\R \setminus \{0\}| \leq |\R|$.
+
+Als nächstes wollen wir zeigen, dass $|\R| \leq |\R \setminus \{0\}|$ gilt. Dafür suchen wir eine Injektion von $\R$ nach $\R \setminus \{0\}$.
+
+Wir suchen eine Injektion mit Wertebereich $\R \setminus \{0\}$. Hier funktioniert zum Beispiel die Funktion $x \mapsto e^x$. 
+
+Zeige, dass diese Funktion injektiv ist. Seien $x, y \in \R$ sodass $e^x = e^y$ gilt. Dies impliziert, dass $x = y$ gilt. Also ist diese Funktion injektiv. 
+
+Die Zahl $0$ liegt nicht im Wertebereich, da es keine $x \in \R$ gibt, sodass $e^x = 0$ gilt.
+
+Wir haben also eine Injektion von $\R$ nach $\R \setminus \{0\}$ gefunden. Es gilt also $|\R| \leq |\R \setminus \{0\}|$.
+
+So gilt nach Cantor-Bernstein-Schröder: $|\R \setminus \{0\}| = |\R|$. \qed
+
+\begin{problem}[Aufgabe]{}{}
+    Zeige: Zwei natürliche Zahlen sind genau dann gleichmächtig, falls sie gleich sind.
+\end{problem}
+
+Wir wollen zeigen: Seien $a, b \in \omega$. $|a| = |b| \iff a = b$.
+
+\begin{itemize}
+    \item \underline{$\implies$}: Zeige zuerst das folgende Lemma:
+    
+    \begin{lemma*}{}{}
+        \begin{itemize}
+            \item \textbf{Transitivität natürlicher Zahlen}: Für jedes $n \in \omega$ und jedes $m \in n$ gilt $m \subseteq n$.
+            \item \textbf{injektiv impliziert surjektiv}: Sei $n \in \omega$. Jede injektive Abbildung von $n$ nach $n$ ist surjektiv.
+            \item \textbf{$\in$-Vergleichbarkeit}: Für alle $m, n \in \omega$ gilt $m \in n$, oder $m = n$, oder $n \in m$.
+        \end{itemize}
+    \end{lemma*}
+
+    \begin{itemize}
+        \item \textbf{Transitivität natürlicher Zahlen}: Sei $n \in \omega$, sei $m \in n$. Da $n$ eine Ordinalzahl ist, ist $n$ transitiv. Es gilt also $m \in n \implies m \subseteq n$. $\checkmark$
+        \item \textbf{injektiv impliziert surjektiv}: Sei $n \in \omega$. Zeige diese Aussage per Induktion über $n$.
+        \begin{itemize}
+            \item Induktionsverankerung: Sei $n = 0 = \emptyset$. Die einzige injektive Abbildung $f: \emptyset \rightarrow \emptyset$ ist auch surjektiv ($\forall y \in \emptyset : \exists x \in \emptyset \text{ sodass } f(x) = y$ gilt trivialerweise).
+            \item Induktionsschritt: Wir nehmen an, dass jede injektive Abbildung von $n$ nach $n$ auch surjektiv ist. Wir wollen zeigen, dass alle injektive Abbildungen von $s(n)$ nach $s(n)$ auch surjektiv sind.
+            
+            Sei $f: s(n) \rightarrow s(n)$ eine injektive Abbildung. Es gilt: $s(n) = n \cup \{n\}$. 
+            \begin{itemize}
+                \item \underline{Fall 1, $f(n) = n$}: Dann ist $f|_n: n \rightarrow n$ surjektiv. Da $f(n) = n$, ist $f$ surjektiv auf ganz $s(n)$.
+                \item \underline{Fall 2, $f(n) = k \in n$}: Zeige, dass es ein $l \in n$ gibt, sodass $f(l) = n$. 
+                
+                Angenommen, kein Element von $n$ wird auf $n$ abgebildet. Das bedeutet $f(s(n)) \subseteq n$. Wir können den Definitionsbereich von $f$ auf $n$ einschränken. Da $f(s(n)) \subseteq n$, muss auch gelten $f|_n(n) \subseteq n$. Das heisst $f|_n: n\rightarrow n$.
+                
+                Da $f$ injektiv ist, muss $f|_n$ auch injektiv sein. Da $f|_n$ eine injektive Funktion von $n$ nach $n$ ist, gilt nach der Induktionshypothese, dass $f|_n$ surjektiv ist.
+
+                Da $k \in n$, muss es ein $x \in n$ geben, sodass $f|_n(x) = k$ gilt. Wir haben aber angenommen, dass $f(n) = k$ gilt. Das heisst, wir haben $f(x) = f(n)$ mit $x \neq n$ (da $x \in n$ kann $x$ unmöglich gleich $n$ sein). Dies widerspricht der Annahme, dass $f$ eine injektive Funktion ist. Das heisst, es muss ein $l \in n$ geben, sodass $f(l) = n$ gilt.
+                
+                Wir können jetzt eine neue Funktion $g: s(n) \rightarrow s(n)$ definieren, mit
+                $$
+                    g(x) :=
+                    \begin{cases}
+                        k & x = l ,\\
+                        n & x = n, \\
+                        f(x) & x \in s(n) \setminus \{l, n\} \\
+                    \end{cases}
+                $$
+
+                Diese Funktion ist injektiv. Wir können nun Fall 1 auf diese neue Funktion $g$ anwenden, und bekommen, dass $g$ surjektiv auf $s(n)$ ist.
+
+                Da wir $g$ nur durch das Vertauschen zweier Funktionswerte der Funktion $f$ konstruiert haben, muss $f$ auch surjektiv sein.
+            \end{itemize}
+
+            Wir haben also gezeigt, dass wenn alles injektiven Abbildungen von $n$ nach $n$ surjektiv sind, dass dann auch alle injektive Abbildungen von $s(n)$ nach $s(n)$ auch surjektiv .
+        \end{itemize}
+
+        Es gilt also für alle $n$, dass jede injektive Abbildung von $n$ nach $n$ auch surjektiv ist. $\checkmark$
+
+        \item \textbf{$\in$-Vergleichbarkeit}: Dies gilt nach einem Theorem im Skript (Trichotomie für Ordinalzahlen). $\checkmark$
+    \end{itemize}
+
+    Wir haben also alle drei Aussagen des Lemmas bewiesen.
+
+    Seien $a, b \in \omega$ mit $|a| = |b|$. Zeige, dass $a = b$ gilt.
+
+    Da $|a| = |b|$, existiert eine Bijektion $f: b \rightarrow a$. Angenommen, es gilt $a \neq b$, dann wissen wir nach der $\in$-Vergleichbarkeit, dass entweder $a \in b$ oder $b \in a$ gelten muss. Wir können o.B.d.A. annehmen, dass $a \in b$ gilt. Dann gilt nach der Transitivität $a \subsetneq b$ (wir wissen, dass $a = b$ nicht gilt). Das bedeutet, es gibt Elemente in $b$, die nicht in $a$ sind, zum Beispiel $a \in b$, $a \notin a$.
+
+    Betrachte die Funktion $f|_a: a \rightarrow a$. Da $f$ bijektiv und insbesondere injektiv ist, muss diese eingeschränkte Funktion auch injektiv sein. Es folge aus dem Lemma, dass $f|_a: a \rightarrow a$ auch surjektiv sein muss.
+
+    Wir haben aber mindestens noch das Element $a \notin a$, welches auf irgendein Wert $k \in a$ abgebildet wird. Da $f|_a$ surjektiv ist, existiert ein $c \in a$ mit $f|_a(c) = f(c) = k$. Wir haben dann aber $f(a) = f(c) = k$ mit $a \neq c$ (da $c \in a$ und $a \neq a$ können sie unmöglich gleich sein), also ist $f$ nicht injektiv.
+
+    Dies widerspricht aber unserer Annahme, dass $f$ eine Bijektion ist. Es muss also gelten: $a = b$.
+
+    \item \underline{$\impliedby$}: Seien $a, b \in \omega$ mit $a = b$. Zeige, dass $|a| = |b|$ gilt. Wir suchen eine Bijektion von $a$ nach $b$. Es gilt aber $a = b$, also nehme als Bijektion die Identitätsabbildung. Wir haben also eine Bijektion von $a$ nach $b$, also gilt $|a| = |b|$. \qed
+\end{itemize}
+
+
+\end{document}

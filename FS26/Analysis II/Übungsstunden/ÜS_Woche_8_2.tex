@@ -1,0 +1,114 @@
+\documentclass[12pt]{article}
+\usepackage{seantex}
+
+% --- Document Info ---
+\title{ÜS Analysis II: Week 8, No. 2}
+\author{Sean Findlay}
+\date{\today}
+
+% --- Start Document ---
+\begin{document}
+
+\maketitle
+
+\section{Riemann-Integral in mehreren Variablen}
+$Q = I_1 \times I_2 \times \dots, \ \lambda(Q) = \mu_n(Q) = |I_2| \cdot |I_2| \cdot \dots$. 
+Treppenfunktion: $Q_1, \dots, Q_n$, $g_1, g_2, \dots, g_n \in \R$.
+
+$$
+g = \sum_{i = 1}^{n} g \cdot \mathds{1}_{Q_i}(x)
+$$
+
+Integral über Treppenfunktion:
+
+$$
+    \int_g = \sum g_i \cdot \lambda(Q_i) = \int_g \dd \lambda(x) = 2^{-np}\cdot\sum_i g_i
+$$
+
+\subsection*{Riemann-Integrierbar}
+
+$f: A \subset \R^n \rightarrow \R$, 
+
+$$
+    I_{\text{low}} = \sup \left\{\int_g | g: \R^n \rightarrow \R \text{ Treppenfunktion}\right\}
+    % I_{\text{high}} = \inf \left\{\int_g | g: \R^n \rightarrow \R \text{ Treppenfunktion}\right\}
+$$
+
+\begin{remark}{Eigenschaften des Riemann-Integrals}{}
+    $f, g$ Treppenfunktionen, $\alpha \in \R$
+
+    \begin{enumerate}
+        \item Linearität:
+        $$
+            \int f + \alpha g = \int f + \alpha \cdot \int g 
+        $$
+        \item Dreiecksungleichung:
+        $$
+            |\int f| \leq \int |f|
+        $$
+        \item Monoton:
+        $$
+            f \leq g \implies \int f \leq \int g
+        $$
+    \end{enumerate}
+\end{remark}
+
+\begin{remark}{Integral über positive Funktionen}{}
+    $f^+(x) = \max(f(x), 0), f^-(x) = \max(-f(x), 0)$,
+    $$
+        \int_A f = \int_A f^+ - \int_A f^-
+    $$
+
+    Wenn $f$ Riemann integrierbar, dann
+
+    $$
+        \int_A f(x) \dd\lambda(x) = \int_{a}^{b} f(x) \dd x
+    $$
+\end{remark}
+
+\begin{remark}{Riemann-Integral und Jordan-Mass}{}
+    $A \subset \R^n,\ f: A \rightarrow [0, \infty),\ \Gamma(f)_A = \{(x, y) \in \R^n \times \R \ |\ x \in A \land 0 \leq y \leq f(x)\}$ Hypograph von $f$. Dann gilt:
+    
+    $$
+        \int f = \mu_{n + 1} \left(\Gamma_A(f) \right)
+    $$
+\end{remark}
+
+\begin{theorem}{Fubini}{}
+    $A_1 \subset \R^n, A_2 \subset \R^D$, $A_1 \times A_2$ beschränkt. $f: A \rightarrow [0, \infty)$ stetig.
+
+    $$
+        \int_{A_1 \times A_2} f \dd\lambda(x, y) = \int_{A_1} \left( \int_{A_2} f \dd \lambda(x)\right) \dd \lambda(y) = \int_{A_2} \left( \int_{A_1} f \dd \lambda(y)\right) \dd \lambda(x)
+    $$
+\end{theorem}
+
+Wir integrieren unterschiedliche Variablen in beliebiger Reihenfolge.
+
+\begin{example}{}{}
+    $[0, 1] \times [0, 1],\ f(x, y) = 1$
+    
+    $$
+        \int_{[0, 1]^2} f \dd \lambda(x, y) = \int_{0}^{1} x \int_{0}^{1} \dd y = 1
+    $$
+\end{example}
+
+\begin{example}{}{}
+    $A = \{(x, y) \in \R^2 \ | \ x \in [0, 1],\ x \leq y \leq e^x\}$ (Hypograph von $e^x$ im Intervall $[0, 1]$ mit $x \leq y$)
+
+    $$
+        V = \int_A x \cdot y \dd \lambda(x,y) = \int_A x \cdot y \mathds{1}_{[x, e^x]} \dd \lambda(x, y)
+    $$
+
+    wobei $A = [0, 1] \times [0, e]$
+
+    $$
+        = \int_{[0, 1]} \int_{[0, e]} x \cdot y \cdot \mathds{1}_{[x, e^x]} \cdot \dd y \dd x
+    $$
+
+    $$
+        \int_{x}^{e^x} y \dd y = \left[\frac{y^2}{2}\right]_{x}^{e^x} = \frac{1}{2}e^x - \frac{x^2}{2}
+    $$
+\end{example}
+
+
+\end{document}

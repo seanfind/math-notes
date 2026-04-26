@@ -1,0 +1,228 @@
+\documentclass[12pt]{article}
+\usepackage{seantex}
+
+% --- Document Info ---
+\title{Analysis II: Week 8, Lecture 2}
+\author{Sean Findlay}
+\date{\today}
+
+% --- Start Document ---
+\begin{document}
+
+\maketitle
+
+\begin{corollary}{Fubini in practice}{}
+$K = [a_1,b_1] \times \dots \times [a_n, b_n] \subset \R^n$, $f: K \rightarrow \R$ continuous, then $$
+\int_{K} f(x) \,dx = \left(\int_{a_1}^{b_1} \left(\int_{a_2}^{b_2} \left(\dots \left(\int_{a_n}^{b_n} f(x_1, x_2, \dots, x_n) \,dx_n\right) \dots \right) \,dx_2\right) \,dx_1\right)
+$$
+\end{corollary}
+
+Example: $K = [a_1,b_1] \times [a_2, b_2] \times [a_3, b_3]$, then 
+$$
+\int_{K} f(x) \,dx = \left(\int_{a_1}^{b_1} \left(\int_{a_2}^{b_2} \left(\int_{a_n}^{b_n} f(x_1, x_2, x_3) \,dx_3\right) \,dx_2\right) \,dx_1\right)
+$$
+
+Example of usage:
+
+$$
+\int_{K} y_1^2 \cos(y_3) \,dy = \int_{0}^{1} \int_{0}^{2\pi} \int_{-\frac{\pi}{2}}^{\frac{\pi}{2}} y_1^2 \cos(y_3) \,dy_3 \,dy_2 \,dy_1
+$$
+
+\begin{enumerate}
+    \item $$
+    \int_{-\frac{\pi}{2}}^{\frac{\pi}{2}} y_1^2 \cos(y_3) \,dy_3 = y_1^2 \int_{-\frac{\pi}{2}}^{\frac{\pi}{2}} \cos(y_3) \,dy_3 = y_1^2 \cdot [\sin(y_3)]_{-\frac{\pi}{2}}^{\frac{\pi}{2}} = 2y_1^2
+    $$
+    \item $$
+    \int_{0}^{2\pi} 2y_1^2 \,dy_2 = 4\pi y_1^2
+    $$
+    \item $$
+    \int_{0}^{1}4\pi y_1^2 \,dy_1 = 4 \pi [\frac{y_1^3}{3}]_{1}^{0} = \frac{4}{3}\pi
+    $$
+\end{enumerate}
+
+This is just the formula for the volume of a sphere (as expected).
+
+\begin{proofbox}
+Proof in $\R^3$ (to keep it simple).
+
+We will use Fubini with $K = [a_1,b_1] \times [a_2, b_2] \times [a_3, b_3]$.
+
+Let 
+$$
+\vphi = \int f(x_1, x_2, x_3) \,dy \text{ where } y  := (x_2, x_3)
+$$
+
+So $f_{x_1}(y) = f(x_1, y)$, $f_{x_1}: [a_2, b_2] \times [a_3, b_3] \rightarrow \R$.
+
+$$
+\int_{K} f(x) \,dx = \int_{a_1}^{b_1} \vphi(x_1) \,dx_1 = \int_{a_1}^{b_1} \left(\int_{[a_2, b_2] \times [a_3, b_3]} f_{x_1}(x_2, x_3) \,dy\right) \,dx_1
+$$
+
+Let $I$ be the inner integral here (the one over $dy$).
+
+Now, apply Fubini with $K = 1$ in two dimensions:
+$$
+I(x_1) = \int_{a_2}^{b_2} \left(\int_{[a_3, b_3]} f(x_1, x_2, x_3) \,dx_3\right) \,dx_2
+$$
+
+Substitute $I$ back:
+
+$$
+\int_{K} f(x) \,dx = \int_{a_1}^{b_1} \vphi(x_1) \,dx_1 = \int_{a_1}^{b_1} \left(\int_{a_2}^{b_2} \left(\int_{a_3}^{b_3} f(x_1, x_2, x_3) \,dx_3\right) \,dx_2\right) \,dx_1
+$$
+
+This is what we wanted to show.\end{proofbox}
+
+\begin{theorem}{Differentiation under the integral sign}{}
+Let $K$ be a compact subset of $\R^n$, $f: K \times [a, b] \rightarrow \R$, $f = f(x, t)$. Assume that $f$ and $\partial_t f$ are $C^0(K \times [a, b])$. Then, 
+$$
+\forall \, t_0 \in (a, b), \, \frac{d}{dt} |_{t_0} \int_{K} f(x, t) \,dx = \int_{K} \partial_t f(x, t_0) \,dx
+$$
+\end{theorem}
+
+Imagine we have a function depending on time (among other variables), and we want to take the derivative under the integral. Then, the above theorem tells us how to compute this.
+
+\begin{proofbox}
+$$
+\frac{d}{dt} |_{t_0} \int_{K} f(x, t) \,dx = \lim_{h \rightarrow 0} \frac{\int_{K} f(x, t_0+h) \,dx - \int_{K} f(x, t_0) \,dx}{h}
+$$
+
+Introduce the function $F(t) = \int_{K} f(x, t) \,dx$. Then, the above is equivalent to 
+$$
+F'(t_0) = \lim_{h \rightarrow 0}\frac{F(t_0 + h) - F(t_0)}{h}
+$$
+
+$$
+= \lim_{h \rightarrow 0} \int_{K} \left(\frac{f(x, t_0+h) - f(x, t_0)}{h}\right)
+$$
+
+We would like to replace the right hand side with the partial derivative.
+
+First, we will apply the mean value theorem:
+
+$$
+\frac{f(x, t_0+h) - f(x, t_0)}{h} = \partial_t f(x, \xi_x) \text{ with } \xi_x \in (0, h) \text{ and } h > 0
+$$
+
+$\partial_t f$ is continuous on $K \times [a, b]$ compact, so it is uniformly continuous:
+
+$$
+\forall \eps > 0 \, \exists \delta > 0 \text{, if } h < \delta (\implies |\xi_x - t_0| < 0) \text{, then } |\partial_t f(x, \xi_x) - \partial_t f(x, t_0)| < \eps
+$$
+
+So: 
+
+$$
+\int_{K} \frac{f(x, t_0+h) - f(x, t_0)}{h} = \int_{K} \partial_t f(x, t_0) + E(x)
+$$
+
+where $E(x)$ is the error $|\partial_t f(x, \xi_x) - \partial_t f(x, t_0)|$, which is less than $\eps$. So:
+
+$$
+\int_{K} \partial_t f(x, t_0) + E(x) = \int_{K} \partial_t f(x, t_0) + O(\eps)
+$$
+
+Send $h \rightarrow 0$ and we get that
+
+$$
+\frac{d}{dt} |_{t_0} \int_{K} f(x, t) \,dx = \int_{K} \partial_t f(x, t_0)
+$$
+\end{proofbox}
+
+\subsection{Improper integrals}
+
+\begin{definition}{Improper integral}{}
+Let $U \subset \R^n$ open, $f: U \rightarrow \R$ continuous and non-negative. Define
+
+$$
+\int_{U} f(x) \,dx = \sup \left\{\int_{K} f | K \subset U, K \text { compact and Jordan measurable}\right\}
+$$
+\end{definition}
+
+This basically means that the integral over an open subset $U$ of $\R^n$ is just the largest integral of a compact and Jordan measurable set inside of $U$.
+
+\begin{remark}{}{}
+Whenever $\{K_l\}_{l \geq 0}$ is a sequence of sets with $K_0 \subset K_1 \subset \dots \subset K_l \subset \dots$, $U = \bigcup\limits_{l \geq 0} K_l$, then
+$$
+\int_{U} f = \lim_{l \rightarrow \infty} \int_{K_l} f
+$$
+
+Also,
+$$
+\int_{K_i} f \leq \lim_{l \rightarrow \infty}\int_{K_l} f \text{ for all } i \in \Z_{\geq 0}
+$$
+\end{remark}
+
+\begin{example}{}{}
+Consider the integral
+$$
+\int_{B_R} e^{-x^2-y^2} \,dx \,dy
+$$
+
+Use the substitution $x = r \cos \phi, y = r \sin \phi$. Write $\psi(r, \phi) = \begin{pmatrix} r \cos \phi \\ r \sin \phi \end{pmatrix}$. The Jacobian of this substitution is
+
+\[
+J = 
+\begin{bmatrix}
+\cos \phi & -r \sin \phi \\
+\sin \phi & r \cos \phi
+\end{bmatrix}
+\implies \det J = r \cos^2 \phi + r \sin^2 \phi = r
+\]
+
+Then:
+
+$$
+\int_{B_R} e^{-x^2-y^2} \,dx \,dy = \int_{0}^{R} \left(\int_{0}^{2\pi} e^{-r^2} \,d\phi \right) \det(J) \,dr = \int_{0}^{R} \left(\int_{0}^{2\pi} e^{-r^2} \,d\phi \right) r \,dr 
+$$
+
+$$
+= -\pi \int_{0}^{R} -e^{-r^2} 2r \,dr = -\pi \left[e^{-r^2}\right]_0^R=\pi\left(1-e^{-R^2}\right)
+$$
+
+\end{example}
+
+\begin{example}{Famous improper integral}{}
+$$
+\int_{\R} e^{-x^2} \,dx = \int_{-\infty}^{\infty} e^{-x^2} \,dx = \lim_{L \rightarrow \infty} \int_{-L}^{L} e^{-x^2} \,dx =: I
+$$
+
+How to compute $I$? We will use the following trick. Consider 
+
+$$
+\int_{-L}^{L} \int_{-L}^{L} e^{-x^2-y^2} \,dy \,dx = \int_{-L}^{L} \int_{-L}^{L} e^{-x^2}e^{-y^2} \,dy \,dx
+$$
+
+Using Fubini, we can compute this (with the result from the previous example):
+
+$$
+\int_{-L}^{L} \int_{-L}^{L} e^{-x^2}e^{-y^2} \,dy \,dx = \int_{-L}^{L} e^{-x^2} \int_{_L}^{L} e^{-y^2} \,dy \,dx = \left(\int_{-L}^{L} e^{-x^2} \,dx\right) \left(\int_{-L}^{L} e^{-y^2} \,dy\right)
+$$
+
+$$
+\int_{\R^2} e^{-x^2-y^2} \,dy \,dx = \lim_{L \rightarrow \infty} \left(\int_{-L}^{L} e^{-x^2} \,dx\right)^2 = I^2
+$$
+
+$$
+= \lim_{R \rightarrow \infty} \int_{B_R} e^{-x^2-y^2} \,dy\,dx = \lim_{R \rightarrow \infty} \pi(1 - e^{-R^2}) = \pi
+$$
+
+$I^2 = \pi$, so \[
+\boxed{I = \sqrt{\pi}}
+\]
+
+$$
+\int_{-\infty}^{\infty} e^{-x^2} \,dx = \sqrt{\pi}
+$$
+
+This is why the normalized Gaussian is $\frac{1}{\sqrt{\pi}} e^{-x^2}$.
+\end{example}
+
+\begin{exercise}{}{}
+$a, b, c$ vectors in $\R^3$. Show that 
+$$
+(a \times b) \cdot c = \det(a, b, c)
+$$
+\end{exercise}
+
+\end{document}

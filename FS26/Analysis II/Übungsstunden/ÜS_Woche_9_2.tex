@@ -1,0 +1,172 @@
+\documentclass[12pt]{article}
+\usepackage{seantex}
+
+% --- Document Info ---
+\title{ÜS: Analysis II, Woche 9, No. 2}
+\author{Sean Findlay}
+\date{\today}
+
+% --- Start Document ---
+\begin{document}
+
+\maketitle
+
+\section{Transformator-Regel (change of variables)}
+
+\begin{definition}{Transformator-Regel (change of variables)}{}
+    
+    $U, V \subseteq \R^n$ offen, $\Phi: U \rightarrow V$ Diffeomorphismus, $A \subseteq U$ Jordan messbar, $\overline{A} \subseteq U$, $f: \overline{A} \rightarrow [0, \infty]$ stetig, 
+    $$
+        \int_A f(x) \dd x = \int_{\Phi(A)} \frac{f(\Phi^{-1}(y))}{\left| \det J \Phi(\Phi^{-1}(y)) \right|} \dd y
+    $$
+
+    oder: 
+    $g: V \rightarrow \R$,
+    $$
+        \int_U g(\Phi(x)) \cdot |\det(\Psi(x))| \dd \lambda(x) = \int_{\Phi(U)} f(y) \dd \lambda(y)
+    $$
+
+    Anstelle von $\dd \lambda(x)$ können wir auch $\dd x$ schreiben.
+\end{definition}
+
+\begin{example}{}{}
+    $U \subseteq \R^2$ Kreis, $V \subseteq \R^2$ Ellipse, $\Phi: \R^2 \rightarrow \R^2$, $(y_1, \lambda_1) \mapsto (ax_1, bx_2)$, $f: \R^2 \rightarrow \R$
+
+    Sei $\Phi$ also die Transformation von einem Kreis zu einer Ellipse. Die Determinante der Jacobi-Matrix ist:
+    $$
+        J\Phi = \begin{pmatrix}
+            a & 0 \\
+            0 & b
+        \end{pmatrix},\ |\det J \Phi| = ab
+    $$
+
+    $$
+        \int_V f(\Phi(x)) \cdot |\det J \Phi(x_1)| 
+    $$
+\end{example}
+
+\section{Länge einer Kurve}
+
+\begin{definition}{}{}
+    $\gamma: [a, b] \rightarrow \R^n \in C^1$. Die Länge der Kurve ist
+    $$
+        L(\gamma) = \int_{a}^{b} \lVert \gamma'(t) \rVert_2
+    $$
+\end{definition}
+
+\begin{example}{}{}
+    Sei $\gamma: [0, 2\pi] \rightarrow \R^2$, $\gamma(t) = \begin{pmatrix} t \sin(t) \\ t \cos(t) \end{pmatrix}$. Diese Kurve ist eine Spirale vom Ursprung aus. Wir brauchen den "Geschwindigkeitsvektor":
+    $$
+        \gamma'(t) = \begin{pmatrix} \sin(t) + t\cos(t) \\ \cos(t) - t \sin(t) \end{pmatrix}
+    $$
+
+    Die Länge ist also:
+    $$
+        L(\gamma) = \int_{0}^{2\pi} \left( \sin^2t + 2\sin(t) t \cos t  + \cos^2(t) \cdot t^2 + \cos^2(t) - 2\sin(t)\cos(t) + t^2\sin^2(t)\right)^{1/2}
+    $$
+
+    $$
+        = \int_{0}^{2\pi} (1 + t^2)^{1/2} \approx 21.3
+    $$
+\end{example}
+
+\begin{example}{}{}
+    $\gamma_2: [0, 2\pi] \rightarrow \R^2$, $t \mapsto \begin{pmatrix} \cos(2t)\cos(t) \\ \cos(2t)\sin(t) \end{pmatrix}$
+
+    Der "Geschwindigkeitsvektor" ist:
+    $$
+        \gamma_2'(t) = \begin{pmatrix} -2\sin(2t)\cos(t) - \cos(2t)\sin(t) \\ -2\sin(2t)\sin(t)+\cos(2t)\cos(t) \end{pmatrix}
+    $$
+
+    Die Länge ist:
+    $$
+        \int_{0}^{2\pi} \left( \lVert \gamma'_2(t) \rVert_2 \right)^{1/2} \approx 9.7
+    $$
+\end{example}
+
+\section{Gram'sche Determinante}
+
+\begin{definition}{Gram'sche Determinante}{}
+    Sei $L: \R^m \rightarrow \R^n$ eine lineare Funktion mit $n \geq m$ (wir bilden von einem kleineren Raum in einen grösseren ab). Die Gram'sche Determinante ist:
+    $$
+        \det(L^T L)
+    $$
+\end{definition}
+
+\section{$m$-Volumen einer $m$-Untermannigfalt}
+
+\begin{definition}{Volumen einer $m$-dimensionalen Untermannigfalt}{}
+    $\mathrm{vol}_V(\Phi) = \int_V \sqrt{\det(J\Phi^T J \Phi)}$, wobei $\Phi$ die Parametrisierung der Untermannigfalt ist, und $\Phi \in C^1 \iff \mathrm{rank}(J \Phi)$ ist maximal. 
+\end{definition}
+
+\begin{example}{}{}
+    $\Phi: [0, \pi] \times [0, 2\pi] \rightarrow \R^3$, definiert als:
+    $$
+        (\theta, \vphi) \mapsto \begin{pmatrix} R \sin \theta \cos \vphi \\ R \sin \theta \sin \phi \\ R \cos \theta \end{pmatrix}
+    $$  
+
+    Die Jacobi-Matrix ist
+    $$
+        J \Phi = R \cdot \begin{pmatrix} \cos\theta\cos\vphi & -\sin\theta\sin\vphi \\ \cos\theta\sin\vphi & \sin\theta \cos\vphi \\ -\sin\theta & 0 \end{pmatrix}
+    $$
+
+    $$
+    \begin{aligned}
+        J \Phi^T J \Phi &= R \begin{pmatrix} \cos\theta\cos\vphi & -\sin\theta\sin\vphi \\ \cos\theta\sin\vphi & \sin\theta \cos\vphi \\ -\sin\theta & 0 \end{pmatrix}^T \cdot R \begin{pmatrix} \cos\theta\cos\vphi & -\sin\theta\sin\vphi \\ \cos\theta\sin\vphi & \sin\theta \cos\vphi \\ -\sin\theta & 0 \end{pmatrix} \\
+        &= R^2 \begin{pmatrix}
+                \cos^2\theta + \sin^2\theta & * \\
+                0 & \sin^2\theta \\
+            \end{pmatrix} = 
+            \begin{pmatrix}
+                1 & * \\
+                0 & \sin^2\theta \\
+            \end{pmatrix}
+    \end{aligned}
+    $$
+
+    $$
+        \implies |\det(J\Phi^T J\Phi)| = |R^2 \det\begin{pmatrix}
+                1 & * \\
+                0 & \sin^2\theta \\
+            \end{pmatrix}| = R^4 \sin^2\theta
+    $$
+
+    Wir können nun das Volumen berechnen:
+
+    $$
+        \mathrm{vol_2}(\Phi) = \int_{[0, \pi] \times [0, 2\pi]} \sqrt{R^4 \sin^2\theta} \dd \lambda(\theta, \vphi) = R^2 \int_{0}^{\pi}\int_{0}^{2\pi} \sin\theta \dd \theta  \dd \vphi
+    $$
+
+\end{example}
+
+\begin{example}{Mantel eines Kegels}{}
+    $\Phi: [0, h]\times[0,2\pi]\rightarrow \R^3,\ \Phi(z, \vphi) = \begin{pmatrix} (h-z)\cos\vphi \\ (h-z)\sin\vphi \\ z \end{pmatrix}$ Die Jacobi-Matrix ist
+    $$
+        J \Phi = \begin{pmatrix}
+            -\cos\vphi & (h-z) \sin\vphi \\
+            -\sin\vphi & -(h-z) \cos\vphi \\
+            1 & 0 \\
+        \end{pmatrix}
+    $$
+
+    $$
+        J \Phi^T J \Phi = \begin{pmatrix}
+            2 & * \\
+            0 & (h-z)^2 \\
+        \end{pmatrix}
+    $$
+
+    $$
+        |\det(J \Phi^TJ \Phi)| = 2(h-z)^2
+    $$
+
+    Das Volumen ist:
+    $$
+        \mathrm{vol}_{\text{Kegel}} = \int_{[0, h]\times[0, 2\pi]} \sqrt{2}(h-z) \dd \lambda(z, \vphi) = \int_{0}^{h} \dd z \int_{0}^{2\pi} \dd \vphi \sqrt{2} \cdot (h - z)
+    $$
+    $$
+        = \sqrt{2} \cdot 2 \pi \left(h \cdot z - \frac{z^2}{2}\right)_0^h = \boxed{\sqrt{2} \pi h^2}
+    $$
+\end{example}
+
+\end{document}

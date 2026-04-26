@@ -1,0 +1,166 @@
+\documentclass[12pt]{article}
+\usepackage{seantex}
+
+% --- Document Info ---
+\title{Grundstrukturen ÜS: Woche 8}
+\author{Sean Findlay}
+\date{\today}
+
+% --- Start Document ---
+\begin{document}
+
+\maketitle
+
+\section{Ordnungen und Ordinalzahlen}
+
+\begin{exercise}{Transitivität}{}
+    $x$ ist transitiv $\iff \forall y \in x (y \subseteq x)$. Ist $\{\{\emptyset\}\}$ transitiv?
+\end{exercise}
+
+Antwort: nein, weil $\{\emptyset\} \subseteq \{\{\emptyset\}\}$, aber $\emptyset \notin \{\{\emptyset\}\}$.
+
+\begin{definition}{lineare Ordnung}{}
+    Eine zweistellige Relation $<$ ist eine lineare Ordnung, wenn gilt:
+    \begin{enumerate}
+        \item Transitivität: $\forall x, y, z \in X, \ x < y \land y < z \implies x < z$.
+        \item Trichotomie: $\forall x, y \in X, \ x < y \lor y < x \lor x = y$.
+    \end{enumerate}
+\end{definition}
+
+\begin{definition}{Totalordnung}{}
+    Eine zweistellige Relation $\leq$ ist eine Totalordnung, wenn gilt:
+
+    \begin{enumerate}
+        \item Reflexivität: $\forall x \in X, \ x \leq x$.
+        \item Antisymmetrie: $\forall x, y \in X, \ x \leq y \land y \leq x \implies y = x$.
+        \item Transitivität: $\forall x, y, z \in X, \ x \leq y \land y \leq z \implies x \leq z$.
+        \item Totalität: $\forall x, y \in X, \ x \leq y \lor y \leq x$.
+    \end{enumerate}
+\end{definition}
+
+\begin{definition}{Partialordnung}{}
+    Eine zweistellige Relation $\leq$ ist eine Partialordnung, wenn gilt:
+
+    \begin{enumerate}
+        \item Reflexivität: $\forall x \in X, \ x \leq x$.
+        \item Antisymmetrie: $\forall x, y \in X, \ x \leq y \land y \leq x \implies y = x$.
+        \item Transitivität: $\forall x, y, z \in X, \ x \leq y \land y \leq z \implies x \leq z$.
+    \end{enumerate}
+\end{definition}
+
+
+\begin{example}{$\subseteq$ als Partialordnung}{}
+    $\subseteq$ auf Mengen ist eine Partialordnung:
+
+    \begin{enumerate}
+        \item $x \subseteq x$ gilt, also ist $\subseteq$ reflexiv.
+        \item $x \subseteq y, y \subseteq x \implies x = y$ nach ZF1.
+        \item $x \subseteq y, y \subseteq z \implies x \subseteq z$.
+    \end{enumerate}
+
+    Also ist $\subseteq$ eine Partialordnung.
+\end{example}
+
+\begin{definition}{Kette}{}
+    Eine Teilmenge $C \subseteq P$ einer Partialordnung $(P, \leq)$ ist eine Kette $\iff$ $C$ ist durch $\leq$ total geordnet.
+\end{definition}
+
+\begin{definition}{Ordinalzahl}{}
+    Eine Menge $\alpha$ ist eine Ordinalzahl $\iff$ $\alpha$ ist transitiv und durch $\in$ wohlgeordnet $\iff \alpha$ ist transitiv und $\in$ ist eine lineare Ordnung, sodass jede nicht-leere Teilmenge von $\alpha$ ein kleinstes Element hat.
+\end{definition}
+
+\begin{exercise}{}{}
+    Zeige, dass $n \in \omega$ eine Ordinalzahl ist.
+\end{exercise}
+
+\begin{proofbox}
+    Wir müssen zeigen:
+
+    \begin{itemize}
+        \item \underline{$n$ ist transitiv}: wir wollen zeigen:
+        $$
+            \forall x \in n : (x \subseteq n)
+        $$
+
+        Sei $m \in n$. Zeige per Induktion über $n$ die Formel: 
+        $$
+            \psi(n) \equiv \forall m \in n (m \subseteq n)
+        $$
+
+        \begin{itemize}
+            \item Base case: $n = 0 = \emptyset \implies \forall m \in \emptyset (m \in \emptyset) \ \checkmark$
+            \item Induktionsschritt: Zeige, $\psi(n) \implies \psi(s(n))$
+            Wir haben $n \in \omega$ mit $\psi(n)$. Zeige $\psi(s(n)) \equiv \forall m \in s(n) (m \subseteq s(n))$. 
+            $$
+            m \in s(n) = n \cup \{n\} \iff \begin{cases}
+                m \in n & \implies m \subseteq n \subseteq n \cup \{n\} = s(n) \\
+                m = n & \implies m = n \subseteq n \cup {n} = s(n)
+            \end{cases}
+            $$
+
+            $$
+                \implies m \subseteq s(n) \implies \psi(s(n)) \equiv \forall m \in n (m \subseteq n)
+            $$
+        \end{itemize}
+
+        \item \underline{$n$ ist eine lineare Ordnung}: Seien $l, m, k \in n$. $\omega ist transitiv \implies n \in \omega \implies n \subseteq \omega \implies l, m, k \in \omega \implies$ Transitivität und Trichotomie gelten.
+        \item \underline{$n$ hat eine kleinstes Element}: Sei $m \subseteq n$ nicht leer. $m \subseteq n \subseteq \omega \xRightarrow{transitiv} $
+    \end{itemize}
+\end{proofbox}
+
+\section{Auswahlaxiom}
+
+\begin{remark}{Äquivalenz zum Auswahlaxiom}{}
+    \begin{itemize}
+        \item AC $\iff \forall \mathcal{F} \left(\emptyset \notin \mathcal{F} \rightarrow \exists f (f \in ^{\mathcal{F}}\bigcup \mathcal{F} \land \forall x \in \mathcal{F} (f(x) \in x))\right)$
+        \item WOP $\iff$ Jede Menge kann wohlgeordnet werden.
+        \item KZL $\iff (P, \leq)$ nicht-leere Partialordnung, jede Kette $C \subseteq P$ hat eine obere Schranke $\implies P$ hat ein maximales Element.
+        \item TP $\iff \mathcal{F}$ nicht-leere Familie von endlichem Charakter $\implies \mathcal{F}$ hat bezüglich $\subseteq$ ein maximales Element.
+    \end{itemize}
+\end{remark}
+
+\begin{exercise}{}{}
+    $X$ Menge, $\mathcal{A} \subseteq \powerset(X)$, sodass $\forall A, B \in \mathcal{A} : A \cap B \neq \emptyset$. Zeige, dass mit ZFC gilt $\exists \mathcal{M} \subseteq \powerset(X)$ mit $\mathcal{A} \subseteq \mathcal{M}$ sodass:
+
+    \begin{enumerate}
+        \item $\forall A, B \in \mathcal{M} : A \cup B \neq \emptyset$
+        \item $\mathcal{M}$ maximal mit dieser Eigenschaft.
+    \end{enumerate}
+\end{exercise}
+
+\begin{proofbox}
+    Wir wollen das KZL anwenden. Kontruiere eine Kette. Diese soll erfüllen:
+
+    $$
+        S = \left\{\mathcal{F} \subseteq \powerset(X) | \forall A, B \in \mathcal{F} : A \cap B \neq \emptyset, A \subseteq \mathcal{F} \right\}
+    $$
+
+    Zeige, dass $S$ die Bedingungen für das KZL erfüllt.
+
+    \begin{itemize}
+        \item \underline{$S$ ist eine Partialordnung}: $\mathcal{F}_1 \leq \mathcal{F}_2 \iff \mathcal{F}_1 \subseteq \mathcal{F}_2$
+        \item \underline{$S \neq \emptyset$}: $A \in S$, also ist $S$ nicht leer.
+        \item \underline{Jede Kette hat eine obere Schranke}: Sei $C \subseteq S$ eine Kette. Betrachte die Vereinigung $T = \bigcup\limits_{\mathcal{F} \in S} \mathcal{F}$. Zeige, dass $T \in S$ gilt: 
+        
+        \begin{itemize}
+            \item $\forall \mathcal{F} \in C : a \subseteq \mathcal{F} \implies A \subseteq \bigcup\limits_{\mathcal{F} \in S} \mathcal{F}$
+            \item $\forall A, B \in \bigcup\limits_{\mathcal{F} \in S} \mathcal{F} : \exists F_1, F_2 \in C$ sodass $A \in F_1, B \in F_2 \xRightarrow{o.B.d.A} F_1 \subseteq F_2 \implies A, B \in F_2, A, B \neq \emptyset$
+        \end{itemize}
+    \end{itemize}
+\end{proofbox}
+
+\begin{exercise}{}{}
+    $X$ Menge, $\forall x \in X : A_x$ Menge, partielle Auswahlfunktion $f: D \rightarrow \bigcup\limits_{x \in X} A_x, \ f(x) \in A_x$. Zeige: $\exists$ maximale partielle Auswahlfunktion $\iff \forall x \in X \setminus D, \ \nexists a \in A_x$ sodass $f$ sich durch $f(x) = a$ erweitern lässt.
+\end{exercise}
+
+\begin{proofbox}
+    $$
+        \mathcal{F} = \left\{f | f \text{ ist partielle Auswahlfunktion}\right\}, \ f = \left\{(x, f(x), x \in \mathrm{dom}f)\right\} \subseteq X \times \bigcup\limits_{x \in X} A_x
+    $$
+
+    $\implies \mathcal{F}$ has endlichen Charakter und ist nicht leer.
+
+    $\implies \exists$ maximales Element nach dem Teichmüller-Prinzip.
+\end{proofbox}
+
+\end{document}

@@ -1,0 +1,312 @@
+\documentclass[12pt]{article}
+\usepackage{seantex}
+
+% --- Document Info ---
+\title{Analysis II: Serie 09}
+\author{Sean Findlay}
+\date{\today}
+
+% --- Start Document ---
+\begin{document}
+
+\maketitle
+
+\begin{problem}{Volume}{}
+    Calculate the volume of the region $B \subset \R^3$ enclosed by the surfaces $x^2 + y^2 + z^2 = 8$ and $2z = x^2 + y^2$.
+\end{problem}
+
+We would like to describe the region using cylindrical coordinates. Let $K$ be the parameter space of $\Phi$. Consider the transformation $\Phi: K \rightarrow B$:
+$$
+    \Phi(\rho, \vphi, z) = \begin{pmatrix} x \\ y \\ z \end{pmatrix} = \begin{pmatrix} \rho \cos \vphi \\ \rho \sin \vphi \\ z \end{pmatrix}
+$$
+
+We need:
+$$
+\begin{aligned}
+    &(\rho \cos \vphi)^2 + (\rho \sin \vphi)^2 + z^2 = 8 \\
+    &(\rho \cos \vphi)^2 + (\rho \sin \vphi)^2 = 2z \\
+    &\implies 8 - z^2 = 2z \iff z^2 + 2z - 8 = 0 \iff (z + 4)(z - 2) = 0 \\
+    &\implies z = 2 \text { or } z = -4
+\end{aligned}
+$$
+
+Since $2z = x^2 + y^2$ and $x, y \in \R$, only the solution $z = 2$ is possible. So the two surfaces intersect at $z = 2$.
+
+The two surfaces are rotationally symmetric around $z$, so we can have $0 \leq \vphi \leq 2\pi \iff \vphi \in [0, 2\pi]$.
+
+For $\rho$ we have:
+$$
+\begin{aligned}
+    (\rho \cos \vphi)^2 + (\rho \sin \vphi)^2 = 2 \cdot 2 = 4 &\iff \rho^2\left( \cos^2\vphi + \sin^2\vphi \right) = 4 \\
+    &\iff \rho^2 \cdot 1 = 4 \iff \rho^2 = 4 \iff \rho = \pm 2
+\end{aligned}
+$$
+
+We will only consider $\rho = 2$. So for the region enclosed by the surfaces, we need $\rho \in [0, 2]$
+
+Finally, determine the full range of $z$ values. Given $\phi \in [0, 2\pi]$ and $\rho \in [0, 2]$, what values can $z$ take?
+$$
+\begin{aligned}
+    x^2 + y^2 + z^2 = 8 &\iff z^2 = 8 - (x^2 + y^2) \iff z^2 = 8 - (\rho^2\cos^2\vphi + \rho^2\sin^2\vphi) \\
+    &\iff z^2 = 8 - \rho^2(\cos^2\vphi + \sin^2\vphi) \iff z^2 = 8 - \rho^2 \\
+    &\iff \pm \sqrt{z} = \pm \sqrt{8 - \rho^2}
+\end{aligned}
+$$
+
+We will take the postive solution since we know $z = 2$ is the intersection. So at the boundary with this surface, $z = \sqrt{8 - \rho^2}$.
+
+For the other surface, we have:
+$$
+\begin{aligned}
+    2z = x^2 + y^2 &\iff 2z = \rho^2 \iff z = \frac{\rho^2}{2}
+\end{aligned}
+$$
+
+So we have $z \in \left[\frac{\rho^2}{2}, \sqrt{8 - \rho^2}\right]$
+
+Now, compute the Jacobian of $\Phi$ and its determinant:
+$$
+\begin{aligned}
+    J \Phi(\rho, \vphi, z) = 
+    \begin{pmatrix}
+        \cos\vphi & -\rho\sin\vphi & 0 \\
+        \sin\vphi & \rho\cos\vphi & 0 \\
+        0 & 0 & 1 \\
+    \end{pmatrix}
+\end{aligned}
+$$
+$$
+\det J\Phi(\rho,\vphi,z) = \det 
+        \begin{pmatrix}
+            \cos\vphi & -\rho\sin\vphi \\
+        \sin\vphi & \rho\cos\vphi \\
+        \end{pmatrix}
+    = \rho\cos^2\vphi + \rho\sin^2\vphi = \rho
+$$
+
+So $|\det J \Phi| = \rho$. Since $J\Phi$ is a square matrix, we have that
+$$
+    \sqrt{\det\left(J\Phi^T J \Phi\right)} = |\det J \Phi|
+$$
+
+
+
+Given these bounds and the determinant, we can now compute the volume:
+
+The volume is defined as:
+$$
+\begin{aligned}
+    \mathrm{vol}_3(B) &= \int_B \sqrt{\det\left(J\Phi^T J \Phi\right)} \dd \lambda(\rho, \vphi, z) = \int_{0}^{2} \int_{0}^{2\pi} \int_{\rho^2/2}^{\sqrt{8 - \rho^2}} \rho \dd z \dd \vphi \dd \rho \\
+    &= \int_{0}^{2\pi} \dd \vphi \int_{0}^{2} \int_{\rho^2/2}^{\sqrt{8 - \rho^2}} \rho \dd z \dd \rho = 2\pi \int_{0}^{2} \int_{\rho^2/2}^{\sqrt{8 - \rho^2}} \rho \dd z \dd \rho
+\end{aligned}
+$$
+
+Compute the integral with respect to $z$:
+$$
+\begin{aligned}
+    \int_{\rho^2/s}^{\sqrt{8 - \rho^2}} \rho \dd z &= \rho \Big[ z\Big]_{\rho^2/2}^{\sqrt{8 - \rho^2}} = \rho \left(\sqrt{8 - \rho^2} - \frac{\rho^2}{2}\right) = \rho\sqrt{8 - \rho^2} - \frac{\rho^3}{2}
+\end{aligned}
+$$
+
+Substitute this into the original integral:
+$$
+\begin{aligned}
+    \mathrm{vol}_3(B) &= 2\pi \int_{0}^{2} \int_{\rho^2/2}^{\sqrt{8 - \rho^2}} \rho \dd z \dd \rho = 2\pi \int_{0}^{2} \left(\rho\sqrt{8 - \rho^2} - \frac{\rho^3}{2} \right) \dd \rho \\
+    &= 2\pi \left( \int_{0}^{2} \rho\sqrt{8 - \rho^2} \dd \rho - \int_{0}^{2} \frac{\rho^3}{2} \dd \rho \right) \\
+\end{aligned}
+$$
+
+Compute the first term. Let $u := 8-\rho^2$. Then $\rho \dd \rho = -\frac{1}{2}\dd u$, so
+$$
+\begin{aligned}
+    \int_{0}^{2} \rho\sqrt{8 - \rho^2} \dd \rho &= - \int_{4}^{8} \sqrt{u} \cdot -\frac{1}{2}\dd u = \frac{1}{2} \int_{4}^{8} u^\frac{1}{2} \dd u = \frac{1}{2} \left[ \frac{2}{3} u^\frac{3}{2} \right]_{4}^{8} \\
+    &= \frac{1}{2} \cdot \frac{2}{3} \left( 8^\frac{3}{2} - 4^\frac{3}{2} \right) = \frac{1}{3}\left(\sqrt{512} - 8\right) = \frac{1}{3}\left(16 \sqrt{2} - 8\right)
+\end{aligned}  
+$$
+
+Compute the second term:
+$$
+\begin{aligned}
+    \int_{0}^{2} \frac{\rho^3}{2} \dd \rho &= \frac{1}{2} \int_{0}^{2} \rho^3 \dd \rho = \frac{1}{2} \left[ \frac{1}{4} \rho^4 \right]_0^2 = \frac{1}{8} \cdot 16 = 2
+\end{aligned}
+$$
+
+So the volume is:
+$$
+\begin{aligned}
+    &\mathrm{vol}_3(B) = 2\pi \left( \int_{0}^{2} \rho\sqrt{8 - \rho^2} \dd \rho - \int_{0}^{2} \frac{\rho^3}{2} \dd \rho \right) = 2\pi \left( \frac{1}{3}\left(16 \sqrt{2} - 8\right) - 2 \right)\\
+    &\boxed{\mathrm{vol}_3(B) = \frac{4}{3}\pi\left(8 \sqrt{2} - 7\right)}
+\end{aligned}
+$$
+
+\begin{problem}{Multiple integrals}{}
+    \begin{enumerate}
+        \item Let $D = [0, 2] \times [0, 1]$. Compute
+        $$
+            \iint_D \left( x^3 + 3x^2y +y^3 \right) \dd x \dd y
+        $$
+
+        \item Let $D \subset \R^2$ be the interior of the triangle with the vertices $(0, 0), (0, \pi), (\pi, \pi)$. Compute:
+        $$
+            \begin{aligned}
+                \iint_D x\cos(x + y) \dd x \dd y
+            \end{aligned}
+        $$
+
+        \item Let $D = \left\{ (x, y) \in \R^2 \ |\ x > 1,\ y > 1,\ x + y < 3 \right\}$. Compute:
+        $$
+            \iint_D \frac{1}{(x + y)^3} \dd x \dd y
+        $$
+    \end{enumerate}
+\end{problem}
+
+\begin{enumerate}
+    \item Apply Fubini:
+    $$
+    \begin{aligned}
+        \iint_{[0, 2] \times [0, 1]} \left( x^3 + 3x^2y +y^3 \right) \dd x \dd y &= \int_{0}^{2} \int_{0}^{1} \left( x^3 + 3x^2y +y^3 \right) \dd y \dd x
+    \end{aligned}
+    $$
+
+    Compute the integral w.r.t. $y$:
+    $$
+    \begin{aligned}
+        \int_{0}^{1} \left( x^3 + 3x^2y +y^3 \right) \dd y &= \left[x^3y + \frac{3}{2}x^2y^2 + \frac{1}{4}y^4\right]_{y = 0}^{y = 1} = x^3 + \frac{3}{2}x^2 + \frac{1}{4}
+    \end{aligned}
+    $$
+
+    Substitute back into the original integral:
+    $$
+    \begin{aligned}
+        \int_{0}^{2} \int_{0}^{1} \left( x^3 + 3x^2y +y^3 \right) \dd y \dd x &= \int_{0}^{2} x^3 + \frac{3}{2}x^2 + \frac{1}{4} \dd x = \left[ \frac{1}{4}x^4 + \frac{1}{2}x^3 + \frac{1}{4}x \right]_0^2 \\
+        &= 4 + 4 + \frac{1}{2} = \boxed{\frac{17}{2}}
+    \end{aligned}
+    $$
+
+    \item Compute the domain. The boundary consists of the line segments $y = \pi$, $x = 0$, $x = y$. So the domain is:
+    $$
+        D = \left\{ (x, y) \in \R^2 \ |\ 0 < x < y < \pi  \right\}
+    $$
+    
+    Apply Fubini:
+    $$
+        \begin{aligned}
+            \iint_D x\cos(x + y) \dd x \dd y &= \int_{0}^{\pi} \int_{x}^{\pi} x \cos(x + y) \dd y \dd x
+        \end{aligned}
+    $$
+
+    Compute the integral w.r.t. $y$:
+    $$
+        \begin{aligned}
+            \int_{x}^{\pi} x \cos(x + y) \dd y &= x \int_{x}^{\pi} \cos(x + y) \dd y = x \big[ \sin(x + y) \big]_{y = x}^{y = \pi} \\
+            &= x\sin(x + \pi) - x\sin(2x) = -x\sin(x) -x\sin(2x)
+        \end{aligned}
+    $$
+
+    Substitute back into the original integral:
+    $$
+        \begin{aligned}
+            \int_{0}^{\pi} \int_{x}^{\pi} x \cos(x + y) \dd y \dd x &= \int_{0}^{\pi} \left(-x\sin(x) -x\sin(2x)\right) \dd x \\
+            &= \int_{0}^{\pi} -x\sin(x) \dd x - \int_{0}^{\pi} x\sin(2x)\dd x \\
+            &= \bigg[ x\cos(x) - \sin(x) \bigg]_0^\pi - \left[ -\frac{x}{2}\cos(2x) +\frac{1}{4} \sin(2x) \right]_0^\pi \\
+            &= \pi\cos(\pi) - \sin(\pi) + \frac{\pi}{2}\cos(2\pi) - \frac{1}{4}\sin(2\pi) \\
+            &= -\pi + \frac{\pi}{2} = \boxed{-\frac{\pi}{2}}
+        \end{aligned}
+    $$
+
+    \item Apply Fubini:
+    $$
+    \begin{aligned}
+        \iint_D \frac{1}{(x + y)^3} \dd x \dd y &= \int_1^2 \int_1^{3-x} \frac{1}{(x + y)^3} \dd y \dd x
+    \end{aligned}
+    $$
+
+    Compute the integral w.r.t. $y$. Substitute: $u = x + y,\ \dd u = \dd y$:
+    $$
+    \begin{aligned}
+        \int_1^{3-x} (x + y)^{-3} \dd y &= \int_{x + 1}^{3} u^{-3} \dd u = \left[-\frac{1}{2} u^{-2}\right]_{x+1}^3 \\
+        &= -\frac{1}{2} \cdot \frac{1}{9} + \frac{1}{2}\cdot\frac{1}{(x+1)^2} = \frac{1}{2(x+1)^2} - \frac{1}{18}
+    \end{aligned}
+    $$
+
+    Substitute back into the original integral:
+    $$
+    \begin{aligned}
+        \int_1^2 \int_1^{3-x} \frac{1}{(x + y)^3} \dd y \dd x &= \int_1^2 \left( \frac{1}{2(x+1)^2} - \frac{1}{18} \right) \dd x \\
+        &= \frac{1}{2} \int_1^2 (x+1)^{-2} \dd x - \frac{1}{18} \int_1^2 \dd x = 
+    \end{aligned}
+    $$
+
+    Substitute: $u = x + 1$:
+    $$
+    \begin{aligned}
+        \frac{1}{2} \int_1^2 (x+1)^{-2} \dd x - \frac{1}{18} \int_1^2 \dd x &= \frac{1}{2} \int_{2}^{3} u^{-2} \dd u - \frac{1}{18} = \frac{1}{2} \left[ -\frac{1}{u} \right]_{2}^{3} - \frac{1}{18} \\
+        &= -\frac{1}{6} + \frac{1}{4} -\frac{1}{18} = \frac{-6 + 9 - 2}{36} \\
+        &= \boxed{\frac{1}{36}}
+    \end{aligned}
+    $$
+\end{enumerate}
+
+\begin{problem}{Fubini's theorem}{}
+    Compute the integrals:
+    $$
+        \int_0^{\sqrt{\pi}} \int_x^{\sqrt{\pi}} \sin(y^2) \dd y \dd x
+    $$
+    $$
+        \int_{-1}^{1} \int_{|y|}^{1} (x + y)^2 \dd x \dd y
+    $$
+\end{problem}
+\begin{enumerate}
+    \item This integral is hard in the current order. If we could swap the order of the variables we integrate with respect to, we can make it easier. 
+    
+    The current domain is $D = \left\{(x, y) \in R^n \ |\ 0 < x < y < \sqrt{\pi}\right\}$
+
+
+    We can apply Fubini's theorem:
+    $$
+    \begin{aligned}
+        \int_0^{\sqrt{\pi}} \int_x^{\sqrt{\pi}} \sin(y^2) \dd y \dd x &= \int_0^{\sqrt{\pi}} \int_0^{y} \sin(y^2) \dd x \dd y
+    \end{aligned}
+    $$
+
+    Now, the inner integral evaluates to:
+    $$
+    \begin{aligned}
+        \int_0^{y} \sin(y^2) \dd x &= \sin(y^2) \int_0^{y} \dd x = \sin(y^2) \left[x\right]_0^y = y\sin(y^2)
+    \end{aligned}
+    $$
+
+    Substitute back, let $u = y^2$, $\dd u = 2y \dd y \iff y \dd y = \frac{1}{2} \dd u$:
+    $$
+    \begin{aligned}
+        \int_0^{\sqrt{\pi}} \int_0^{y} \sin(y^2) \dd x \dd y &= \int_0^{\sqrt{\pi}} y\sin(y^2) \dd y = \frac{1}{2} \int_0^{\pi} \sin(u) \dd u = \frac{1}{2}\Big[ -\cos(u) \Big]_0^\pi \\
+        &= -\frac{1}{2} \cos(\pi) + \frac{1}{2} \cos(0) = \frac{1}{2} + \frac{1}{2} = \boxed{1}
+    \end{aligned}
+    $$
+
+    \item We have the domain: $D = \left\{ (x, y) \in \R^2 \ |\ -1 < y < 1,\ |y| < x < 1 \right\}$ 
+    
+    The smallest that $|y|$ can be is $0$. So $(|y|, 1)$ is maximally $(0, 1)$. Using Fubini, we can write:
+    $$
+    \begin{aligned}
+        \int_{-1}^{1} \int_{|y|}^{1} (x + y)^2 \dd x \dd y &= \int_{0}^{1} \int_{-x}^{x} (x + y)^2 \dd y \dd x
+    \end{aligned}
+    $$
+
+    With the substitution $u = x + y$, $\dd u = \dd y$, the inner integral evaluates to:
+    $$
+        \begin{aligned}
+            \int_{-x}^{x} (x + y)^2 \dd y &= \int_{0}^{2x} u^2 \dd u = \left[ \frac{1}{3} u^3 \right]_{0}^{2x} = \frac{8}{3}x^3
+        \end{aligned}
+    $$
+
+    Substituting this back gives:
+    $$
+    \begin{aligned}
+        \int_{0}^{1} \int_{-x}^{x} (x + y)^2 \dd y \dd x &= \int_{0}^{1} \frac{8}{3}x^3 \dd x = \frac{8}{3} \int_{0}^{1} x^3 \dd x = \frac{8}{3} \left[ \frac{1}{4} x^4 \right]_0^1 \\
+        &= \frac{8}{3} \cdot \frac{1}{4} = \boxed{\frac{2}{3}}
+    \end{aligned}
+    $$
+\end{enumerate}
+
+\end{document}
