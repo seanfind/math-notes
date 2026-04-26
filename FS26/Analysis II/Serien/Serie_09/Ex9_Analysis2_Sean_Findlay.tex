@@ -323,6 +323,369 @@ $$
     $$
         \int_{0}^{\infty} \left( \int_{0}^{\infty} f(x, y) \dd x \right) \dd y,\quad \int_{0}^{\infty} \left( \int_{0}^{\infty} f(x, y) \dd y \right) \dd x
     $$
+
+    and show that they have different values. Explain why this does not contradict Fubini's theorem.
 \end{problem}
+
+Compute the first integral:
+$$
+\begin{aligned}
+    \int_{0}^{\infty} \left( \int_{0}^{\infty} f(x, y) \dd x \right) \dd y
+\end{aligned}    
+$$
+
+We need to split the inner integral into its two pieces:
+$$
+\begin{aligned}
+    \int_{0}^{\infty} f(x, y) \dd x &= \int_{0}^{y} -e^{x-y} \dd x + \int_{y}^{\infty} e^{y-x} \dd x
+\end{aligned}  
+$$
+
+So we have:
+$$
+\begin{aligned}
+    \int_{0}^{\infty} \left( \int_{0}^{\infty} f(x, y) \dd x \right) \dd y &= \int_{0}^{\infty} \left( \int_{0}^{y} -e^{x-y} \dd x + \int_{y}^{\infty} e^{y-x} \dd x \right) \dd y \\
+\end{aligned}    
+$$
+
+The two parts evaluate to:
+$$
+\begin{aligned}
+    \int_{0}^{y} -e^{x-y} \dd x &= \left[-e^{x-y}\right]_0^y = -e^{0} + e^{-y} = e^{-y} - 1 \\
+    \int_{y}^{\infty} e^{y-x} \dd x &=  \left[ -e^{y-x} \right]_y^\infty = 0 - (-e^{0}) = 1
+\end{aligned}
+$$
+
+So the integral is:
+$$
+\begin{aligned}
+    \int_{0}^{\infty} \left( \int_{0}^{y} -e^{x-y} \dd x + \int_{y}^{\infty} e^{y-x} \dd x \right) \dd y &= \int_{0}^{\infty} \left( e^{-y} -1 + 1 \right) \dd y \\
+    &= \int_{0}^{\infty} e^{-y} \dd y = \left[ -e^{-y} \right]_0^\infty \\
+    &= 0 - (-1) = \boxed{1}
+\end{aligned}   
+$$
+
+The second integral is:
+$$
+\begin{aligned}
+    \int_{0}^{\infty} \left( \int_{0}^{\infty} f(x, y) \dd y \right) \dd x &= \int_{0}^{\infty} \left( \int_{0}^{x} e^{y-x} \dd y + \int_{x}^{\infty} -e^{x-y} \dd y \right) \dd x
+\end{aligned} 
+$$
+
+The two parts evaluate to:
+$$
+\begin{aligned}
+    \int_{0}^{x} e^{y-x} \dd y &= \left[ e^{y-x} \right]_0^x = e^0 - e^{-x} = 1 - e^{-x} \\
+    \int_{x}^{\infty} -e^{x-y} \dd y &= \left[ e^{x-y} \right]_x^{\infty} = 0 - e^{0} = -1
+\end{aligned}
+$$
+
+So the integral is:
+$$
+\begin{aligned}
+    \int_{0}^{\infty} \left( \int_{0}^{x} e^{y-x} \dd y + \int_{x}^{\infty} -e^{x-y} \dd y \right) \dd x &= \int_{0}^{\infty} \left( 1 - e^{-x} - 1 \right) \dd x \\
+    &= \int_{0}^{\infty} -e^{-x} \dd x = \left[ e^{-x} \right]_0^\infty\\
+    &= 0 - e^0 = \boxed{-1}
+\end{aligned} 
+$$
+
+So the two integrals are not equal. This is not a violation of Fubini's theorem, because of a requirement in the statement of the theorem (Theorem 13.47 from the lecture notes): The domain of integration must be bounded. In this problem, the domain is $[0, \infty)^2$, which cannot be contained within any finite bounding box. Therefore, the requirements for Fubini's Theorem are not met, and it cannot be applied.
+
+\begin{problem}{Volume of the cone over a set}{}
+    Let $\Omega \in \R^n$ be a bounded measurable set, $n \geq 1$. Consider the "cone over $\Omega$":
+    $$
+        C\Omega := \left\{ (x, t) \in \R^n \times \R \ |\ t \in [0, 1],\ x \in (1-t)\Omega \right\}
+    $$
+
+    Using Fubini's theorem and the homogeneity of $\mu_n$, show that
+    $$
+        \mu_{n+1}(C\Omega) = \frac{\mu_n(\Omega)}{n + 1}
+    $$
+
+    Use this result to compute the $n$-volume of the $n$-simplex:
+    $$
+        \mu_n(T_n) := \mu_n\left( \left\{ a_1e_1 + \dots + a_ne_n \ |\ a_i \in [0, 1],\ a_1 + \dots + a_n \leq 1 \right\} \right) = \frac{1}{n!}
+    $$
+
+    where $e_1,\dots,e_n$ denotes an orthonormal frame of $\R^n$.
+\end{problem}
+
+First, show that 
+$$
+\begin{aligned}
+    \mu_{n+1}(C\Omega) = \frac{\mu_n(\Omega)}{n + 1}
+\end{aligned}
+$$
+
+At any specific height $t$ of our cone, the "slice" at that height is precisely $(1-t)\Omega$. So, we can apply Fubini to integrate over these slices:
+$$
+\begin{aligned}
+    \mu_{n+1}(C\Omega) = \int_{0}^{1} \mu_n((1-t)\Omega) \dd t
+\end{aligned}
+$$
+
+By homogeneity of $\mu_n$, we have:
+$$
+\begin{aligned}
+    \int_{0}^{1} \mu_n((1-t)\Omega) \dd t &= \int_{0}^{1} (1-t)^n \mu_n(\Omega) \dd t = \mu_n(\Omega) \int_{0}^{1} (1-t)^n \dd t \\
+    &= \mu_n(\Omega) \int_{0}^{1} (1-t)^n \dd t = \mu_n(\Omega) \left[ \frac{-(1-t)^{n+1}}{n + 1} \right]_0^1 = \boxed{\frac{\mu_n(\Omega)}{n + 1}}
+\end{aligned}
+$$
+
+Next, compute the volume
+$$
+    \mu_n(T_n) := \mu_n\left( \left\{ a_1e_1 + \dots + a_ne_n \ |\ a_i \in [0, 1],\ a_1 + \dots + a_n \leq 1 \right\} \right) = \frac{1}{n!}
+$$
+
+Let $a_n =: t$. Then,
+$$
+\begin{aligned}
+    T_n &= \left\{ a_1e_1 + \dots + a_{n-1}e_{n-1} + te_n \ |\ a_i \in [0, 1],\ t \in [0, 1],\ a_1 + \dots + t \leq 1 \right\} \\
+    &= \left\{ a_1e_1 + \dots + a_{n-1}e_{n-1} + te_n \ |\ a_i \in [0, 1],\ t \in [0, 1],\ a_1 + \dots + a_{n-1} \leq 1 - t \right\} \\
+    &= \left\{ a_1e_1 + \dots + a_{n-1}e_{n-1} + te_n \ |\ a_i \in [0, 1],\ t \in [0, 1],\ \frac{a_1}{1 - t} + \dots + \frac{a_{n-1}}{1 - t} \leq 1 \right\} \\
+\end{aligned}
+$$
+
+For all slices except $t \neq 1$ (which would be the single point at the top of the cone), we have
+$$
+    \frac{a_1}{1 - t} + \dots + \frac{a_{n-1}}{1 - t} \leq 1
+$$
+
+Because we have that $a_1 + \dots + a_{n-1} \leq 1 - t$, and all $a_i$ are positive, we know that $a_i \leq 1 -t$ for all $i = 1,\dots,n-1$. This implies $\frac{a_i}{1 - t} \leq 1$ for all $i = 1,\dots,n-1$. We also have that all $\frac{a_i}{1-t} \geq 0$. So the vector $(\frac{a_1}{1 - t}, \dots, \frac{a_{n-1}}{1 - t})$ is an element of $T_{n-1}$.
+
+Let $x = a_1e_1 + \dots + a_{n-1}e_{n-1} = (a_1,\dots,a_{n-1})$. We have then that
+$$
+    (\frac{a_1}{1 - t}, \dots, \frac{a_{n-1}}{1 - t}) = \frac{1}{1-t}(a_1,\dots,a_{n-1}) = \frac{1}{1-t} x
+$$
+
+So we have 
+$$
+    \frac{1}{1-t} x \in T_{n-1} \iff x \in (1-t)T_{n-1}
+$$
+
+So we can rewrite:
+$$
+\begin{aligned}
+    T_n &= \left\{ a_1e_1 + \dots + a_{n-1}e_{n-1} + te_n \ |\ a_i \in [0, 1],\ t \in [0, 1],\ a_1 + \dots + t \leq 1 \right\} \\
+    &= \left\{ a_1e_1 + \dots + a_{n-1}e_{n-1} + te_n \ |\ a_i \in [0, 1],\ t \in [0, 1],\ \frac{a_1}{1 - t} + \dots + \frac{a_{n-1}}{1 - t} \leq 1 \right\} \\
+    &= \left\{ x + te_n \ |\ t \in [0, 1],\ x \in (1-t)T_{n-1} \right\} = \left\{ (x, t) \in \R^{n-1} \times \R \ |\ t \in [0, 1],\ x \in (1-t)T_{n-1} \right\} \\
+    &= CT_{n-1}
+\end{aligned}
+$$
+
+So we can simply recursively apply the formula for the volume of a cone (as shown above):
+$$
+\begin{aligned}
+    \mu_n(T_n) &= \mu_{n}\left(C(T_{n-1})\right) = \frac{1}{n} \mu_{n-1}(T_{n-1}) = \frac{1}{n}\cdot\frac{1}{n-1} \mu_{n-1}(T_{n-1}) = \dots = \frac{1}{n}\cdot \dots \cdot \frac{1}{2} \cdot \mu_1(T_1) \\
+\end{aligned}
+$$
+
+Compute the value of $\mu_1(T_1)$:
+$$
+    \mu_1(T_1) = \mu_1({a_1e_1 \ |\ a_1 \in [0, 1],\ a_1 \leq 1 }) = \mu_1([0, 1]) = 1
+$$
+
+So we have:
+$$
+\begin{aligned}
+    \mu_n(T_n) &= \frac{1}{n}\cdot \dots \cdot \frac{1}{2} \cdot \mu_1(T_1) \\
+    &= \frac{1}{n \cdot \dots \cdot 2 \cdot 1} = \boxed{\frac{1}{n!}}
+\end{aligned}
+$$
+
+\newpage
+
+\begin{problem}{Gaussian integrals}{}
+    Let $n \in \N$ and $A \in \mathrm{M}_{n\times n}(\R)$ be a symmetric positive definite matrix. Show that
+    $$
+        \int_{\R^n} e^{-\langle Ax, x \rangle}\dd x = \frac{\pi^{n/2}}{\sqrt{\det(A)}}
+    $$
+\end{problem}
+
+Prove first the specific case where $A$ is a diagonal matrix. Let
+$$
+    A =: \begin{pmatrix}
+        \lambda_1 & \dots & 0 \\
+        \vdots & \ddots & \vdots \\
+        0 & \dots & \lambda_n \\
+    \end{pmatrix}
+$$
+
+Then for $x \in \R^n,\ x =: \begin{pmatrix} x_1 \\ \vdots \\ x_n \end{pmatrix}$, we have
+$$
+    \langle Ax, x \rangle = (Ax)^T x = \begin{pmatrix} \lambda_1x_1\ \dots\ \lambda_nx_n \end{pmatrix} \begin{pmatrix} x_1 \\ \vdots \\ x_n \end{pmatrix} = \lambda_1x_1^2 + \dots +\lambda_nx_n^2 
+$$
+
+Then, the integral is:
+$$
+\begin{aligned}
+    \int_{\R^n} e^{-\langle Ax, x \rangle}\dd x &= \int_{\R^n} e^{-(\lambda_1x_1^2 + \dots +\lambda_nx_n^2) }\dd x = \int_{\R^n} e^{-\lambda_1x_1^2} \cdot\ \dots\ \cdot e^{-\lambda_nx_n^2 }\dd x \\
+\end{aligned}
+$$
+
+Apply Fubini:
+$$
+\begin{aligned}
+    \int_{\R^n} e^{-\lambda_1x_1^2} \cdot\ \dots\ \cdot e^{-\lambda_nx_n^2 }\dd x &= \int_\R \dots \int_\R e^{-\lambda_1x_1^2} \cdot\ \dots\ \cdot e^{-\lambda_nx_n^2 } \dd x_n \dots \dd x_1 \\
+    &= \int_\R e^{-\lambda_1x_1^2} \dd x_1 \cdot \dots \cdot \int_\R e^{-\lambda_nx_n^2} \dd x_n \\
+\end{aligned}
+$$
+
+
+We can use the following integral to compute this:
+$$
+\begin{aligned}
+    \int_\R e^{-x^2} \dd x = \sqrt{\pi} \iff \int_\R e^{-\lambda x^2} \dd x &= \int_\R e^{-(\sqrt{\lambda}x)^2} \dd x = \int_\R e^{-u^2} \frac{1}{\sqrt{\lambda}} \dd u \\
+    &= \frac{1}{\sqrt{\lambda}} \int_\R e^{-u^2} \dd u = \sqrt{\frac{\pi}{\lambda}}
+\end{aligned}
+$$
+
+Apply this:
+$$
+\begin{aligned}
+    \int_\R e^{-\lambda_1}e^{x_1^2} \dd x_1 \cdot \dots \cdot \int_\R e^{-\lambda_n}e^{x_n^2} \dd x_n &= \sqrt{\frac{\pi}{\lambda_1}} \dots \sqrt{\frac{\pi}{\lambda_n}} = \sqrt{\frac{\pi^n}{\lambda_1 \dots \lambda_n}} \\
+    &= \frac{\pi^{n/2}}{\sqrt{\det(A)}}
+\end{aligned}
+$$
+
+So the statement holds for diagonal matrices. Now, show the general case where $A$ is only symmetric and positive definite. 
+
+Let $A$ be a symmetric positive definite matrix. By the spectral theorem, $A$ is diagonalisable. So there exists an orthogonal $Q \in \mathrm{GL}_n(\R)$ such that $D := Q^{-1}AQ$ is a diagonal matrix. Because $D$ is diagonal, it holds that
+$$
+    \int_{\R^n} e^{-\langle Dx, x \rangle}\dd x = \int_{\R^n} e^{-\langle (Q^{-1}AQ)x, x \rangle}\dd x = \frac{\pi^{n/2}}{\sqrt{\det(D)}}
+$$
+
+We want to show that:
+$$
+    \int_{\R^n} e^{-\langle (Q^{-1}AQ)x, x \rangle}\dd x = \int_{\R^n} e^{-\langle Ax, x \rangle}\dd x
+$$
+
+Given that $Q$ is orthogonal, we have $Q^{-1} = Q^T$, so
+$$
+\begin{aligned}
+    \langle (Q^{-1}AQ)x, x \rangle &= \langle (Q^TAQ)x, x \rangle = ((Q^TAQ)x)^T x = x^T(Q^TAQ)^T x = x^T Q^T A Q x = (Qx)^T A (Qx) \\
+    &= (Qx)^T A^T (Qx) = (A(Qx))^T (QX) = \langle A(Qx), Qx \rangle
+\end{aligned}
+$$
+
+So we can use the substitution $w := Qx$, $\dd w = |\det(Q)| \dd x = |\pm 1| \dd x = \dd x$ and rewrite:
+$$
+    \int_{\R^n} e^{-\langle (Q^{-1}AQ)x, x \rangle}\dd x = \int_{\R^n} e^{-\langle A(Qx), Qx \rangle}\dd x = \int_{\R^n} e^{-\langle Aw, w \rangle}\dd w
+$$
+
+Because $w$ is just now just a symbol, we have shown that
+$$
+    \int_{\R^n} e^{-\langle (Q^{-1}AQ)x, x \rangle}\dd x = \int_{\R^n} e^{-\langle Ax, x \rangle}\dd x
+$$
+
+We also have that
+$$
+\begin{aligned}
+    \det(D) &= \det(Q^{-1}AQ) = \det(Q^{-1})\det(A)\det(Q) = \det(Q^T)\det(A)\det(Q) = \det(Q)^2\det(A) \\
+    &= \det(A)
+\end{aligned}
+$$
+
+So
+$$
+    \frac{\pi^{n/2}}{\sqrt{\det(D)}} = \frac{\pi^{n/2}}{\sqrt{\det(A)}}
+$$
+
+Because $\int_{\R^n} e^{-\langle (Q^{-1}AQ)x, x \rangle}\dd x = \int_{\R^n} e^{-\langle Ax, x \rangle}\dd x$ and $\frac{\pi^{n/2}}{\sqrt{\det(D)}} = \frac{\pi^{n/2}}{\sqrt{\det(A)}}$, we have shown that the statement also holds for symmetric positive definite matrices. So the statement holds. \qed
+
+\begin{problem}{Layer-cake formula}{}
+    Let $f: \R^n \rightarrow [0, \infty)$ be a continuous function which vanishes identically outside a compact set, and let $p \geq 1$. Using Fubini's theorem, show the Layer-cake formula:
+    $$
+        \int_\R f(x)^p \dd x = p \int_{0}^{\infty} t^{p-1} \mu_n \left(\left\{ x \in \R^n \ |\ f(x) > t \right\}\right) \dd t
+    $$
+
+    Find a similar formula for the integral of
+    $$
+        \int_\R \Phi(f(x)) \dd x = \int_{0}^{\infty} \dots \mu_n\left( \left\{x \in \R^n \ |\ f(x) > t\right\}\right) \dd t
+    $$
+
+    where $\Phi \in C^1(\R)$ is any function such that $\Phi(0) = 0$.
+\end{problem}
+
+$f(x)$ is just some non-negative real number. So, by the fundamental theorem of calculus,
+$$
+    f(x)^p = \int_{0}^{f(x)} p \cdot t^{p-1} \dd t
+$$
+
+Rewrite:
+$$
+\begin{aligned}
+    \int_\R f(x)^p \dd x &= \int_{-\infty}^{\infty} \int_{0}^{f(x)} p \cdot t^{p-1} \dd t \dd x
+\end{aligned}
+$$
+
+Define $A := [0, f(x)]$. Then, let $\mathds{1}_A$ be the indicator function for the set $A$:
+$$
+    \mathds{1}_A(t) = 
+    \begin{cases}
+        1 & t \in A, \\
+        0 & t \notin A
+    \end{cases}
+$$
+
+Then, we can extend the bounds of the inner integral:
+$$
+\begin{aligned}
+    \int_\R f(x)^p \dd x &= \int_{-\infty}^{\infty} \int_{0}^{f(x)} p \cdot t^{p-1} \dd t \dd x = \int_{-\infty}^{\infty} \int_{0}^{\infty} \mathds{1}_A(t) \cdot p \cdot t^{p-1} \dd t \dd x
+\end{aligned}
+$$
+
+Now, we can apply Fubini:
+$$
+\begin{aligned}
+    \int_{-\infty}^{\infty} \int_{0}^{\infty} \mathds{1}_A(t) \cdot p \cdot t^{p-1} \dd t \dd x &= \int_{0}^{\infty} \int_{-\infty}^{\infty} \mathds{1}_A(t) \cdot p \cdot t^{p-1} \dd x \dd t \\
+    &= \int_{0}^{\infty} p t^{p-1} \left( \int_{-\infty}^{\infty} \mathds{1}_A(t) \dd x \right) \dd t \\
+\end{aligned}
+$$
+
+Notice that the inner integral is $1$ whenever $f(x) > t$, because then we have $t \in [0, f(x)]$. So we are basically computing the measure of the following set:
+$$
+    \int_{-\infty}^{\infty} \mathds{1}_A(t) \dd x = \mu_n\left(\left\{x \in \R^n \ |\ f(x) > t\right\}\right)
+$$
+
+Substitute this back in order to get
+$$
+\begin{aligned}
+    \int_\R f(x)^p \dd x &= \int_{0}^{\infty} p t^{p-1} \left( \int_{-\infty}^{\infty} \mathds{1}_A(t) \dd x \right) \dd t = p \int_{0}^{\infty} t^{p-1} \mu_n\left(\left\{x \in \R^n \ |\ f(x) > t\right\}\right) \dd t
+\end{aligned}
+$$
+
+which is what we wanted to show.
+
+Next, find a formula for the integral
+$$
+    \int_\R \Phi(f(x)) \dd x
+$$
+
+where $\Phi \in C^1(\R)$ with $\Phi(0) = 0$. This means $\Phi'$ exists and is continuous. So, we can apply the fundamental theorem of calculus again:
+$$
+    \Phi(z) = \int_0^{z} \Phi'(t) \dd t
+$$
+
+Plug in $f(x)$ (which is just a non-negative real number):
+$$
+    \Phi(f(x)) = \int_0^{f(x)} \Phi'(t) \dd t
+$$
+
+Substitute into our integral:
+$$
+    \int_\R \Phi(f(x)) \dd x = \int_{-\infty}^{\infty} \int_0^{f(x)} \Phi'(t) \dd t \dd x
+$$
+
+Let $A := [0, f(x)]$ and let $\mathds{1}_A$ be the indicator function for this set. Then we can rewrite and apply Fubini like before:
+$$
+\begin{aligned}
+    \int_{-\infty}^{\infty} \int_0^{f(x)} \Phi'(t) \dd t \dd x &= \int_{-\infty}^{\infty} \int_{0}^{\infty} \mathds{1}_A(t) \cdot \Phi'(t) \dd t \dd x = \int_{0}^{\infty} \int_{-\infty}^{\infty} \mathds{1}_A(t) \cdot \Phi'(t) \dd x \dd t \\
+    &= \int_{0}^{\infty} \Phi'(t) \left( \int_{-\infty}^{\infty} \mathds{1}_A(t) \dd x \right) \dd t \\
+    &= \int_{0}^{\infty} \Phi'(t) \cdot \mu_n\left(\left\{ x \in \R^n \ |\ f(x) > t \right\}\right) \dd t
+\end{aligned}
+$$
+
+which is a formula for the integral we wanted. \qed
 
 \end{document}
