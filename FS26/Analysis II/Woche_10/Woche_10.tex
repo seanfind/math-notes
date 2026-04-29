@@ -1,0 +1,349 @@
+\documentclass[12pt]{article}
+\usepackage{seantex}
+
+% --- Document Info ---
+\title{Analysis II: Woche 10}
+\author{Sean Findlay}
+\date{\today}
+
+% --- Start Document ---
+\begin{document}
+
+\maketitle
+
+\begin{definition}{$C^k$ domain}{}
+    Fiven $k \geq 1$, we say that $\Omega \subset \R^n$ open and bounded is a \textbf{$C^k$ domain}, if $\forall p \in \partial \Omega\ \exists r > 0$ and $F$ rigid motion, we have 
+    \begin{itemize}
+        \item $F(B_r(p)) = B_r(0)$
+        \item $F(\Omega) \cap B_r(0)$ satisfies: $\Omega \subset \R^n$ open, $V \subset \R^{n-1}$ open, $g: V \rightarrow \R$, $C^1$ function,
+        $$
+            \partial \Omega \cap B_r(0) = \left\{ (x', x_n) \in V \times \R  \ |\ x_n = g(x')\right\} \cap B_r(0)
+        $$
+
+        $$
+            \Omega \cap B_r(0) = \left\{(x', x_n) \in V \times \R  \ |\ x_n < g(x') \right\} \cap B_r(0)
+        $$
+    \end{itemize}
+\end{definition}
+
+\begin{theorem}{Divergence/Gauss/Green/Stokes theorem}{}
+    Let $\Omega \subset \R^n$ be a bounded $C^1$ domain. Let $G \in C^1(\overline\Omega, \R^n)$ (the "vector field"). Then
+    $$
+        \int_\Omega \mathrm{div} G \dd x = \int_{\partial \Omega} G \cdot \nu \dd \mathrm{vol_{\partial \Omega}}
+    $$
+\end{theorem}
+
+\underline{Basic idea}: Take function we want to integrate, split function using partition of unity, take integral over each piece and then sum these integrals.
+
+The divergence is: $\mathrm{div} F := \sum_{i = 1}^{N} \partial_i F_i$.
+
+\begin{proofbox}
+    By definition of a $C^1$ domain, $\forall p \in \partial \Omega,\ \exists r > 0$ and $F$, such that the properties in the above definition hold. Since $\partial \Omega$ is compact (closed and bounded subset of $\R^n$), $\exists p_1,\dots,p_n,\ r_1,\dots,r_N$ such that $\partial\Omega \subset \bigcup_{l = 1}^N B_{r_l}(p_l)$. Call $F_l(x) := R_l x + a_l$, where $R_l$ is an orthogonal matrix, $a_l$ is a translation (so that $F_l$ defines a rigid motion).
+
+    Let $\eta_l$ be the corresponding partition of unity associated with these balls (as in the lemma above on partition of unity), with $\tilde\eta$ denoting the background function. Define
+    $$
+        G_l := GF \cdot \eta_l,\ \tilde G := G \tilde\eta
+    $$
+
+    Notice that
+    $$
+        \sum_{l = 1}^N G_l + \tilde G = G \quad (\text{in } \Omega)
+    $$
+
+    And $\mathrm{spt}(G_l) \subset B_{r_l}(p_l)$, $\mathrm{spt}(\tilde G) \subset \Omega$.
+
+    By construction, up to applying the isometry $F_l$, $\Omega \cap B_{r_l}(p_l)$ satisfies the definition of a $C^1$ domain. So, we can apply the local divergence theorem to $G_l$ (actually, we apply it to $G_l \circ F_l^{-1}$), and thus
+    $$
+        \int_{\Omega} \mathrm{div} G_l \dd x = \int_{\partial \Omega} G_l \cdot \nu \dd \mathrm{vol}_{\partial \Omega}
+    $$
+
+    Moreover, since $\tilde G \in C^1(\Omega, \R^n)$, and $\mathrm{spt}(\tilde G) \subset \Omega$, we claim that
+    $$
+        \int_\Omega \mathrm{div} \tilde G = 0
+    $$
+
+    and assume this holds for now. We will prove this later. Then, because the divergence is a linear operator (we can see this easily),
+    $$
+    \begin{aligned}
+        &\sum_{l = 1}^N \left( \int_{\Omega} \mathrm{div} G_l \dd x \right) + \int_\Omega \mathrm{div} \tilde G = \int_{\Omega} \left( \sum_{l = 1}^N \mathrm{div} G_l \right) \dd x  + \int_\Omega \mathrm{div} \tilde G \\
+        & = \int_{\Omega} \left( \sum_{l = 1}^N \mathrm{div} G_l \right) + \mathrm{div} \tilde G \dd x = \int_\Omega \mathrm{div}(\sum_{l = 1}^{N} G_l + \tilde G) \\
+        &= \int_{\partial \Omega} \left( \sum_{l = 1}^{N} G_l \right) \cdot \nu \dd \mathrm{vol}_{\partial \Omega}
+    \end{aligned}
+    $$
+\end{proofbox}
+
+\begin{proofbox}[of the claim]
+    We will now prove that
+    $$
+        \int_\Omega \mathrm{div} \tilde G = 0
+    $$
+
+    We will show this by proving
+    $$
+        \int_\Omega \partial_i \tilde G_i \dd x = 0 \quad \forall i = 1,\dots,n
+    $$
+
+    which is equal to the divergence. Notice
+    $$
+        \int_\Omega G (x + te_i) \dd x = \int_{\Omega - te_i} G(x) \dd x \quad \forall t \in {-\eps, \eps}
+    $$
+
+    Here, we can apply differentiation under the integral sign:
+    $$
+        \implies \frac{\dd}{\dd t} \int_\Omega \tilde G(x + te_i) \dd x = \int_\Omega \partial_i G_i(x) \dd x = 0
+    $$
+
+    Alternatively, this statement can be proven using Fubini.
+\end{proofbox}
+
+\subsection{Applications of the divergence theorem}
+
+\textbf{Archimedes principle}: (Physics) We have a body submerged in water, it will experience an upward force. Important fact from fluid dynamics: The force on a body in a fluid is always normal to the area and is $\vec F = A \cdot p \cdot \vec{\nu}$, where $A$ is the area and $p$ is the pressure, which is $p = z \cdot \rho$, with $\rho$ the density and $z$ the depth under water. So we have
+$$
+    \vec F = \int_{\partial\Omega} p \cdot \nu \dd \mathrm{vol}_{\partial\Omega} = \rho \int_{\partial\Omega} zv \dd S
+$$
+
+Notice that
+$$
+    \mathrm{div}(z e_3) = \partial_z (z e_3) = 1
+$$
+
+And
+$$
+\begin{aligned}
+    F \cdot \vec e_3 &= \rho \int_{\partial \Omega} z (\nu \cdot e_3) \dd S = \rho \int_{\partial \Omega} (z \cdot e_3) \nu \dd S \overset{\text{thm.}}= \rho \int_{\Omega} \mathrm{div}(z e_3) \dd x \\
+    &= \rho \int_\Omega 1 \dd x = \rho \cdot \mathrm{vol}_3(\Omega)
+\end{aligned}
+$$
+
+which is the forula for the weight in water of the volume of $\Omega$.
+
+\textbf{Application 2}: $B_1 \subset \R^n$. We want to measure the $(n-1)$-dimensional volume of this sphere:
+$$
+    \mathrm{vol}_{n-1}(\partial B_1) = \int_{\partial B_1} 1 \dd \mathrm{vol}_{n-1} = \int_{\partial \Omega} p \cdot \nu(p) \mathrm{vol}_{n-1}(p)
+$$
+
+Note that for any point on the sphere, it is a vector from the origin to the point, which is also coincidentally the normal vector $\nu$ at $x$. So we have $x = \nu(x)$.
+
+Let $F(x) = x$. Compute the divergence:
+$$
+    \mathrm{div}(F) = \sum_{i = 1}^{n} \partial_i F_i = \sum_{i = 1}^{n} 1 = n
+$$
+
+So, by the divergence theorem:
+$$
+    \int_{\partial \Omega} p \cdot \nu(p) \mathrm{vol}_{n-1}(p) = \int_{B_1} n \dd x = \mathrm{vol}_n(B_1) \cdot n
+$$
+
+We have proven that the $(n-1)$ dimensional volume of the sphere is always the $n$-dimensional volume times $n$.
+
+
+\textbf{Continuity equation}: (Fluid dynamics, general relativity, potential theory, etc.) Local conservation of relevant quantities. For example, the density of mass in a fluid. We model fluids in the following way: at every point in the fluid, the particles have a velocity $v$, and each point has a density $\rho$. The mass of fluid inside a control volume $\Omega$ is
+$$
+    \frac{\dd}{\dd t} \int_{\Omega} \rho \dd x = \int_\Omega \partial_t \rho \dd x = \int_\Omega \mathrm{div}(\rho v) \dd x = \int_{\partial \Omega} \rho \cdot v \cdot \vec\nu \dd S
+$$
+
+The final equation is:
+$$
+    \partial_t \rho = \mathrm{div}(\rho v)
+$$
+
+\textbf{Green's theorem}: $\R^2$. Let $F \in C^1(\overline\Omega, \R^2)$ be a vector field. The boundary $\partial \Omega$ is a curve. We can orient the curve by parametrising it counter-clockwise. Let $\tau(p)$ be the tangent vector to the curve at a point $p$. Green's theorem states
+$$
+    \int_{\partial \Omega} \vec F \cdot \tau \dd L = \int_\Omega \mathrm{rot}(\vec{F})
+$$
+
+where $\mathrm{rot}(\vec{F}) = \partial_2 F_1 - \partial_1 F_2$.
+
+This is actually just a reformulation of the divergence theorem: Let $F = (F_1,F_2)^T$, $G = F^\perp = (-F_2, F_1)$. Apply the divergence theorem to $G$:
+$$
+    \int_\Omega \mathrm{div}(G) = \int_{\partial \Omega} G \cdot \nu \dd L = \int_{\partial\Omega} F \cdot \tau \dd L
+$$
+
+And the divergence $\mathrm{div}(G) = \partial_1 G_1 + \partial_2 G_2 = -\partial_1 F_2 + \partial_2 F_1$, so
+$$
+    \int_\Omega \mathrm{div}(G) = \int_\Omega \mathrm{rot}(\vec{F})
+$$
+
+So we have deduced from the divergence theorem that
+$$
+    \int_{\partial \Omega} \vec F \cdot \tau \dd L = \int_\Omega \mathrm{rot}(\vec{F})
+$$
+
+\begin{exercise}{}{}
+    Show the following formulas:
+    \begin{enumerate}[label=\alph*)]
+        \item
+        $$
+            \int_\Omega \partial_i g \dd x = \int_{\partial\Omega} g \nu_i \dd \mathrm{vol_{n-1}} \quad g, h \in C^1(\overline\Omega, \R) \ \forall i = 1,\dots,n
+        $$
+
+        \item The integration by parts formula:
+        $$
+            \int_\Omega \partial_i g h \dd x = - \int_\Omega g \partial_i h + \int_{\partial \Omega} g h \nu_i \dd \mathrm{vol}_{n-1}
+        $$
+
+        \item $f \in C^1(\overline\Omega, \R^n)$, $g \in C^1(\overline\Omega, \R)$
+        $$
+            \int_\Omega \mathrm{div} f g = - \int_\Omega f \cdot \nabla g + \int_{\partial \Omega} f \cdot \nu g \dd \mathrm{vol}_{n-1}
+        $$
+    \end{enumerate}
+\end{exercise}
+
+\begin{notebox}{Warning}{}
+    The divergence theorem also holds true in most "reasonable" domains. Consider for example a square domain in $\R^2$ (not a $C^1$ domain, it is not smooth).
+
+    If $\Omega := \{ (x', x_n) \in \R^{n-1} \times \R \ |\ g_n(x') < x_n < g_2(x')\}$, our domain has two cusps. But the divergence theorem will still hold.
+\end{notebox}
+
+\begin{exercise}{}{}
+    Prove the divergence theorem for $\Omega = [a, b] \times [c, d] \subset \R^2$.
+\end{exercise}
+
+\section{Line integrals}
+
+Recall: Given a vector space $V$ over the real numbers, the dual space $V^*$ is defined as
+$$
+    V^* := \{ a: V \rightarrow \R \ |\ a \text{ is linear} \} = \mathrm{Hom}(V, \R)
+$$
+
+Take $V = \R^n$. Then, the dual space is ${\R^n}^*$. If $v \in \R^n$, we call it a vector. If $v \in {\R^n}^*$, we call it a \textbf{covector}. For our purposes, vectors are column vectors, and covectors are row vectors. (in the general case, there is more of a distinction. But for us, this is the only difference!)
+
+\begin{definition}{}{}
+    Let $U \subset \R^n$ open. A map assigning to each point $x \in U$ a covector in ${\R^n}^*$ 
+    $$
+    x \mapsto (\alpha_1(x),\dots,\alpha_n(x)) = \alpha_x'
+    $$ 
+    
+    is called a \textbf{$1$-form}. It is $C^k$ if $\alpha_i: U \rightarrow \R$ of class $C^k$ (for $k \geq 1$).
+\end{definition}
+
+\begin{example}{}{}
+    \begin{enumerate}[label=\alph*)]
+        \item Let $U \subset \R^n$ open, $F\in C^1(U, \R^n)$ a $C^k$ vector field (a map from $U$ to $\R^n$), then
+        $
+            \alpha = \alpha_F \text{ defined by } \alpha_x = F(x)^T
+        $ is a 1-form. (yes, it is trivial, but it is a legitimate example of a 1-form).
+
+        \item $f \in C^k(U, \R),\ k \geq 2,\ u \ni x \mapsto D f_x$ is a $1$-form.
+    \end{enumerate}
+\end{example}
+
+\begin{definition}{}{}
+    $f \in C^\infty(U)$, define $df: U \rightarrow {\R^n}^*$, $df_x := Df_x$.
+\end{definition}
+
+\begin{notebox}{0-forms}{}
+    We often call functions $0$-forms, $f \in C^\infty(U)$ for instance in the example above is a $0-form$.
+\end{notebox}
+
+\begin{definition}{Line integral}{}
+    Let $U \subset \R^n$ open. If $\alpha: U \rightarrow {R^n}^*,\ C^1$ is a 1-form (in $U$), $\gamma: [a, b] \rightarrow U$ a $C^1$ curve, then 
+    $$
+        \int_\gamma \alpha := \int_{a}^{b} \alpha_{\gamma(t)} \left( \gamma'(t) \right) \dd t = \int_{a}^{b} \underbrace{\alpha_{\gamma(t)} \cdot \gamma'(t)}_{\text{matrix product}} \dd t
+    $$
+
+    Note that the matrix product is $1 \times n$ times $n \times 1$, so the result is a scalar ($1 \times 1$ matrix).
+\end{definition}
+
+\begin{lemma}{Reparametrisation invariance of the line integral}{}
+    Let $\Psi: [c, d] \rightarrow [a, b]$ be a $C^1$ diffeomorphism with $\Psi' > 0$ (orientation preserving), then
+    $$
+        \int_\gamma \alpha = \int_{\gamma \circ \Psi} \alpha
+    $$
+\end{lemma}
+
+\begin{proofbox}
+    By definition,
+    $$
+        \int_\gamma \alpha = \int_{a}^{b} \alpha_{\gamma(t)} (\gamma'(t)),\quad 
+    $$
+
+    We can write:
+    $$
+    \begin{aligned}
+        \int_{\gamma \circ \Psi} \alpha &= \int_{c}^{d} \alpha_{\gamma(\Psi(s))} \underbrace{ \left((\gamma \circ \Psi)'(s) \right)}_{\gamma'(\Psi(s)) \Psi'(s)} \dd s \\
+        &= \int_{c}^{d} \left(\alpha_{\gamma(\Psi(s))}\right) \gamma'(\Psi(s)) \Psi'(s) \dd s
+    \end{aligned}
+    $$
+
+    We can now perform a change of variables and see that the two integrals are equal.
+\end{proofbox}
+
+\begin{remark}{}{}
+    To each vector field $F$, associated $\alpha = F^T$ 1-form:
+    $$
+        \int_{\gamma} \alpha = \int_\gamma F^T = \int_{a}^{b} F^T(\gamma(t)) \gamma'(t) \dd t = \int_{a}^{b} F(\gamma(t) )\cdot \gamma'(t) \dd t
+    $$
+\end{remark}
+
+\begin{definition}{Conservative vector fields, exact 1-forms}{}
+    Let $U \subset \R^n$ be a connected open set. We say that $F: U \rightarrow \R^n$ $C^1$ vector field is \textbf{conservative} if $\exists f: U \rightarrow \R,\ C^2$, such that $\nabla f = F$.
+    
+    Equivalently, in the language of $1$-forms, $\alpha: U \rightarrow {\R^n}^*,\ C^1$ 1-form is \textbf{exact} if $\exists f: U \rightarrow \R$ such that $\alpha = df$.
+\end{definition}
+
+Note that the transpose of the gradient is the differential (Jacobian). So the above definition makes sense.
+
+\begin{lemma}{}{}
+    If $\alpha: U \rightarrow {\R^n}^*$ is an exact 1-form, ($\alpha = df$ for some $f: U \rightarrow \R,\ C^2$), and $\gamma: [a, b] \rightarrow U \text{ a } C^1 \text{ curve}$, then
+    $$
+        \int_\gamma \alpha = f(\gamma(b)) - f(\gamma(a))
+    $$
+\end{lemma}
+
+\begin{proofbox}
+    $$
+    \begin{aligned}
+        \int_\gamma \alpha &= \int_{a}^{b} \alpha_{\gamma(t)} \left( \gamma'(t) \right) \dd t = \int_{a}^{b} \underbrace{df_{\gamma(t)} \left( \gamma'(t) \right)}_{\text{chain rule!}} \dd t = \int_{a}^{b} (f \circ \gamma)'(t) \dd t \\
+        &\overset{\text{FTC}}= f(\gamma(b)) - f(\gamma(a))
+    \end{aligned}
+    $$
+\end{proofbox}
+
+\begin{lemma}{Integrability condition}{}
+    Let $U \subset \R^n$ open. Let $\alpha: U \rightarrow {\R^n}^*$ be an exact $1$-form. Then, letting $\alpha_x := (\alpha_1(x),\dots,\alpha_n(x))$,
+    $$
+        \partial_i \alpha_i = \partial_i \alpha_j \iff \forall x \in U\ \partial_i \alpha_i(x) = \partial_i \alpha_j(x)
+    $$
+\end{lemma}
+
+\begin{proofbox}
+    If $\alpha = df_x = (\partial_1f(x),\dots,\partial_nf(x))$, then
+    $$
+        \partial_j \alpha_i = \partial_j \partial_i f \overset{\text{Schwarz}}= \partial_i \partial_j f = \partial_i \alpha_j
+    $$
+\end{proofbox}
+
+When checking if a field is conservative, or if a 1-form is exact, the above lemma is the first thing to check. If this doesn't hold, the field is definitely not conservative.
+
+\begin{lemma}{Converse of the integrability condition}{}
+    Assume that $U \subset \R^n$ is convex and let $\alpha: U \rightarrow {\R^n}^*$ satisfy the integrability condition (from the lemma above). Then, $\exists f \in C^2(U)$ such that $df = \alpha$.
+\end{lemma}
+
+\begin{proofbox}
+    First, prove for a box in $\R^2$. $U = (a,b)\times(c, d) \subset \R^2$. Fix $(x_0,y_0) \in U$, and fix a "destination" $(x, y) \in U$. We will travel along a path, one part horizontal then one part vertical. Start at $(x_0,y_0)$, travel via $(x, y_0)$ to $(x_0, y_0)$.
+    $$
+        f(x, y) = \int_{x_0}^{x} \alpha_{(t, y_0)}\left(\begin{pmatrix} 1 \\ 0 \end{pmatrix}\right) \dd t + \int_{y_0}^{y} \alpha_{(x, s)}\left(\begin{pmatrix} 0 \\ 1 \end{pmatrix}\right) \dd s
+    $$
+    If $\alpha_{(x, y)} = (\alpha_1(x, y), \alpha_2(x, y))$, then
+    $$
+        = \int_{x_0}^{x} \alpha_1(t, y_0) \dd t + \int_{y_0}^{y} \alpha_2(x, s) \dd s
+    $$
+
+    Claim: $df = \alpha \iff \nabla f = a^T$.
+    \begin{proofbox}[of claim]
+        $$
+            \partial_1 f = \alpha_1(x, y_0) + \underbrace{\int_{y_0}^{y} \partial_1 \alpha_2(x, s) \dd s}_{\text{diff. under integral sign}} \overset{\text{int. cond.}}= \alpha_1(x, y_0) + \int_{y_0}^{yes} \partial_2 \alpha_1(x, s) \dd s
+        $$
+        $$
+            \partial_2 f = \alpha_2(x, y) 
+        $$
+
+        $$
+            \partial_1 f(x, y) = \alpha_1(x, y_0) + \alpha_1(x, y) - \alpha_1(x, y_0) = \alpha_1(x, y)
+        $$
+    \end{proofbox}
+\end{proofbox}
+
+\end{document}

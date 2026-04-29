@@ -434,25 +434,6 @@ $$
 A proof of this is not relevant to the course.
 \end{notebox}
 
-\section{Dual spaces and inner products}
-
-Let $V$ be a vector space over $K$. Recall: $V^* := \mathrm{Hom}(V, K) = $ the space of all linear maps (also known as functionals) $\vphi: V \rightarrow K$.
-
-Assume that $V = K_\text{col}^n$, and let $\vphi: K_\text{col}^n \rightarrow K$ be a functional. Then,
-$$
-    \exists! A = (a_1,\dots,a_n) \in M_{1 \times n}(K),\quad \text{such that } \vphi(v) = Av \ \forall v\in K_\text{col}^n
-$$
-
-Indeed, if $e_1,\dots,e_n$ is the standard basis for $K_\text{col}^n$, then define
-$$
-    a_1 := \vphi(e_1),\dots,a_n:=\vphi(e_n).
-$$
-
-Then, if $v = \begin{pmatrix} v_1 \\ \vdots \\ v_n \end{pmatrix} \in K_\text{col}^n$, then,
-$$
-    \vphi(v) = \vphi(v_1e_1 + \dots + v_ne_n) = v_1\vphi(e_1) + \dots + v_n \vphi(e_n) = a_1v_1 + \dots + a_nv_n = A v
-$$
-
 
 
 \end{document}

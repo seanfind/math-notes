@@ -1,0 +1,29 @@
+\documentclass[12pt]{article}
+\usepackage{seantex}
+
+% --- Document Info ---
+\title{ÜS: Analysis II Woche 10, Lektion 1}
+\author{Sean Findlay}
+\date{\today}
+
+% --- Start Document ---
+\begin{document}
+
+\maketitle
+
+\begin{example}{Gauss'sches Integral}{}
+    $$
+    \begin{aligned}
+        \int_\R e^{-x^2} \dd x = \sqrt{\pi}
+    \end{aligned}
+    $$
+
+    In zwei Variablen, mit Fubini:
+    $$
+    \begin{aligned}
+        \int_{\R \times \R} e^{-x^2-y^2} \dd \mu(x, y) = \int_\R \left(\int_\R e^{-x^2} e^{-y^2} \dd \mu(x)\right) \dd \mu(y) = \left(\int_\R e^{-x^2} \dd x\right)^2
+    \end{aligned}
+    $$
+\end{example}
+
+\end{document}

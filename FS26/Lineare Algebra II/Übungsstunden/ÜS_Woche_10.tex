@@ -1,0 +1,109 @@
+\documentclass[12pt]{article}
+\usepackage{seantex}
+
+% --- Document Info ---
+\title{ÜS: Lineare Algebra II, Woche 10}
+\author{Sean Findlay}
+\date{\today}
+
+% --- Start Document ---
+\begin{document}
+
+\maketitle
+
+\begin{exercise}{Quiz}{}
+    Sei $A \in M_{3 \times 3}(\R)$ mit
+    $$
+        \chi_A(x) = x^3 +x^2-2x
+    $$
+
+    Finde $\chi_{A^2}(x) \in \R[x]$.
+\end{exercise}
+
+Sei $(\lambda, v)$ Eigenwert-Eigenvektor-Paar von $A$. Dann gilt:
+$$
+    Av = \lambda v \implies A^2 v = A(\lambda v) = \lambda^2 v
+$$
+
+Also ist $\chi_{A^2}(x) = \prod_{i = 1}^n (x-\lambda_i^2)$.
+
+Finde die Eigenwerte von $A$:
+$$
+    x^3 +x^2-2x = x(x^2+x-2) = x(x-1)(x+2) \implies \lambda_1 = 0, \lambda_2 = 1, \lambda_3 = -2
+$$
+
+Also gilt:
+$$
+    \chi_{A^2}(x) = (x - \lambda_1^2)(x - \lambda_2^2)(x - \lambda_3^2) = x(x-1)(x-2)
+$$ \qed
+
+\section{Orthogonalität}
+
+\begin{definition}{Orthogonalität}{}
+    \begin{itemize}
+        \item Seien $v, w \in V$. $v, w$ sind orthogonal $\iff \langle v, w \rangle = 0$
+        \item $S \subseteq V$ ist ein orthongonales System $\iff \forall v, w \in S : \langle v, w \rangle = 0$
+        \item Ein orthongonales System $s \subseteq V$ heisst orthonormal $\iff \forall v \in S : \lVert v \rVert = 1$
+    \end{itemize}
+\end{definition}
+
+\begin{proposition}{}{}
+    Sei $B \subseteq V$ eine orthonormale Basis und $v \in V$. So gilt $\langle b, v \rangle \neq 0$ für endlich viele $b \in B$ und 
+    $$
+        v = \sum_{b \in B} \langle b, v \rangle \cdot b
+    $$
+\end{proposition}
+
+\begin{exercise}{}{}
+    $B = \left(\frac{1}{\sqrt{2}}\begin{pmatrix} 1 \\ -1 \end{pmatrix}, \frac{1}{\sqrt{2}}\begin{pmatrix} 1 \\ 1 \end{pmatrix}\right)$. Ziel: schreibe $\begin{pmatrix} 1 \\ 7 \end{pmatrix}$ als Linearkombination aus $b \in B$.
+    $$
+    \begin{aligned}
+        \begin{pmatrix} 1 \\ 7 \end{pmatrix} &= \langle \frac{1}{\sqrt{2}}\begin{pmatrix} 1 \\ -1 \end{pmatrix}, \begin{pmatrix} 1 \\ 7 \end{pmatrix} \rangle \cdot \frac{1}{\sqrt{2}}\begin{pmatrix} 1 \\ -1 \end{pmatrix} + \langle \frac{1}{\sqrt{2}}\begin{pmatrix} 1 \\ 1 \end{pmatrix}, \begin{pmatrix} 1 \\ 7 \end{pmatrix} \rangle \cdot \frac{1}{\sqrt{2}}\begin{pmatrix} 1 \\ 1 \end{pmatrix} \\
+        &= \frac{-6}{\sqrt{2}} \frac{1}{\sqrt{2}}\begin{pmatrix} 1 \\ -1 \end{pmatrix} + \frac{9}{\sqrt{2}} \frac{1}{\sqrt{2}}\begin{pmatrix} 1 \\ 1 \end{pmatrix} = \frac{-6}{2}\begin{pmatrix} 1 \\ -1 \end{pmatrix} + \frac{9}{2} \begin{pmatrix} 1 \\ 1 \end{pmatrix} \\
+        &= \boxed{-3 \begin{pmatrix} 1 \\ -1 \end{pmatrix} + \frac{9}{2} \begin{pmatrix} 1 \\ 1 \end{pmatrix}}
+    \end{aligned}
+    $$
+\end{exercise}
+
+\begin{definition}{Projektion}{}
+    Sei $(V, \langle \cdot, \cdot \rangle)$ ein Skalarproduktraum mit $v \in V,\ v \neq 0_V$, dann ist
+    $$
+        p_v: V \rightarrow V,\quad u \mapsto \frac{\langle u, v \rangle}{\lVert v \rVert^2}
+    $$
+\end{definition}
+
+\begin{definition}{Gram-Schmidt Verfahren}{}
+    Algorithmus: Sei $B = (v_1,\dots,v_n) \subseteq V$ eine Basis. Ziel: $B$ orthonormalisieren.
+    \begin{enumerate}
+        \item Setze $\tilde v_1 = v_1$ und $e_1 = \frac{\tilde v_1}{\lVert \tilde v_1 \rVert}$
+        \item Für jedes $j \in \left\{2,\dots,n\right\}$:
+        $$
+            \tilde v_j = v_j - \left( \sum_{i = 1}^{j -1} \frac{\langle v_j, \tilde v_i \rangle}{\langle \tilde v_i, \tilde v_i \rangle} \tilde v_i  \right), \quad e_j = \frac{\tilde v_j}{\lVert \tilde v_j \rVert}
+        $$
+
+        \item $\left\{ \tilde v_1,\dots,\tilde v_n \right\}$ ist orthogonal, $\left\{ \tilde e_1,\dots,\tilde e_n \right\}$ ist orthonormal.
+    \end{enumerate}
+\end{definition}
+
+\begin{exercise}{}{}
+    Orthogonalisiere: $V = \R^4,\ \langle x, y \rangle = x^Ty$, $B = 
+    \left\{
+        \begin{pmatrix} 2 \\ 1 \\ 2 \\ 0 \end{pmatrix},
+        \begin{pmatrix} 1 \\ -1 \\ 1 \\ 0 \end{pmatrix},
+        \begin{pmatrix} 1 \\ 0 \\ 0 \\ 2 \end{pmatrix}
+    \right\}
+    $
+\end{exercise}
+
+Setze $\tilde v_1 = \begin{pmatrix} 2 \\ 1 \\ 2 \\ 0 \end{pmatrix}$.
+
+Dann ist
+$$
+    \tilde v_2 = \begin{pmatrix} 1 \\ -1 \\ 1 \\ 0 \end{pmatrix} - \frac{1}{3} \begin{pmatrix} 2 \\ 1 \\ 2 \\ 0 \end{pmatrix} = \frac{1}{3} \begin{pmatrix} 1 \\ -4 \\ 1 \\ 0 \end{pmatrix}
+$$
+
+$$
+    \tilde v_3 = \begin{pmatrix} 1 \\ 0 \\ 0 \\ 2 \end{pmatrix} - \frac{}{}
+$$
+
+\end{document}

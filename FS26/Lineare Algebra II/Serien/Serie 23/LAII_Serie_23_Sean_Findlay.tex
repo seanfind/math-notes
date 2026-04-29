@@ -1,0 +1,772 @@
+\documentclass[12pt]{article}
+\usepackage{seantex}
+
+% --- Document Info ---
+\title{Lineare Algebra II: Serie 23}
+\author{Sean Findlay}
+\date{\today}
+
+% --- Start Document ---
+\begin{document}
+
+\maketitle
+
+\begin{problem}{}{}
+    Let $V$ be a finite dimensional Euclidean vector space and $S \subseteq V$ an orthonormal set. Show that we can extend $S$ to an orthonormal basis of $V$.
+\end{problem}
+
+$S =: \{v_1,\dots,v_k\}$ is an orthonormal set, so $0 \notin S$ and $\forall v_i, v_k \in S,\ i \neq j$, we have $\langle v_i, v_j \rangle = 0$. Let $a_1,\dots,a_k \in K$ such that
+$$
+    a_1v_1 + \dots + a_kv_k = 0
+$$
+
+Then,
+$$
+    \langle a_1v_1 + \dots + a_kv_k, v_i \rangle = \langle 0, v_i \rangle
+$$
+
+The RHS equals zero by the definition of an inner product. We can apply linearity in the first variable on the LHS:
+$$
+    \iff a_1 \langle v_1, v_i \rangle + \dots + a_i \langle v_i, v_i \rangle + \dots + a_k \langle v_k, v_i \rangle = 0
+$$
+
+By orthogonality of $S$, all inner products except $\langle v_i, v_i \rangle$ evaluate to zero:
+$$
+    \iff a_i \langle v_i, v_i \rangle = 0
+$$
+
+Because $0 \notin S$, we know that $v_i \neq 0$. Then, by positive definiteness of the inner product, $\langle v_i, v_i \rangle > 0$. So $a_i$ must be equal to zero.
+
+Because $v_i$ was chosen arbitrarily, this must hold for all $i = 1,\dots,k$. So we can conclude $a_1 = \dots = a_i = \dots = a_k = 0$, which implies that $S$ is linearly independent.
+
+We know from Linear Algebra I that any linearly independent subset of $V$ can be extended to a basis of $V$. So extend $S$ to a basis $B$ of $V$:
+$$
+    B := \{v_1,\dots,v_k,w_1,\dots,w_{n-k}\}
+$$
+
+Now, we can apply the Gram-Schmidt orthogonalisation process to $B$. We will obtain an orthogonal basis, where the first $k$ vectors are just $v_1,\dots,v_k$, because for these vectors, the sum that we subtract, i.e.
+$$
+    \tilde v_j = v_j - \underbrace{\left( \sum_{i = 1}^{j -1} \frac{\langle v_j, \tilde v_i \rangle}{\langle \tilde v_i, \tilde v_i \rangle} \tilde v_i  \right)}_{\text{this sum}}
+$$
+will be zero. The numerator is always the inner product of two vectors from $S$, which by definition is zero. So the first vector with a potentially non-zero sum will be $w_1$, and the subsequent vectors up to $w_{n-k}$. So we then obtain an orthogonal basis which we can normalise to obtain an orthonormal $B' = \{v_1,\dots,v_k,w'_1,\dots,w'_{n-k}\}$, with $S \subseteq B'$. So we can extend any orthonormal set in $V$ to an orthonormal basis of $V$. \qed
+
+\begin{problem}{}{}
+    Let $A \in M_{n \times n}(\R)$. Show that
+    \begin{enumerate}[label=\alph*)]
+        \item The matrix $A^TA$ is symmetric.
+        \item The matrix $A^TA$ is positive definite iff $A$ is invertible.
+        \item We have $\mathrm{rank}(A^TA) = \mathrm{rank}(A)$.
+        \item Assume that $A$ is symmetric and that it admits $(\lambda_1,v_1), (\lambda_2,v_2)$ with $\lambda_1,\lambda_2 \neq 0$ as pairs of eigenvalue-eigenvector. Show that if $\lambda_1 \neq \lambda_2$ then $v_1 \perp v_2$.
+    \end{enumerate}
+\end{problem}
+
+\begin{enumerate}[label=\alph*)]
+    \item We want to show that $A^TA$ is symmetric. We have that
+    $$
+        (A^TA)^T = A^T (A^T)^T = A^T A
+    $$
+
+    using rules of transposition of matrix product and that the transpose of the transpose is the matrix itself. So the transpose of $A^TA$ equals $A^T$ itself. So $A^TA$ is symmetric.
+
+    \item 
+    \begin{itemize}
+        \item \underline{$\implies$}: Assume $A^TA$ is positive definite. This means $v^T (A^T A) v > 0$ for all $v \in \R^n$ with $v \neq 0$. Show that $A$ is invertible.
+        
+        We can rewrite
+        $$
+            v^T (A^T A) v = (v^T A^T) (A v) = (Av)^T (Av) = \lVert A v \rVert^2
+        $$
+
+        So for all $v \in \R^n$ with $v \neq 0$, we have $\lVert Av \rVert^2 > 0$. We know that $Av \neq 0$, because if it were, then $\lVert Av \rVert^2$ would be equal to zero. So $Av \neq 0$.
+
+        We have shown that $v \neq 0 \implies Av \neq 0 \overset{\text{contraposition}}{\iff} Av = 0 \implies v = 0$. This means that the kernel of $A$ is trivial, so $A$ is invertible.
+
+        \item \underline{$\impliedby$}: Assume $A$ is invertible. Show that $A^TA$ is positive definite.
+        
+        $A$ is invertible, so $\ker A = \{0\}$. This means that if $v \neq 0$, then $A v \neq 0$. Then, $\lVert A v \rVert^2 \neq 0$, so $\lVert A v \rVert^2 > 0$. Then we have
+        $$
+            \lVert Av \rVert^2 = (Av)^T (Av) = v^T A^T A v = v^T (A^TA) v > 0
+        $$
+
+        So we have shown that if $v \neq 0$, then $v^T (A^TA) v > 0$. Because $A^T A$ is also symmetric, $A^TA$ is positive definite.
+    \end{itemize}
+
+    \item Show that $\mathrm{rank}(A^T A) = \mathrm{rank}(A)$.
+    $$
+        \iff \dim\img(A^T A) = \dim\img(A) \iff \dim\R^n - \dim\ker(A^T A) = \dim\R^n - \dim\ker(A)
+    $$
+    $$
+        \iff \dim\ker(A^T A) = \dim\ker(A)
+    $$
+
+    We can show that actually, $\ker(A^T A) = \ker(A)$.
+
+    \begin{itemize}
+        \item \underline{$\ker(A) \subseteq \ker(A^T A)$}. Take $x \in \ker(A)$. Then
+        $$
+            A x = 0 \implies A^T A x = 0 \iff x \in \ker(A^T A)
+        $$
+        So $x \in \ker(A) \implies x \in \ker(A^T A)$. Therefore, $\ker(A) \subseteq \ker(A^T A)$ holds.
+        \item \underline{$\ker(A^T A) \subseteq \ker(A)$}: Take $x \in \ker(A^T A)$. Then
+        $$
+            A^T A x = 0 \iff x^T A^T A x = x^T \cdot 0 \iff (A x)^T A x = 0
+        $$
+        $$
+            \iff \lVert A x \rVert^2 = 0 \iff \lVert A x \rVert = 0 \iff \sqrt{\langle A x, A x \rangle} = 0
+        $$
+
+        By the positivity of the inner product, this implies that $A x$ must be equal to zero. So $x \in \ker(A)$. We have shown that $\ker(A^T A) \subseteq \ker(A)$.
+    \end{itemize}
+
+    Because $\ker(A) \subseteq \ker(A^T A)$ and $\ker(A^T A) \subseteq \ker(A)$ both hold, we have shown that $\ker(A^T A) = \ker(A)$. This clearly implies that $\dim\ker(A^T A) = \dim\ker(A)$. By the above chain of implications, this means that $\mathrm{rank}(A^T A) = \mathrm{rank}(A)$.
+
+    \item Assume $\lambda_1 \neq \lambda_2$. Then
+    $$
+        \langle A v_1, v_2 \rangle = \langle \lambda_1 v_1, v_2 \rangle = \lambda_1 \langle v_1, v_2 \rangle
+    $$
+
+    We also have
+    $$
+        \langle A v_1, v_2 \rangle = (Av_1)^T v_2 = v_1^T A^T v_2 \overset{A = A^T}= v_1^T (A v_2) = \langle v_1, A v_2 \rangle = \langle v_1, \lambda_2 v_2 \rangle = \lambda_2 \langle v_1, v_2 \rangle
+    $$
+
+    So we have shown
+    $$
+    \begin{aligned}
+        &\lambda_1 \langle v_1, v_2 \rangle = \langle A v_1, v_2 \rangle = \langle v_1, A v_2 \rangle = \lambda_2 \langle v_1, v_2 \rangle \\
+        &\iff \lambda_1 \langle v_1, v_2 \rangle - \lambda_2 \langle v_1, v_2 \rangle = 0 \iff (\lambda_1 - \lambda_2) \langle v_1, v_2 \rangle = 0
+    \end{aligned}
+    $$
+
+    Because $\lambda_1 \neq \lambda_2$, we have $\lambda_1 - \lambda_2 \neq 0$. So the only way for this equality to hold is if $\langle v_1, v_2 \rangle = 0$. So we have that $v_1 \perp v_2$. \qed
+\end{enumerate}
+
+\begin{problem}{}{}
+    Compute a decomposition $A = QR$ of the matrix
+    $$
+        A = \begin{pmatrix}
+            -1 & 1 & -1 \\
+            2 & 0 & 1 \\
+            -2 & 1 & 0
+        \end{pmatrix}
+    $$
+    into an orthogonal matrix $Q$ and an upper triangular matrix $R$. Use this decomposition to solve the linear system $Ax = b$ for $b = (0, 3, -3)^T$.
+\end{problem}
+
+Apply Gram-Schmidt to the columns of $A$ to obtain the orthogonal matrix
+$$
+    Q = \frac{1}{3} \begin{pmatrix}
+        -1 & 2 & -2 \\
+        2 & 2 & 1 \\
+        -2 & 1 & 2
+    \end{pmatrix}
+$$
+
+Next, find an upper triangular matrix $R$ such that $A = QR$. Because $Q$ is orthogonal, $Q^{-1} = Q^T$. So we can rewrite:
+$$
+    A = QR \iff Q^T A = Q^T Q R \iff Q^T A = R
+$$
+
+So, compute $Q^TA$ to find the matrix $R$. 
+$$
+\begin{aligned}
+    R &= Q^TA = \frac{1}{3} \begin{pmatrix}
+        -1 & 2 & -2 \\
+        2 & 2 & 1 \\
+        -2 & 1 & 2
+    \end{pmatrix} \begin{pmatrix}
+            -1 & 1 & -1 \\
+            2 & 0 & 1 \\
+            -2 & 1 & 0
+        \end{pmatrix} \\
+    &= \frac{1}{3}\begin{pmatrix}
+        9 & -3 & 3 \\
+        0 & 3 & 0 \\
+        0 & 0 & 3
+    \end{pmatrix} = \begin{pmatrix}
+        3 & -1 & 1 \\
+        0 & 1 & 0 \\
+        0 & 0 & 1
+    \end{pmatrix}
+\end{aligned}
+$$
+
+So with $Q = \frac{1}{3} \begin{pmatrix}
+        -1 & 2 & -2 \\
+        2 & 2 & 1 \\
+        -2 & 1 & 2
+    \end{pmatrix}$ and $R = \begin{pmatrix}
+        3 & -1 & 1 \\
+        0 & 1 & 0 \\
+        0 & 0 & 1
+    \end{pmatrix}$, we have $A = QR$.
+
+Next, solve the system $Ax = b$ for $b = (0,3,-3)^T$. Because $A = QR$, we can write
+$$
+    Ax = b \iff (QR)x = b \iff Q^T QR x = Q^Tb \iff R x = Q^T b
+$$
+
+We can now just compute $Q^T b = Q b$ (because $Q$ happens to be symmetric):
+$$
+    Q^T b = \frac{1}{3} \begin{pmatrix} 12 \\ 3 \\ -3 \end{pmatrix} = \begin{pmatrix} 4 \\ 1 \\ -1 \end{pmatrix}
+$$
+
+Now, we have
+$$
+    R x = \begin{pmatrix}
+        3 & -1 & 1 \\
+        0 & 1 & 0 \\
+        0 & 0 & 1
+    \end{pmatrix} \begin{pmatrix} x_1 \\ x_2 \\ x_3 \end{pmatrix} = \begin{pmatrix} 4 \\ 1 \\ -1 \end{pmatrix} \iff \begin{cases}
+        3x_1 - x_2 + x_3 = 4 \\
+        x_2 = 1 \\
+        x_3 = -1 
+    \end{cases}
+$$
+
+$$
+    \implies 3x_1 - 1 + (-1) = 4 \implies x_1 = 2 
+$$
+
+So we have the solution $x = \begin{pmatrix} 2 \\ 1 \\ -1 \end{pmatrix}$.
+
+\begin{problem}{}{}
+    Let $U$ be the subspace of $\R^3$ with the standard inner product spanned by the two vectors $v_1 = (1, 1, 1)^T$ and $v_2 = (0, 2, 1)^T$.
+
+    \begin{enumerate}[label=\alph*)]
+        \item Determine an orthonormal basis of $U$ and an orthonormal basis of $U^\perp$.
+        \item Compute the representation matrices of the orthogonal projections $\R^3 \rightarrow U$ and $\R^3 \rightarrow U^\perp$ with respect to the standard basis of $\R^3$ and the bases from (a).
+    \end{enumerate}
+\end{problem}
+
+\begin{enumerate}[label=\alph*)]
+    \item $\begin{pmatrix} 1 \\ 1 \\ 1 \end{pmatrix} \cdot \begin{pmatrix} 0 \\ 2 \\ 1 \end{pmatrix} \neq 0$, so we need to orthogonalise. We can apply Gram-Schmidt to obtain
+    $$
+        B = \left\{\frac{1}{\sqrt{3}}\begin{pmatrix} 1 \\ 1 \\ 1 \end{pmatrix}, \frac{1}{\sqrt{2}}\begin{pmatrix} -1 \\ 1 \\ 0 \end{pmatrix} \right\}
+    $$
+
+    We can extend $B$ to a basis of $V$ by adding some linearly independent vector $w$, and apply Gram-Schmidt. Because Gram-Schmidt subtracts the projection of $w$ onto $U$, the resulting vector is orthogonal to $U$. Therefore, this additional vector will be a basis for $U^\perp$.
+
+    Choose $w = (0, 0, 1)^T$. This vector is linearly independent from $B$ (as we can show using Gaussian elimination, for instance). Now, perform the Gram-Schmidt process on the set 
+    $$
+        \left\{ \frac{1}{\sqrt{3}}\begin{pmatrix} 1 \\ 1 \\ 1 \end{pmatrix}, \frac{1}{\sqrt{2}}\begin{pmatrix} -1 \\ 1 \\ 0 \end{pmatrix}, \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix} \right\}
+    $$
+
+    We then obtain the set
+    $$
+        \left\{ \frac{1}{\sqrt{3}}\begin{pmatrix} 1 \\ 1 \\ 1 \end{pmatrix}, \frac{1}{\sqrt{2}}\begin{pmatrix} -1 \\ 1 \\ 0 \end{pmatrix}, \frac{1}{\sqrt{6}}\begin{pmatrix} -1 \\ -1 \\ 2 \end{pmatrix} \right\}
+    $$
+
+    So we have the following basis $B'$ for $U^\perp$:
+    $$
+        B' = \left\{ \frac{1}{\sqrt{6}}\begin{pmatrix} -1 \\ -1 \\ 2 \end{pmatrix} \right\}
+    $$
+
+    Because this basis only contains one element, which is normalised, it is an orthonormal basis for $U^\perp$.
+
+    \item Denote $\mathcal{C} = B \cup B' = \left\{b_1, b_2, b_3\right\} = \left\{ \frac{1}{\sqrt{3}}\begin{pmatrix} 1 \\ 1 \\ 1 \end{pmatrix}, \frac{1}{\sqrt{2}}\begin{pmatrix} -1 \\ 1 \\ 0 \end{pmatrix}, \frac{1}{\sqrt{6}}\begin{pmatrix} -1 \\ -1 \\ 2 \end{pmatrix} \right\}$.
+    
+    Let $v \in V$. Because $U^\perp$ is a complement of $U$, we can write $v$ as the unique sum $v = u + u'$ with $u \in U$ and $u' \in U^\perp$. We can write $u$ and $u'$ as unique linear combinations using the respective bases.
+    $$
+        u = a_1b_1 + a_2b_2,\ u' = a_3b_3 \quad \text{for some } a_1,a_2,a_3 \in \R
+    $$
+
+    In the basis $B$, the orthogonal projection onto $U$ simply takes a vector $(a_1, a_2, a_3)^T$ and simply drops the last component, setting it to zero. So, the representation matrix is
+    $$
+        \boxed{[P_U]_{\mathcal{C}}^{\mathcal{C}} = 
+        \begin{pmatrix}
+            1 & 0 & 0 \\
+            0 & 1 & 0 \\
+            0 & 0 & 0
+        \end{pmatrix}}
+    $$
+
+    Similarly for the orthogonal projection onto $U^\perp$:
+    $$
+        \boxed{[P_{U^\perp}]_{\mathcal{C}}^{\mathcal{C}} = 
+        \begin{pmatrix}
+            0 & 0 & 0 \\
+            0 & 0 & 0 \\
+            0 & 0 & 1
+        \end{pmatrix}}
+    $$
+
+    We would now like to write these matrices in the standard basis $\mathcal{E}$ of $\R^3$. For this, try to find the change of basis matrix $[\mathrm{id}_V]_{\mathcal{C}}^{\mathcal{E}}$. By definition,
+    $$
+    \begin{aligned}
+        [\mathrm{id}_V]_{\mathcal{E}}^{\mathcal{C}} &=  \begin{pmatrix} | & | & | \\ [\mathrm{id}_V(b_1)]_{\mathcal{E}} & [\mathrm{id}_V(b_2)]_{\mathcal{E}} & [\mathrm{id}_V(b_3)]_{\mathcal{E}} \\ | & | & | \end{pmatrix}
+        = \begin{pmatrix} | & | & | \\ [b_1]_{\mathcal{E}} & [b_2]_{\mathcal{E}} & [b_3]_{\mathcal{E}} \\ | & | & | \end{pmatrix} \\
+        &= 
+        \begin{pmatrix}
+            \frac{1}{\sqrt{3}} & -\frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{6}} \\
+            \frac{1}{\sqrt{3}} & \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{6}} \\
+            \frac{1}{\sqrt{3}} & 0 & \frac{2}{\sqrt{6}}
+        \end{pmatrix}
+        = 
+        \begin{pmatrix}
+            \frac{\sqrt{2}}{\sqrt{6}} & -\frac{\sqrt{3}}{\sqrt{6}} & -\frac{1}{\sqrt{6}} \\
+            \frac{\sqrt{2}}{\sqrt{6}} & \frac{\sqrt{3}}{\sqrt{6}} & -\frac{1}{\sqrt{6}} \\
+            \frac{\sqrt{2}}{\sqrt{6}} & 0 & \frac{2}{\sqrt{6}}
+        \end{pmatrix} \\
+        &= \frac{1}{\sqrt{6}} 
+        \begin{pmatrix} 
+            \sqrt{2} & -\sqrt{3} & -1 \\ 
+            \sqrt{2} & \sqrt{3} & -1 \\ 
+            \sqrt{2} & 0 & 2 
+        \end{pmatrix}
+    \end{aligned}
+    $$
+
+    Because these vectors come from an orthonormal basis of $V$, the matrix $[\mathrm{id}_V]_{\mathcal{E}}^{\mathcal{C}}$ is actually orthogonal. So $[\mathrm{id}_V]_{\mathcal{C}}^{\mathcal{E}} = \left([\mathrm{id}_V]_{\mathcal{E}}^{\mathcal{C}}\right)^{-1} = \left([\mathrm{id}_V]_{\mathcal{E}}^{\mathcal{C}}\right)^T$. This means:
+    $$
+    \begin{aligned}
+        [P_U]_{\mathcal{E}}^{\mathcal{E}} &= [\mathrm{id}_V]_{\mathcal{E}}^{\mathcal{C}}  \cdot [P_U]_{\mathcal{C}}^{\mathcal{C}}\cdot \left([\mathrm{id}_V]_{\mathcal{E}}^{\mathcal{C}}\right)^{-1} = \left([\mathrm{id}_V]_{\mathcal{C}}^{\mathcal{E}}\right)^T \cdot [P_U]_{\mathcal{C}}^{\mathcal{C}} \cdot [\mathrm{id}_V]_{\mathcal{C}}^{\mathcal{E}} \\
+        &= 
+        \frac{1}{\sqrt{6}} 
+        \begin{pmatrix} 
+            \sqrt{2} & -\sqrt{3} & -1 \\ 
+            \sqrt{2} & \sqrt{3} & -1 \\ 
+            \sqrt{2} & 0 & 2 
+        \end{pmatrix}
+         \cdot 
+        \begin{pmatrix}
+            1 & 0 & 0 \\
+            0 & 1 & 0 \\
+            0 & 0 & 0
+        \end{pmatrix} \cdot
+        \frac{1}{\sqrt{6}}
+        \begin{pmatrix} 
+            \sqrt{2} & \sqrt{2} & \sqrt{2} \\ 
+            -\sqrt{3} & \sqrt{3} & 0 \\ 
+            -1 & -1 & 2 
+        \end{pmatrix} \\
+        &= \frac{1}{6}
+        \begin{pmatrix} 
+            \sqrt{2} & -\sqrt{3} & -1 \\ 
+            \sqrt{2} & \sqrt{3} & -1 \\ 
+            \sqrt{2} & 0 & 2 
+        \end{pmatrix} \cdot
+        \begin{pmatrix}
+            \sqrt{2} & \sqrt{2} & \sqrt{2} \\
+            -\sqrt{3} & \sqrt{3} & 0 \\
+            0 & 0 & 0
+        \end{pmatrix} \\
+        &= \boxed{\frac{1}{6}
+        \begin{pmatrix}
+            5 & -1 & 2 \\
+            -1 & 5 & 2 \\
+            2 & 2 & 2
+        \end{pmatrix}}
+    \end{aligned}
+    $$
+
+    And for $P_{U^\perp}$, we can use the property $P_U + P_{U^\perp} = \mathrm{id}_V \iff P_{U^\perp} = \mathrm{id}_V - P_U$: 
+
+
+    $$
+    \begin{aligned}
+        [P_{U^\perp}]_{\mathcal{E}}^{\mathcal{E}} &= I_3  - [P_U]_{\mathcal{E}}^{\mathcal{E}} \\
+        &= \begin{pmatrix}
+            1 & 0 & 0 \\
+            0 & 1 & 0 \\
+            0 & 0 & 1
+        \end{pmatrix} - \frac{1}{6}
+        \begin{pmatrix}
+            5 & -1 & 2 \\
+            -1 & 5 & 2 \\
+            2 & 2 & 2
+        \end{pmatrix}
+        = \frac{1}{6} \left( \begin{pmatrix}
+            6 & 0 & 0 \\
+            0 & 6 & 0 \\
+            0 & 0 & 6
+        \end{pmatrix} - 
+        \begin{pmatrix}
+            5 & -1 & 2 \\
+            -1 & 5 & 2 \\
+            2 & 2 & 2
+        \end{pmatrix} \right) \\
+        &= \boxed{\frac{1}{6}
+        \begin{pmatrix}
+            1 & 1 & -2 \\
+            1 & 1 & -2 \\
+            -2 & -2 & 4
+        \end{pmatrix}}
+    \end{aligned}
+    $$ \qed
+\end{enumerate}
+
+\begin{problem}{}{}
+    For each of the following vector spaces $V$ endowed with the inner product $\langle \cdot, \cdot \rangle$ find $U^\perp$ for the given subset $U$:
+    \begin{enumerate}[label=\alph*)]
+        \item First consider
+        $$
+            V = \left\{ (a_0,a_1,a_2,\dots)\ \big|\ \sum_{n = 0}^{\infty} |a_n|^2 < \infty \right\}, \quad \langle (a_n)_{n = 0}^{\infty}, (b_n)_{n = 0}^{\infty} \rangle = \sum_{n = 0}^{\infty} a_n \cdot b_n
+        $$
+        $$
+            U = \left\{ (a_n)_{n = 0}^{\infty} \in V \ \big|\ \exists N \geq 0 \text{ s.t. } \forall m \geq N : a_m = 0 \right\}
+        $$
+
+        \item Secondly, we set
+        $$
+            V = C([0, 1]),\quad \langle f, g \rangle = \int_{0}^{1} f(x) \cdot g(x) \dd x,
+        $$
+        $$
+            U = \left\{ f \in V \ \big|\ \int_{0}^{\frac{1}{2}} f(x) \dd x = 0 \right\}
+        $$
+    \end{enumerate}
+\end{problem}
+
+\begin{enumerate}[label=\alph*)]
+    \item $V$ is the vector space of sequences that are finite when summed over the square of each element. $U$ is the set of all sequences that are eventually zero.
+    
+    Fix an arbitrary $v = (b_0, b_1, b_2, \dots) \in U^\perp$. Because $v \in U^\perp$, its inner product with any sequence in $U$ must be zero. Try some sequences in $U$:
+
+    Consider for example the standard basis sequences 
+    $$
+        e_0 = (1, 0, 0, \dots),\ e_1 = (0, 1, 0, \dots),\ \dots
+    $$
+    these sequences are in $U$ because they are eventually zero. $\langle v, e_i \rangle = b_i$, the product of all other indices is zero. Because all $e_i$ are in $U$, we need that $\langle v, e_i \rangle = 0$ for all $i = 1,2,3,\dots$. But this implies that $b_i = 0$ for all $i=1,2,3,\dots$. So it must be that $v = 0$.
+
+    Check that $v = 0$ is actually perpendicular to $U$: Let $u \in U$. Then, $\langle u, 0 \rangle = 0$. So $0 \perp u$ for all $u \in U$.
+
+    We can conclude: $U^\perp = \{0_V\}$
+
+    \item $V$ is the vector space of continuous functions on the closed interval $[0, 1]$. $U$ is the set of functions such that the integral from $0$ to $\frac{1}{2}$ of $f$ is zero.
+    
+    We know that, for example, any piecewise function $f$ defined the following way is in $U$:
+    $$
+        f(x) = \begin{cases}
+            0 & x \in [0, \frac{1}{2}] \\
+            F(X) & x \in [\frac{1}{2}, 1]
+        \end{cases}
+    $$
+
+    where $F(X)$ is any continuous function such that $F(\frac{1}{2}) = 0$.
+
+    Let $p \in U^\perp$. Note that, in order for $p$ to be perpendicular to $U$, it must be perpendicular to every such function $f$. This means that
+    $$
+        \langle f, p \rangle \overset{!}= 0 \iff \int_0^1 f(x) \cdot p(x) \dd x \overset{!}= 0
+    $$
+
+    We have that
+    $$
+    \begin{aligned}
+        \int_0^1 f(x) \cdot p(x) \dd x &= \int_{0}^{\frac{1}{2}} f(x) \cdot p(x) \dd x + \int_{\frac{1}{2}}^1 f(x) \cdot p(x) \dd x \\
+        &= \int_{0}^{\frac{1}{2}} 0 \cdot p(x) \dd x + \int_{\frac{1}{2}}^1 F(x) \cdot p(x) \dd x = \int_{\frac{1}{2}}^1 F(x) \cdot p(x) \dd x
+    \end{aligned}
+    $$
+
+    So, in order for $p$ to be in $U^\perp$, we need
+    $$
+        \int_{\frac{1}{2}}^1 F(x) \cdot p(x) \dd x \overset{!}= 0
+    $$
+
+    Choose for instance $F(x) := (x - \frac{1}{2}) \cdot p(x)$. This function is continuous and has $F(\frac{1}{2}) = 0$. Then we need $p$ such that
+    $$
+        \int_{\frac{1}{2}}^1 (x - \frac{1}{2}) \cdot (p(x))^2 \dd x \overset{!}= 0
+    $$
+
+    Because this function is non-negative and continuous, there is no way for this integral to be zero unless $p|_{[\frac{1}{2}, 1]} \equiv 0$.
+
+    What about $p$ on the interval $[0, \frac{1}{2}]$? We know that the following must hold for all $g \in U$:
+    $$
+    \begin{aligned}
+        \int_0^1 g(x) \cdot p(x) \dd x &= \int_{0}^{\frac{1}{2}} g(x) \cdot p(x) \dd x + \int_{\frac{1}{2}}^1 g(x) \cdot p(x) \dd x \\
+        &= \int_{0}^{\frac{1}{2}} g(x) \cdot p(x) \dd x + \int_{\frac{1}{2}}^1 g(x) \cdot 0 \dd x = \int_{0}^{\frac{1}{2}} g(x) \cdot p(x) \dd x \overset{!}= 0\\
+    \end{aligned}
+    $$
+
+    We know that because $g \in U$, we have $\int_0^{\frac{1}{2}} g(x) \dd x = 0$. Show that $p$ must be constant on $[0, \frac{1}{2}]$. If it is constant on this interval, then its value must be equal to its average value over the interval. Compute this average value the following way:
+    $$
+        c = \frac{1}{\frac{1}{2} - 0} \int_{0}^{\frac{1}{2}} p(x) \dd x = 2 \int_{0}^{\frac{1}{2}} p(x) \dd x
+    $$
+
+    Rearranging this gives us
+    $$
+        \int_{0}^{\frac{1}{2}} p(x) \dd x = \frac{c}{2}
+    $$
+
+    Let $h(x) = p(x) - c$ be the difference between $p$ and its average. We want to show that $h \equiv 0$. We can show that $g \in U$:
+    $$
+        \int_0^{\frac{1}{2}} h(x) \dd x =  \int_0^{\frac{1}{2}} \left(p(x) - c\right) \dd x = \int_0^{\frac{1}{2}} p(x) \dd x - \int_0^{\frac{1}{2}} c \dd x = \frac{c}{2} - \frac{c}{2} = 0 
+    $$
+
+    At the end, we used the identity $\int_{0}^{\frac{1}{2}} p(x) \dd x = \frac{c}{2}$. Because $h \in U$ and $p \in U^\perp$, we know that their inner product is zero:
+    $$
+        \langle p, h \rangle = \int_0^1 p(x) \cdot h(x) \dd x = \int_0^{\frac{1}{2}} p(x) \cdot h(x) \dd x + \int_\frac{1}{2}^1 p(x) \cdot h(x) \dd x = 0
+    $$
+
+    We already know that $p \equiv 0$ on $[\frac{1}{2}, 1]$. So we have
+    $$
+        \int_0^{\frac{1}{2}} p(x) \cdot h(x) \dd x  = 0
+    $$
+
+    We showed above that 
+    $$
+        \int_0^{\frac{1}{2}} h(x) \dd x = 0 \iff c \cdot \int_0^{\frac{1}{2}} h(x) \dd x = 0 \iff \int_0^{\frac{1}{2}} c\cdot h(x) \dd x = 0
+    $$
+
+    So, we can write:
+    $$
+    \begin{aligned}
+        &\int_0^{\frac{1}{2}} p(x) \cdot h(x) \dd x - \int_0^{\frac{1}{2}} c\cdot h(x) \dd x = 0 - 0 \\
+        &\iff \int_0^{\frac{1}{2}} h(x) \left( p(x) - c \right) \dd x = 0 \\
+        &\iff \int_0^{\frac{1}{2}} (h(x))^2 \dd x = 0
+    \end{aligned}
+    $$
+
+    Because $h(x) \in \R$, $(h(x))^2$ is a non-negative function. The Riemann integral of a non-negative function $g$ is zero iff $g \equiv 0$.
+
+    So $g(x) = p(x) - c = 0$ for all $x \in [0, \frac{1}{2}]$. Therefore, $p$ is a constant function on $[0, \frac{1}{2}]$.
+    
+    Now, in order for $p \in C^1([0, 1])$ to hold, we need $p$ to be continuous at $\frac{1}{2}$. This means that the constant value $c$ of $p$ must be zero, such that we do not have a discontinuity at $\frac{1}{2}$.
+
+    Thus, we have shown that $p \in U^\perp \implies p \equiv 0$. Thus, $U^\perp = \{0_V\}$. \qed
+
+\end{enumerate}
+
+\begin{problem}{}{}
+    For a finite-dimensional Euclidean vector space $(V, \langle \cdot, \cdot \rangle)$, consider the isomorphism
+    $$
+        \delta: V \rightarrow V^* := Hom_\R(V,\R),\quad v \mapsto \delta(v) := \langle v, \cdot \rangle
+    $$
+
+    \begin{enumerate}[label=\alph*)]
+        \item Show that there exists exactly one inner product $\langle \cdot, \cdot \rangle^*$ on $V^*$ such that $\delta$ is an isometry.
+        \item Let $B$ be an ordered basis of $V$, and let $B^*$ be the corresponding dual basis of $V^*$. Give the representation matrix of $\langle \cdot, \cdot \rangle^*$ with respect to $B^*$ in terms of the representation matrix of $\langle \cdot, \cdot \rangle$ with respect to $B$.
+    \end{enumerate}
+\end{problem}
+
+\begin{enumerate}[label=\alph*)]
+    \item 
+    \begin{itemize}
+        \item \underline{Existence}: We want to show that there exists an inner product $\langle \cdot, \cdot \rangle^*$ such that $\delta$ is an isometry, i.e.
+        $$
+            \forall v, w \in V^*,\ \langle \delta^{-1}(v), \delta^{-1}(w) \rangle = \langle v, w \rangle^*
+        $$
+
+        Let's simply define our inner product $\langle \cdot, \cdot \rangle^*$ such that the above holds. For any $v, w \in V^*$, define
+        $$
+            \langle v, w \rangle^* := \langle \delta^{-1}(v), \delta^{-1}(w) \rangle
+        $$
+
+        Show that this is an inner product:
+        \begin{itemize}
+            \item \underline{Linearity in the first variable}: Let $v_1, v_2, w \in V^*,\ \alpha \in \R$. Then, by linearity of $\delta^{-1}$ and of the inner product on $V$,
+            $$
+            \begin{aligned}
+                \langle \alpha \cdot v_1 + v_2, w \rangle^* &= \langle \delta^{-1}(\alpha \cdot v_1 + v_2), \delta^{-1}(w) \rangle = \langle \alpha \delta^{-1}(v_1) + \delta^{-1}(v_2), \delta^{-1}(w) \rangle \\
+                &= \alpha \cdot \langle \delta^{-1}(v_1), \delta^{-1}(w) \rangle + \langle \delta^{-1}(v_2), \delta^{-1}(w) \rangle \\
+                &= \alpha \cdot \langle v_1, w \rangle^* + \langle v_2, w \rangle^*
+            \end{aligned}
+            $$
+            So we have linearity in the first variable.
+            
+            \item \underline{Symmetry}: Let $v, w \in V^*$. Then, by symmetry of the inner product on $V$,
+            \[
+            \begin{aligned}
+                \langle w, v \rangle^* = \langle \delta^{-1}(w), \delta^{-1}(v) \rangle = \langle \delta^{-1}(v), \delta^{-1}(w) \rangle = \langle v, w \rangle^*
+            \end{aligned}
+            \]
+
+            So we have symmetry.
+
+            \item \underline{Linearity in the second variable}: Let $v, w_1, w_2 \in V^*,\ \alpha \in \R$. We can apply the previously shown properties:
+            \[
+            \begin{aligned}
+                \langle v, \alpha w_1 + w_2 \rangle^* &= \langle \alpha w_1 + w_2, v \rangle^* = \alpha \cdot \langle w_1, v \rangle^* + \langle w_2, v \rangle^* \\
+                &= \alpha \cdot \langle v, w_1 \rangle^* + \langle v, w_2 \rangle^*
+            \end{aligned}
+            \]
+
+            So we have linearity in the second variable.
+
+            \item \underline{Positive definiteness}: Let $v \in V^*$ with $v \neq 0$. Because $\delta$ is an isomorphism, if $v \neq 0$, then $\delta^{-1} \neq 0$. So, by positive definiteness of the inner product on $V$, we have
+            \[
+            \begin{aligned}
+                \langle v, v \rangle^* = \langle \delta^{-1}(v), \delta^{-1}(v) \rangle > 0
+            \end{aligned}
+            \]
+        \end{itemize}
+
+        So, $\langle \cdot, \cdot \rangle^*$ as defined above is an inner product. By definition, $\delta$ is an isometry with respect to it. So we have proven existence.
+
+        \item \underline{Uniqueness}: Assume there exist $\langle \cdot, \cdot \rangle^*_1$ and $\langle \cdot, \cdot \rangle^*_2$ such that $\delta$ is an isometry with respect to both, i.e. that
+        \[
+        \begin{aligned}
+            \forall v, w \in V^*,\ \langle \delta^{-1}(v), \delta^{-1}(w) \rangle = \langle v, w \rangle^*_1 \quad \text{and} \quad \langle \delta^{-1}(v), \delta^{-1}(w) \rangle = \langle v, w \rangle^*_2
+        \end{aligned}
+        \]
+
+        Then, for all $v, w \in V^*$
+        \[
+        \begin{aligned}
+            \langle \delta^{-1}(v), \delta^{-1}(w) \rangle = \langle \delta^{-1}(v), \delta^{-1}(w) \rangle \implies \langle v, w \rangle^*_1 = \langle v, w \rangle^*_2
+        \end{aligned}
+        \]
+
+        So all of their values are the same, hence they are the same inner product.
+    \end{itemize}
+
+    We have shown that there exists only one such inner product $\langle \cdot, \cdot \rangle^*$.
+
+    \item Denote $B = (b_1,\dots,b_n)$, $B^* = (\beta_1,\dots,\beta_n)$.
+    
+    The representation matrix of $\langle \cdot, \cdot \rangle$ with respect to $B$ is the matrix $A = (a_{ij})_{i,j}$, with $a_{ij} = \langle b_i, b_j \rangle$, where $b_k \in B$ is the basis vector with index $k$.
+    
+    Similarly, the representation matrix of $\langle \cdot, \cdot \rangle^*$ with respect to $B^*$ must be the matrix $A^* = (a^*_{ij})_{i, j}$ with $a^*_{ij} = \langle \beta_i, \beta_j \rangle^*$, where $\beta_k \in B^*$ is the basis vector with index $k$.
+
+    Note that
+    \[
+    \begin{aligned}
+        a^*_{ij} = \langle \beta_i, \beta_j \rangle^* = \langle \delta^{-1}(\beta_i), \delta^{-1}(\beta_j) \rangle
+    \end{aligned}
+    \]
+
+    For a basis vector $b_k$, $\delta$, we have:
+    \[
+    \begin{aligned}
+        \delta(b_k) = \langle b_k, \cdot \rangle \in V^*
+    \end{aligned}
+    \]
+
+    Because $\delta(b_k)$ is just a functional in $V^*$, we can write it uniquely as a linear combination of the basis vectors for $V^*$:
+    \[
+    \begin{aligned}
+        \delta(b_k) = c_1\beta_1 + \dots + c_n \beta_n
+    \end{aligned}
+    \]
+
+    For the dual basis, we have that $\beta_i(b_j) = \delta_{ij}$. So,
+    \[
+    \begin{aligned}
+        (\delta(b_k))(b_m) &= (c_1\beta_1 + \dots + c_n \beta_n)(b_m) = (c_1\beta_1)(b_m) + \dots + (c_n \beta_n)(b_m) \\
+        &= c_1\underbrace{(\beta_1(b_m))}_{= 0} + \dots +c_m \underbrace{(\beta_m(b_m))}_{= 1} + \dots + c_n \underbrace{(\beta_n(b_m))}_{= 0} = c_m
+    \end{aligned}
+    \]
+
+    So $(\delta(b_k))(b_m) = c_m$. This means if we feed $\delta(b_k)$ a basis vector $b_m$, it will give us the $m$th coordinate of $\delta(b_k)$ in the basis $B^*$. If we connect this back to the definition of $\delta$, this means
+    \[
+    \begin{aligned}
+        (\delta(b_k))(b_m) = \langle b_k, b_m \rangle = a_{km} = c_m 
+    \end{aligned}
+    \]
+
+    So $(\delta(b_k))(b_m)$ also happens to be the entry of $A$ at the index $k, m$. So we can now fill in the coefficients for the linear combination representing $\delta(b_k)$:
+    \[
+    \begin{aligned}
+        \delta(b_k) = a_{k, 1}\beta_1 + \dots + a_{k, n}\beta_n = \langle b_k, \cdot \rangle
+    \end{aligned}
+    \]
+
+    This means $A$ is also the representation matrix of $\delta$. Because $\delta$ is an isomorphism, its inverse exists, so the representation matrix of $\delta^{-1}$ must be $A^{-1}$. Denote the entries of $A^{-1}$ as $d_{ij}$. This means
+    \[
+    \begin{aligned}
+        \delta^{-1}(\beta_i) = d_{i1} b_1 + \dots + d_{in} b_n
+    \end{aligned}
+    \]
+    
+    So, we can write:
+    \[
+    \begin{aligned}
+        a^*_{ij} &= \langle \beta_i, \beta_j \rangle^* = \langle \delta^{-1}(\beta_i), \delta^{-1}(\beta_j) \rangle = \langle \sum_{l = 1}^{n} d_{il} b_l, \sum_{m = 1}^{n} d_{jm} b_m \rangle \\
+        &= \sum_{l = 1}^{n} d_{il} \langle b_l, \sum_{m = 1}^{n} d_{jm} b_m \rangle = \sum_{l = 1}^{n} \sum_{m = 1}^{n} d_{il} d_{jm} \langle b_l, b_m \rangle \\
+        &= \sum_{l = 1}^{n} \sum_{m = 1}^{n} d_{il} d_{jm} a_{lm}
+    \end{aligned}
+    \]
+
+    $A$ is symmetric, so $A^T = A$. Then, $(A^{-1})^T = (A^T)^{-1} = A^{-1}$, so $A^{-1}$ is also symmetric. Therefore, $d_{jm} = d_{mj}$. So,
+    \[
+    \begin{aligned}
+        a^*_{ij} &= \sum_{l = 1}^{n} \sum_{m = 1}^{n} d_{il} d_{jm} a_{lm} = \sum_{l = 1}^{n} \sum_{m = 1}^{n} d_{il} d_{jm} a_{ml} = \sum_{l = 1}^{n} d_{il} \sum_{m = 1}^{n} d_{jm} a_{ml} \\
+        &= \sum_{l = 1}^{n} d_{il} \left((A^{-1}_{jm}) \cdot (A)_{ml}\right) = \sum_{l = 1}^{n} d_{il} I_{jl}
+    \end{aligned}
+    \]
+
+    $I_{jl} = 1$ only when $j = l$ and is zero otherwise, so
+    \[
+    \begin{aligned}
+        a^*_{ij} &= \sum_{l = 1}^{n} d_{il} I_{jl} = d_{ij}
+    \end{aligned}
+    \]
+
+    So, we have shown that the representation matrix $A^*$ of $\langle \cdot, \cdot \rangle^*$ in the basis $B^*$ is equal to the inverse of $A$:
+    \[
+    \begin{aligned}
+        A^* = A^{-1}
+    \end{aligned}
+    \]
+
+    \qed
+\end{enumerate}
+
+\newpage
+
+\section*{Single choice}
+
+\begin{problem}{}{}
+    Consider the vector space $\R^2$ endowed with the standard scalar product $\langle \cdot, \cdot \rangle$ and the corresponding norm $\lVert \cdot \rVert$. For which vectors do we have $\lVert v + w \rVert = \lVert v \rVert + \lVert w \rVert$?
+\end{problem}
+
+Simply compute: we find that option (d) works.
+
+\begin{problem}{}{}
+    Let $V$ be a Euclidean vector space and let $v_1,v_2,v_3 \in V$. Which assertion does not hold in general?
+\end{problem}
+
+(a) is false: consider the vectors $v_1 = (1, 0)^T,\ v_2 = (0, 1)^T$ and $v_3 = (2, 0)^T$. Then, $v_1 \perp v_2$ and $v_2 \perp v_3$, but $v_1 \not\perp v_3$
+
+\begin{problem}{}{}
+    Let $V$ be a Euclidean vector space and let $S, T \subset V$ be two subsets. Which of the following properties is not equivalent to the other three?
+\end{problem}
+
+(d) is not equivalent to the other statements, because a regular (not orthogonal) complement of $S$ would also satisfy this, but is not orthogonal.
+
+\begin{problem}{}{}
+    Let $S$ be a subset of a finite-dimensional Euclidean vector space $V$. Which assertion does not hold in general?
+\end{problem}
+
+(b) is false in general. $S$ is not necessarily a subspace, and if it isn't a subspace, then it cannot be the orthogonal complement of a subspace of $V$.
+
+\section*{Multiple choice}
+
+\begin{problem}{}{}
+    Which of the following matrices are Hermitian?
+\end{problem}
+
+A matrix $A$ is Hermitian if $A^* := (\overline{A})^T = A$.
+
+(a) is Hermitian (or rather: symmetric)
+
+(b) is \textbf{not} Hermitian
+
+(c) is \textbf{not} Hermitian
+
+(d) is Hermitian
+
+\begin{problem}{}{}
+    Which of the following matrices are unitary?
+\end{problem}
+
+(a) is \textbf{not} unitary, its columns are not normalised.
+
+(b) is a unitary matrix.
+
+(c) is \textbf{not} a unitary matrix.
+
+(d) is a unitary matrix.
+
+\begin{problem}{}{}
+    Let $U, V$ be unitary $n \times n$ matrices, and let $\lambda = e^{2\pi i \theta},\ \theta \in \R$. In general, which of the following statements hold?
+\end{problem}
+
+(a) does \textbf{not} hold, this can break orthonormality of the columns.
+
+(b) holds, because $|\lambda| = 1$
+
+(c) holds, because $U^{-1} = U^*$, and $U^* \cdot U = I$, so we can reverse the roles of $U$ and $U^*$, proving they are both unitary.
+
+(d) holds. $(UV)^*(UV) = V^*U^*UV = V^* V = I$. So $UV$ is unitary.
+
+\end{document}

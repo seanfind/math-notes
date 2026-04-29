@@ -1,0 +1,232 @@
+\documentclass[12pt]{article}
+\usepackage{seantex}
+
+% --- Document Info ---
+\title{Grundstrukturen: Woche 10}
+\author{Sean Findlay}
+\date{\today}
+
+% --- Start Document ---
+\begin{document}
+
+\maketitle
+
+\section{Graphentheorie}
+
+\subsection{Knoten, Kanten, Grade}
+
+\begin{definition}{Graph}{}
+    Din Graph ist eine Menge $V$, die sogennanten Knoten, zusammmen mit einer Teilmenge $E \subseteq V \times V$, den sogennanten Kanten.
+
+    \begin{itemize}
+        \item Zwei Knoten heissen \textbf{adjazent}, falls $\langle x, y \rangle \in E$.
+        \item Ein Graph $G = (V, E)$ ist \textbf{ungerichtet}, falls $E$ symmetrisch ist, d.h. $\langle x, y \rangle \in E \iff \langle y, x \rangle \in E$.
+        \item Ein Graph $G$ heisst \textbf{gerichtet} oder ein Digraph, falls er nicht ungerichtet ist.
+        \item Eine Kante von der Form $\langle x, x \rangle \in E$ heisst \textbf{Schlinge} (engl. \textit{loop}). Ein Graph $G$ heisst \textbf{schlingenfrei}, falls er keine Schlingen besitzt.
+        \item Falls $G = (V, E_0, \dots, E_k)$, so kann es zwischen zwei Knoten mehrere Kanten geben, die verschieden sind. Solche Kanten heissen \textbf{Mehrfachkanten}.
+        \item Ein Graph ohne Schlingen und Mehrfachkanten heisst \textbf{schlicht}.
+    \end{itemize}
+\end{definition}
+
+\begin{example}{}{}
+    \begin{itemize}
+        \item (Graph mit zwei Knoten und einer Kante] ist schlicht
+        \item (Graph mit zwei Knoten und zwei Kanten] ist nicht schlicht
+        \item (Dreieck] ist schlicht
+        \item (Graph mit zwei Knoten, eine Kante und eine Schlinge] ist nicht schlicht
+    \end{itemize}
+\end{example}
+
+\begin{definition}{Adjazenzmatrix}{}
+    Sei $G = (V, E)$ eine endlicher Graph, d.h. $|V|$ ist endlich. Die \textbf{Adjazenzmatrix} $A(G) = (a_{ij})$ ist gegeben durch
+    $$
+        a_{ij} = \begin{cases}
+            1 & \text{falls } \langle v_i, v_j \rangle \in E \\
+            0 & \text{sonst}
+        \end{cases}
+    $$
+
+    für $V = \{v_1,\dots,v_n\}$.
+
+    Falls $G = (V, E_0,\dots,E_k)$, $|V|$ endlich. Sei $G_l := (V, E_l)$. Definiere $A(G) = \sum A(G_l)$
+\end{definition}
+
+\begin{example}{}{}
+    (Graph mit 4 Knoten 1,2,3,4, alle im Kreis verbunden)
+
+    $$
+        A(G) = \begin{pmatrix}
+            0 & 1 & 0 & 0 \\
+            0 & 0 & 1 & 0\\
+            0 & 0 & 0 & 1\\
+            1 & 0 & 0 & 0
+        \end{pmatrix}
+    $$
+\end{example}
+
+\begin{example}{}{}
+    (Graph mit zwei Knoten, beide zwei mal verbunden) 
+    $$
+        A(G) = \begin{pmatrix}
+            0 & 1 \\
+            0 & 0
+        \end{pmatrix} + \begin{pmatrix}
+            0 & 1 \\
+            0 & 0
+        \end{pmatrix} = \begin{pmatrix}
+            0 & 2 \\
+            0 & 0
+        \end{pmatrix}
+    $$
+\end{example}
+
+\begin{example}{Königsberger Brückenproblem}{}
+    (1 2 3 übereinander, 4 rechts. (1,2) und (2, 3) jeweils doppelt verbunden, alle anderen einfach)
+    $$
+        A(G) = \begin{pmatrix}
+            0 & 2 & 0 & 1\\
+            2 & 0 & 2 & 1\\
+            0 & 2 & 0 & 1\\
+            1 & 1 & 1 & 0
+        \end{pmatrix}
+    $$
+\end{example}
+
+\begin{remark}{}{}
+    \begin{itemize}
+        \item $A(G) = (A_{ij})$ Adjazenzmatrix, dann gilt $a_{ij} \geq 0$ und $a_ij \in \omega$.
+        \item $G$ ist schlingenfrei $\iff A_{ii} = 0$ für alle $i$ $ \iff \mathrm{Tr}(A(G)) = 0$
+    \end{itemize}
+\end{remark}
+
+\begin{remark}{}{}
+    $G$ ist ungerichtet $\iff A(G)$ ist symmetrisch.
+\end{remark}
+
+\begin{definition}{Grad für Digraphen}{}
+    Sei $G = (V, E)$ ein Digraph. Für $x \in V$, sei 
+    \begin{itemize}
+        \item $\Gamma^+(x) := \{ y \in V : \langle x, y \rangle \in E \}$
+        \item $\Gamma^-(x) := \{ y \in V : \langle y, x \rangle \in E \}$
+    \end{itemize}
+    Seien
+    \begin{itemize}
+        \item $\deg^+(x) := |\Gamma^+(x)|$ der \textbf{positive Halbgrad}
+        \item $\deg^-(x) := |\Gamma^-(x)|$ der \textbf{negative Halbgrad}
+        \item $\deg(x) := \deg^+(x) + \deg^-(x)$
+    \end{itemize}
+\end{definition}
+
+\begin{example}{}{}
+    (Ein Knoten mit einer Schlinge) $\deg(x) = 2$
+\end{example}
+
+\begin{definition}{Grad für ungerichtete Graphen}{}
+    Sei $G = (V, E)$ ungerichtet. Definiere $\Gamma(x) := \{y \in V : \{x, y\} \in E\}$, und der Grad $\deg(x) := |\Gamma(x)|$
+
+    Falls $G = (V, E_0,\dots,E_k)$, dann definiert man analog: $\deg_G(x) = \deg_{G_0}(x) + \dots + \deg_{G_k}(x)$
+\end{definition}
+
+\begin{definition}{Reguläre und vollständige Graphen}{}
+    Ein ungerichteter Graph $G = (V, E)$ heisst
+    \begin{itemize}
+        \item \textbf{regulär} vom Grad $r$, falls $\deg(x)=r$ ist für alle $x \in V$.
+        \item \textbf{vollständig}, falls für alle $x, y \in V$ gilt ${x, y} \in E$.
+    \end{itemize}
+\end{definition}
+
+\begin{example}{}{}
+    \begin{itemize}
+        \item (Viereck, alles einfach verbunden) ist regulär von Grad $2$.
+        \item (Unendlich tiefer Baum mit immer drei Kindern) ist regulär von Grad $3$.
+        \item (Drei Knoten, jeder ist mit den anderen beiden verbunden) ist vollständig
+    \end{itemize}
+\end{example}
+
+\begin{notebox}{Notation}{}
+    $K_n$ ist der vollständige schlichte Graph mit $n$ Knoten.
+\end{notebox}
+
+\begin{example}{}{}
+    $K_4$: (Quadrat mit Kreuz in der Mitte)
+\end{example}
+
+\begin{remark}{}{}
+    $K_n$ ist regulär vom Grad $n-1$.
+\end{remark}
+
+\subsection{Teilgraphen, Pfeil- und Kantenzüge}
+
+\begin{definition}{Teilgraphen}{}
+    Seien $G = (V, E)$ und $G' = (V', E')$ sodass $V' \subseteq V$ und $E' \subseteq E$. Dann ist $G'$ \textbf{Teilgraph} von $G$. Wir schreiben $G' \subseteq G$.
+    \begin{itemize}
+        \item Sei $U \subseteq V$. Der \textbf{von $U$ erzeugte Teilgraph} $G_U \subseteq G$ ist der Graph mit Knoten $U$ und Kanten $\{\langle x, y \rangle \in E : \{x, y\} \subseteq U\}$
+        \item Sei $F \subseteq E$. Der \textbf{von $F$ erzeugte Teilgraph} $G_F \subseteq G$ ist der Teilgraph mit Knoten $\bigcup \{\{x, y\} \subseteq V : \langle x, y \rangle \in F\}$ und Kanten in $F$.
+    \end{itemize}
+\end{definition}
+
+\begin{definition}{Pfeilzug, Bahn, Wirbel}{}
+    Sei $G = (V, E)$ ein Digraph und sei $H \subseteq E$ eine nicht-leere, endliche Kantenteilmenge, sodass für ein $l \geq 1$ gilt: 
+    $$
+    |H| = l \quad \text{und} \quad H = \left\{ \langle x_0, x_1 \rangle,\dots,\langle x_{l-1}, x_l \rangle \right\}
+    $$
+    Der durch $H$ erzeugte Teilgraph $G_H$ heisst \textbf{Pfeilzug} von $x_0$ nach $x_l$ der Länge $l$. Der Pfeilzug $G_H$ heisst
+    \begin{itemize}
+        \item \textbf{offener Pfeilzug}, falls $x_0 \neq x_l$
+        \item \textbf{geschlossener Pfeilzug}, falls $x_0 = x_l$
+    \end{itemize}
+
+    Falls auch die $x_i$ paarweise verschieden sind, so heisst $G_H$ \textbf{Bahn} von $x_0$ nach $x_l$ der Länge $l$. Falls die $x_i$ auch paarweise verschieden sind ausser $x_0 = x_l$, so ist $G_H$ ein \textbf{Wirbel}.
+\end{definition}
+
+\begin{remark}{}{}
+    \underline{gerichtet}: Pfeilzug, Bahn, Wirbel
+
+    \underline{ungerichtet}: Kantenzug, Weg, Kreis
+\end{remark}
+
+\begin{proposition}{Potenzen der Adjazenzmatrix}{}
+    Sei $V = {v_1,\dots,v_n}$ und $G = (V, E_0,\dots,E_l)$ ein Digraph mit Adjazenzmatrix $A = A(G)$. Schreibe $A^k = (a_{ij}^{[k]})$. Dann ist $a_{ij}^{[k]}$ die Anzahl der verschiedenen Pfeilfolgen von $v_i$ nach $v_j$ der Länge $k$.
+\end{proposition}
+
+\begin{proofbox}
+    Per Induktion über $k$.
+    \begin{itemize}
+        \item \underline{$k = 1$}: gemäss Definition der Adjazenzmatrix $\checkmark$
+        \item \underline{$k \mapsto k + 1$}: Für $1 \leq i \leq n$ ist $a_{il}^{[k]}$ die Anzahl Pfeilfolgen der Länge $k$ von $v_i$ nach $v_l$. Daraus folgt: für $1 \leq i \leq n$ ist $a_{il}^{[k]} \cdot a_{ij}^{[1]}$ die Anzahl Pfeilfolgen der Länge $k + 1$ von $v_i$ nach $v_j$ via $v_l$ im letzten Schritt. 
+        
+        $\implies a_{ij}^{[k + 1]} = \sum_{l = 1}^n a_{il}^{[k]} a_{lj}^{[1]}$ ist die Anzahl Pfeilfolgen, der Länge $k + 1$ von $v_i$ nach $v_j$.
+    \end{itemize}
+\end{proofbox}
+
+\begin{example}{}{}
+    (gerichteter Graph, zwei Knoten, zwei Pfeile von 1 nach 2, ein Pfeil von 2 nach 1) $$
+    A = \begin{pmatrix}
+        0 & 2 \\
+        1 & 0
+    \end{pmatrix}, \quad A^2 = \begin{pmatrix}
+        2 & 0 \\
+        0 & 2
+    \end{pmatrix}, \quad A^3 = \begin{pmatrix}
+        0 & 4 \\
+        2 & 0
+    \end{pmatrix}
+    $$
+\end{example}
+
+\begin{proposition}{}{}
+    Sei $G = (V, E)$ ein endlicher ungerichteter Graph. Dann gilt
+    \begin{enumerate}[label=\alph*)]
+        \item Ist $|E| = m$, das heisst $|\left\{ \left\{x, y\right\} \subseteq V : \langle x, y \rangle \in E \right\}| = m$, so ist $\sum_{x \in V} \deg(x) = 2m$
+        \item Für alle Knoten $x \in V$ ist $|\{x \in V : \deg(x) \text{ ist ungerade}\}|$ gerade.
+    \end{enumerate}
+\end{proposition}
+
+\begin{proofbox}
+    \begin{enumerate}[label=\alph*)]
+        \item In $\sum_{x \in V} \deg(x)$ wird jede Kante genau zweimal gezählt.
+        \item folgt direkt aus (a).
+    \end{enumerate}
+\end{proofbox}
+
+\end{document}

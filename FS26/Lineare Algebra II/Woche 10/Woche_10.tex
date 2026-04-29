@@ -1,0 +1,213 @@
+% !TEX root = Woche_10.tex
+\documentclass[12pt]{article}
+\usepackage{seantex}
+
+% --- Document Info ---
+\title{Linear Algebra II: Woche 10}
+\author{Sean Findlay}
+\date{\today}
+
+% --- Start Document ---
+\begin{document}
+
+\maketitle
+
+\section{Dual spaces and inner products}
+
+Let $V$ be a vector space over $K$. Recall: $V^* := \mathrm{Hom}(V, K) = $ the space of all linear maps (also known as functionals) $\vphi: V \rightarrow K$.
+
+Assume that $V = K_\text{col}^n$, and let $\vphi: K_\text{col}^n \rightarrow K$ be a functional. Then,
+$$
+    \exists! A = (a_1,\dots,a_n) \in M_{1 \times n}(K),\quad \text{such that } \vphi(v) = Av \ \forall v\in K_\text{col}^n
+$$
+
+Indeed, if $e_1,\dots,e_n$ is the standard basis for $K_\text{col}^n$, then define
+$$
+    a_1 := \vphi(e_1),\dots,a_n:=\vphi(e_n).
+$$
+
+Then, if $v = \begin{pmatrix} v_1 \\ \vdots \\ v_n \end{pmatrix} \in K_\text{col}^n$, then,
+$$
+    \vphi(v) = \vphi(v_1e_1 + \dots + v_ne_n) = v_1\vphi(e_1) + \dots + v_n \vphi(e_n) = a_1v_1 + \dots + a_nv_n = A v
+$$
+
+\hrule
+
+Let $(V, \langle \cdot, \cdot \rangle)$ be an inner product space over $K$ (either real or complex). Let $u \in V$. Define 
+$$
+    \vphi_u: V \rightarrow K,\ \vphi_u(v) = \langle v, u \rangle,\ \vphi_u(\cdot) := \langle \cdot, u \rangle
+$$
+
+\begin{exercise}{}{}
+    Prove that $\vphi_u$ is linear.
+\end{exercise}
+
+so $\vphi_u \in \mathrm{Hom}(V, K) = V^*$.
+
+\begin{theorem}{}{}
+    Let $(V, \langle \cdot, \cdot \rangle)$ be a finite dimensional vector space over $K$ (real or complex). Let $\vphi \in V^*$. Then, $\exists! u \in V$ such that $\vphi = \vphi_u$, i.e. $\vphi(v) = \langle v, u \rangle \ \forall v \in V$.
+
+    In fact, we get a map 
+    $$
+        \Phi: V \rightarrow V^*,\ \Phi(u) := \vphi_u
+    $$
+
+    For $K = \R$, $\Phi$ is an iso. For $K = \C$, $\Phi$ is injective and surjective, but only $\C$-antilinear, i.e.
+    $$
+    \begin{aligned}
+        &\Phi(u_1 + u_2) = \Phi(u_1) + \Phi(u_2) \ &\forall v_1,v_2 \in V \\
+        &\Phi(c \cdot u) = \overline{c} \cdot \Phi(u) \ &\forall c \in \C,\ v \in V
+    \end{aligned}
+    $$
+
+    So, at least when $K = \R$, we get a \underline{canonical} isomorphism $V \cong V^*$, $u \longleftrightarrow \langle \cdot, u \rangle$.
+\end{theorem}
+
+Note that the existence of an isomorphism between $V$ and $V^*$ is absolutely trivial. But a canonical isomorphism is something special.
+
+\begin{proofbox}
+    Let's show that $\exists! u$ such that the above holds. Fix an orthonormal basis $e_1,\dots,e_n$ for $V$. Let $\vphi \in V^*$, let $v \in V$. We have
+    $$
+        v = \sum_{i = 1}^{n} \langle v, e_i \rangle e_i
+    $$
+
+    We can expand:
+    $$
+        \vphi(v) = \vphi\left( \sum_{i = 1}^{n} \langle v, e_i \rangle e_i \right) = \sum_{i = 1}^{n} \langle v, e_i \rangle \vphi(e_i) = \langle v, \sum_{i = 1}^{n} \overline{\vphi(e_i)} \cdot e_i \rangle
+    $$
+
+    So define
+    $$
+        u := \sum_{i = 1}^{n} \overline{\vphi(e_i)} \cdot e_i
+    $$
+
+    $\implies \vphi(v) = \langle v, u \rangle$. This holds for all $v \in V$. So $\vphi = \vphi_u$. We have thus shown the existence of $u$.
+
+    Next, show uniqueness of $u$. Suppose that $\vphi_{u_1} = \vphi_{u_2}$. This implies that $\langle v, u_1 \rangle = \langle v, u_2 \rangle \ \forall v \in V$. By a previous statement, we get that $u_1 = u_2$.
+
+    The rest is left as an exercise.
+\end{proofbox}
+
+\begin{exercise}{}{}
+    Show that $\Phi$ is linear/$\C$-antilinear.
+\end{exercise}
+
+\subsection{The adjoint map}
+
+\textbf{Recall: The dual map.} Let $V, W$ be vector spaces over $K$. Let $T: V \rightarrow W$ be a linear map. We saw that $T$ induces a new map $T^*: W^* \rightarrow V^*$ called the \underline{dual map}.
+$$
+    T^*(\vphi) := \phi \cdot T \ \forall \vphi \in W^*
+$$
+
+% https://q.uiver.app/#q=WzAsMyxbMCwwLCJWIl0sWzIsMiwiSyJdLFsyLDAsIlciXSxbMCwyLCJUIl0sWzIsMSwiXFx2YXJwaGkiXSxbMCwxLCJcXHZhcnBoaSBcXGNpcmMgVCIsMix7ImNvbG91ciI6WzAsNjAsNjBdfSxbMCw2MCw2MCwxXV1d
+\[\begin{tikzcd}
+	V && W \\
+	\\
+	&& K
+	\arrow["T", from=1-1, to=1-3]
+	\arrow["{\varphi \circ T}"', color={rgb,255:red,214;green,92;blue,92}, from=1-1, to=3-3]
+	\arrow["\varphi", from=1-3, to=3-3]
+\end{tikzcd}\]
+
+Assume now that $(V, \langle \cdot, \cdot \rangle_V)$, $(W, \langle \cdot, \cdot \rangle_W)$, are inner product spaces over $K$ (real or complex). Assume $\dim V < \infty$. Let $T: V \rightarrow W$ be a linear map. Define $T': W \rightarrow V$ using our "canonical" identifications $W \cong W^*$, $V \cong V^*$.
+
+% https://q.uiver.app/#q=WzAsNCxbMCwyLCJXIl0sWzIsMiwiViJdLFswLDAsIldeKiJdLFsyLDAsIlZeKiJdLFsyLDMsIlReKiJdLFswLDEsIlQnIiwwLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzAsMiwiXFxQaGlfVyIsMV0sWzMsMSwiXFxQaGlfVl57LTF9IiwxXV0=
+\[\begin{tikzcd}
+	{W^*} && {V^*} \\
+	\\
+	W && V
+	\arrow["{T^*}", from=1-1, to=1-3]
+	\arrow["{\Phi_V^{-1}}"{description}, from=1-3, to=3-3]
+	\arrow["{\Phi_W}"{description}, from=3-1, to=1-1]
+	\arrow["{T'}", dashed, from=3-1, to=3-3]
+\end{tikzcd}\]
+
+Define $T' := \Phi_V^{-1} \circ T^* \circ \Phi_W$
+
+\textbf{Properties of $T'$}: Note that $\Phi_V \circ T' = T^* \circ \Phi_W \implies \forall w \in W, \Phi_V \circ T'(w) = T^*(\Phi_W(w))$. $\iff \vphi_{T'(w)} = T^*(\vphi_w) \in V^* \iff \langle v, T'(w) \rangle_V = \vphi \circ T(v) \ \forall v \in V \iff \langle v, T'w \rangle_V = \langle T v, w \rangle_W$.
+
+The map $T'$ is characterised by
+$$
+    \langle T v, w \rangle_W = \langle v, T'w \rangle_V \ \forall v \in V,\ w \in W
+$$
+
+\underline{Claim: $T'$ is a linear map}.
+
+\begin{proofbox}[of claim]
+    If $K = \R$, then $\Phi_W, \Phi_V$ and $T^*$ are all linear maps, hence $T' = \Phi_V^{-1} \circ T^* \circ \Phi_W$ is also linear. If $K = \C$, then $\Phi_V$ and $\Phi_W$ are both additive and $\C$-antilinear (sesquilinear).
+
+    Recall that $T^*$ is linear. 
+
+    \[
+        T'(w_1 + w_2) = \Phi_V^{-1} \circ T^* \circ \Phi_W (w_1 + w_2) = \Phi_V^{-1} \circ T^* \circ \Phi_W(w_1) + \Phi_V^{-1} \circ T^* \circ \Phi_W(w_2)
+    \]
+
+    Let $c \in \C$, $w \in W$. We have
+    \[
+    \begin{aligned}
+        T'(c \cdot w) &= \Phi_V^{-1} \circ T^* \circ \Phi_W (c \cdot w) = \Phi_v^{-1}\left( T^* (\overline{c} \cdot \Phi_W(w)) \right) \\
+        & = \Phi_V^{-1}\left( \overline{c} \cdot T^* (\Phi_W(w)) \right) = \overline{\overline{c}} \cdot \Phi_V^{-1} \circ T^* \circ \Phi_W(w) \\
+        &= c \cdot T'(w)
+    \end{aligned}
+    \]
+
+    So $T'$ is a linear map.
+\end{proofbox}
+
+\begin{exercise}{}{}
+    If $R: X \rightarrow Y$ is a bijective additive and $\C$-antilinear map between two vector spaces $X$ and $Y$ over $\C$, if $R$ is bijective, then $R^{-1}: Y \rightarrow X$ is also additive and $\C$-antilinear. (additive means $R(x_1 + x_2) = R(x_1) + R(x_2)$)
+\end{exercise}
+
+\begin{notebox}{Notation}{}
+    Given $T: V \rightarrow W$ linear, the map $T': W \rightarrow V$ is in fact denoted by $T^*: W \rightarrow V$ (despite the notational conflict with the dual map). This map is called the \textbf{adjoint map} of $T$.
+\end{notebox}
+
+\subsubsection{Properties of the adjoint map}
+
+\begin{lemma}{}{}
+    Let $U, V, W$ be inner product spaces over $K$ (either $\R$ or $\C$). Assume all three are finite dimensional. Let $S, T: V \rightarrow W$ and $R: W \rightarrow U$ be linear maps. Then,
+    \begin{enumerate}
+        \item $T^*$ is linear.
+        \item $(S + T)^* = S^* + T^*$
+        \item $(\lambda \cdot T)^* = \overline{\lambda} \cdot T^* \ \forall \lambda \in K$
+        \item $(T^*)^* = T$
+        \item $(\mathrm{id}_V)^* = \mathrm{id}_V$
+        \item $(R \circ T)^* = T^* \circ R^*$
+    \end{enumerate}
+\end{lemma}
+
+\begin{proofbox}
+    \begin{enumerate}
+        \item has been proven already.
+        \item Let $w \in W, \ v \in V$. $\langle v, (S + T)^* w \rangle = \langle (S + T) v, w \rangle = \langle Sv + Tv, w \rangle = \langle Sv, w \rangle + \langle Tv, w \rangle = \langle v, S^* w \rangle + \langle v, T^* w \rangle = \langle v, S^* w + T^* w \rangle$. This holds $\forall v \in V$. So it follows that $(S + T)^* = S^* + T^*$.
+        \item is left as an exercise.
+        \item Let $v \in V,\ w \in W.\ \langle w, (T^*)^* v \rangle = \langle T^* w, v \rangle = \overline{\langle v, T^* w \rangle} = \overline{\langle Tv, w \rangle} = \langle w, Tv \rangle$. This holds $\forall w \in W$. So it follows that $(T^*)^* = T$.
+        \item is left as an exercise.
+        \item Let $v \in V,\ u \in U$. $\langle v, (R \circ T)^* u \rangle = \langle (R \circ T)v, u \rangle = \langle R(Tv), u \rangle = \langle Tv, R^*u \rangle = \langle v, T^* \circ R^*(u) \rangle$. This holds $\forall v \in V$, hence $(R^* \circ T^*) = T^* \circ R^*$
+    \end{enumerate}
+\end{proofbox}
+
+\begin{exercise}{}{}
+    Prove (3), (5) from the above lemma.
+\end{exercise}
+
+\begin{lemma}{}{}
+    Let $V, W$ be finite dimensional inner product spaces. Let $T: V \rightarrow W$. Consider $T^*: W \rightarrow V$ the adjoint of $T$. Then,
+    \begin{enumerate}
+        \item $\ker(T^*) = (\img T)^\perp$
+        \item $\img(T^*) = (\ker T)^\perp$
+        \item $\ker(T) = (\img T^*)^\perp$
+        \item $\img(T) = (\ker T*)^\perp$
+    \end{enumerate}
+\end{lemma}
+
+\begin{proofbox}
+    \begin{enumerate}
+        \item Let $w \in W$. Then $w \in \ker (T^*) \iff T^* w = 0 \iff \langle v, T^* w \rangle = 0 \ \forall v \in V \iff \langle T v, w \rangle = 0 \ \forall v \in V \iff w \perp T v \ \forall v \in V \iff w \perp \img(T) \iff w \in (\img T)^\perp$.
+        \item[4.] Apply the orthogonal complement to both sides of (1).
+        \item[2.] Use (4) with $T^*$ instead of $T$.
+        \item[3.] Apply the orthogonal complement to both sides of (2).
+    \end{enumerate}
+\end{proofbox}
+
+\end{document}
