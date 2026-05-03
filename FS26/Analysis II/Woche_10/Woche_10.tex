@@ -346,4 +346,229 @@ When checking if a field is conservative, or if a 1-form is exact, the above lem
     \end{proofbox}
 \end{proofbox}
 
+\textbf{How do we generalise line integrals?} Which quantities integrated over parametrised submanifolds are \underline{invariant} under orientation preserving reparametrisation?
+
+Let $V \subset \R^k$, $\Phi: V \rightarrow \R^n$ be a parametrised submanifold. Let $M= \Phi(V)$ (with some orientation). Then
+\[
+    \int_M \alpha = \int_V \alpha \left( \Phi(x), D\Phi(x) \right) \dd x
+\]
+
+where $\alpha_p(T) = \alpha(p, T)$ is a reorientation?
+
+Let $\Psi: W \rightarrow V$ be a $C^1$ diffeomorphism with positive orientation, orientation preserving (this means $\det(D \Psi) > 0$, note that for a diffeomorphism the determinant is never zero anyway, so WLOG if $\Psi$ were to have negative orientation, then just flip the sign of one coordinate to make it positive). Let $\Phi \circ \Psi: W \rightarrow \R^n$ be another parametrisation of $M$. Then
+\[
+    \int_W \alpha((\Phi \circ \Psi)(y), D(\Phi \circ \Psi)(y)) \dd y = \int_W \alpha(\Phi(\underbrace{\Psi(y)}_{x}), D\Phi(\underbrace{\Psi(y)}_{x})D\Psi(y)) \dd y
+\]
+
+If we had that $\alpha(p, TS) = \alpha(p, T) \det(S)$, then
+\[
+    \int_{\underbrace{W}_{\Psi^{-1}(V)}} \alpha(\Phi(\underbrace{\Psi(y)}_{x}), D\Phi(\underbrace{\Psi(y)}_{x})) \cdot \underbrace{\det(D\Psi(y)) \dd y}_{\dd x}
+\]
+
+The property $\alpha(p, TS) = \alpha(p, T) \det(S)$ is given for a \textbf{$k$-form}.
+
+If we have a fixed $p$, $T \in M_{n \times k}(\R)$, $S \in M_{k \times k}(\R)$, $TS \in M_{n \times k}(\R)$,
+\[
+    \alpha(TS) = \alpha(T) \det(S)
+\]
+
+If $n = k$, then for two square matrices, the determinant satisfies this. So let $\alpha(T) = \det(T)$. But if $n \neq k$, i.e. if $T$ is not a square matrix, the determinant no longer works like this. The Gram determinant would work, but only up to a sign:
+\[
+    \alpha(T) = \sqrt{\det T^TT} \quad\text{ then }\quad \alpha(TS) = \alpha(T) |\det(S)|
+\]
+
+One of the simplest examples for $\alpha$ that actually works is the following. Fix $A \in M_{k \times n}(\R)$, let $\boxed{\alpha_A = \det(\underbrace{AT}_{k \times k})}$. Then,
+\[
+    \alpha_A(TS) = \det(ATS) = \det(AT)\det(S) = \alpha_A(T)\det(S)
+\]
+
+This function $\alpha_A$ is actually part of a basis for $k$-forms, as we will see later.
+
+Fix $A_1,\dots,A_N \in  M_{n \times k}(\R)$, let $c_1,\dots,c_N \in \R$, let 
+\[
+    \alpha(T) = \sum_{l = 1}^{N} c_l \det(A_l T)
+\]
+
+This definition also works, for instance.
+
+\begin{definition}{$k$-forms in $\R^n$}{}
+    A map $p \in U \subset \R^n$ assigns $\alpha_p = \alpha_p(T)$
+    \begin{align*}
+        \alpha_p: \R^{n \times k} &\rightarrow \R \\
+        (v_1,\dots,v_k) &\mapsto \alpha_p(v_1,\dots,v_k) 
+    \end{align*}
+
+    and satisfies:
+    \begin{enumerate}
+        \item $\alpha_p(TS) = \alpha_p(T)\det(S) \quad \forall T,\ \forall S \in \R^{k \times k}\quad$ (the useful property we found above)
+        \item $\alpha_p$ is multilinear (i.e. linear in each $v_i$)
+    \end{enumerate}
+
+    If $\alpha$ satisfies (1), (2), then
+    \begin{align*}
+        \alpha(T) = \sum_{1 < i_1< \dots < i_k < n} c_{i_1,\dots,i_k} \det(e_{i_1,\dots,i_k}^T T)
+    \end{align*}
+
+    where $\mathcal{I}_k = \{ (i_1,\dots,i_k)\ |\ i_1 < \dots < i_n \} \subset \{1,\dots,n\}^k$ ($\mathcal{I}_k$ is the set of all multiindices of length $k$ with elements in $\{1,\dots,n\}$, $|\mathcal{I}_k| = \binom{n}{k} = \frac{n!}{(n-k)!k!}$).
+
+    Also $e_{i_1,\dots,i_k}^T$ is the matrix
+    \[
+        \begin{bmatrix}
+            e_{i_1}^T \\
+            \vdots \\
+            e_{i_k}^T \\
+        \end{bmatrix} \in M_{k \times n}
+    \]
+\end{definition}
+
+\begin{definition}{Wedge product}{}
+    If $\alpha$ is a $k$-form, and $\beta$ is an $m$-form with $k + m \leq n$, if
+
+    \[
+        \alpha(T) = \det(\underbrace{A}_{k \times n}\underbrace{T}_{n \times k}),\quad \beta(S) = \det(\underbrace{B}_{m \times n}\underbrace{S}_{n \times m})
+    \]
+
+    Then,
+    \[
+        \alpha \land \beta (X) = \det\!\left(
+            \begin{bmatrix}
+            A \\
+            B
+            \end{bmatrix}
+            X
+            \right)
+    \]
+\end{definition}
+
+A $k$-form is called \textbf{decomposable} if we can write it as $\alpha(T) = \det(A T)$ for some fixed matrix $A$.
+
+Note that not every $k$-form and not every $m$-form is decomposable. We can extend the definition to every $k$-form and every $m$-form in a bilinear fashion:
+\[
+    \left(\sum_{i = 1}^{M} a_i \alpha_i\right) \land \left(\sum_{j = 1}^{N} b_j \beta_j\right) := \sum_{i = 1}^{M} \sum_{j = 1}^{N} a_ib_j\alpha_i \land \beta_j
+\]
+
+where $\alpha_i \land \beta_j$ is defined as in the above definition (because these $\alpha$ and $\beta$ have the required form, i.e. they are decomposable).
+
+\begin{example}{Computing the wedge product}{}
+    $x \mapsto \alpha_x = (0, x_2, x_3-2x_1)$ in $\R^3$. $x \mapsto \beta_X = (1, x_3, \cos x_2)$. Then,
+    \[
+        (\alpha \land \beta)_x (v_1,v_2) = \det(\begin{bmatrix}
+            0 & x_2 & x_3-2x_1\\
+            1 & x_3 & \cos x_2 \\
+        \end{bmatrix}
+        \begin{bmatrix}
+            v_{11} & v_{21} \\
+            v_{12} & v_{22} \\
+            v_{13} & v_{23} \\
+        \end{bmatrix})
+    \]
+\end{example}
+
+\begin{notebox}{Convention/Definition}{}
+    \begin{itemize}
+        \item $0$-forms in $U \subset \R^n$ open are $C^\infty(U)$ functions. (recall that a $0$-form is just a function).
+        \item $k$-forms in $U \subset \R^n$,
+        \[
+            \sum_{I \in \mathcal{I}_k} \underbrace{c_I(x)}_{C^\infty} \det(e_I^T T) = \alpha_x(T)
+        \]
+
+        where $\mathcal{I}_k$ is the set of all increasing multiindices of length $k$ with $n$ elements. This notation allows us to write all of these linear combinations efficiently.
+
+        \item For $k > n$, all $k$-forms $\equiv 0$. Therefore, we always take $0 \leq k \leq n$.
+        \item If $k = n$, this is the special case where $|\mathcal{I}_k| = \binom{n}{n} = 1$. So $c(x) \det(I_nT) = c(x) \det(T)$ 
+        \item Let $\Omega^k(U)$ be the set of $k$-forms that are $C^\infty$ over $U$.
+        \item So $\Omega^0(U) = C^\infty(U)$.
+    \end{itemize}
+\end{notebox}
+
+\begin{definition}{Differential}{}
+    Let $U \subset \R^n$ open. If $0 \leq k \leq n$ and $\alpha \in \Omega^k(U)$ is a $k$-form, then we can of course always write:
+    \[
+        \alpha_x(T) = \sum_{I \in \mathcal{I}_k} c_I(x) \underbrace{\det(e_I^T T)}_{\omega_I(T)}
+    \]
+
+    Then, the \textbf{differential} $\beta := \dd \alpha$ of $\alpha$ is a $k+1$-form, which we can write as
+    \[
+        \beta_x(S) = \sum_{I \in \mathcal{I}_k} \dd c_I(x) \land \omega_I
+    \]
+\end{definition}
+
+If $c_I \in C^\infty(U)$ is a function, or in other words, $c_I \in \Omega^0(U)$, then, the differential of $c_i$ is just
+\[
+    \dd c_I = Dc_I = \left( \partial_1 c_I, \dots, \partial_n c_I, \right)
+\]
+
+After all this definition, still the only useful property of $k$-forms that we know is that we can \textbf{integrate over $k$-submanifolds}, which is \textbf{reparametrisation invariant}.
+
+\begin{remark}{}{}
+    Take the $\R^n$ coordinate functions $f(x) = x_i$ for $i = \{1,\dots,n\}$. Then, the differential (Jacobian matrix) is
+    \[
+        \dd x_i = \dd f_x = Df(x) = e_i^T
+    \]
+
+    So, with this notation, we have found that
+    \[
+        \boxed{e_i^T = \dd x_i}
+    \]
+
+    So any $k$-form is of the form
+    \[
+        \alpha(T) = \sum_{I \in \mathcal{I}_k} c_I(x) \overbrace{\det(e_i^T T)}^{\omega_I(T)}
+    \]
+
+    We have
+    \[
+        \omega_I = \dd x_{i_1} \land \dots \land \dd x_{i_k} \quad \text{with } I = (i_1,i_2,\dots,i_k),\ 1 \leq i_1 < i_2 < \dots < i_k \leq n
+    \]
+
+    We also write for this (for $I \in \mathcal{I}_k$):
+    \[
+        \omega_I = \dd x_{i_1} \land \dots \land \dd x_{i_k} = \boxed{\dd x_I}
+    \]
+
+    With this observation, any $k$-form in $U$ has the expansion:
+    \[
+        \boxed{\alpha = \sum_{I \in \mathcal{I}_k} c_I \dd x_i}
+    \]
+
+    This is standard notation.
+\end{remark}
+
+\begin{exercise}{}{}
+    Let $\psi: V \rightarrow U$ be a $C^\infty$ diffeomorphism with $V \subset \R^n,\ U \subset \R^n$. Denote
+    \[
+        \psi = \begin{pmatrix} \psi_1(x) \\ \vdots \\ \psi_n(x) \end{pmatrix}
+    \]
+
+    Show that
+    \[
+        \dd \psi_1 \land \dots \land \dd \psi_n = \det D \psi(x) \dd x_1 \land \dots \land \dd x_n
+    \]
+
+    Hint: show first for $n=1$, then $n=2$.
+\end{exercise}
+
+\begin{lemma}{}{}
+    For every $\alpha \in \Omega^k(U)$ for $U \subset \R^n$ open. $\dd \alpha \in \Omega^{k+1}(U)$, $\dd (\dd \alpha) \in \Omega^{k+2}(U)$. Then $\dd (\dd \alpha) = 0$. In other words,
+    \[
+        \dd^2 = 0
+    \]
+\end{lemma}
+
+\begin{proofbox}
+    Take $\dd \dd (f(x) \omega_I)$.
+
+    For the first differential, we have
+    \[
+        \dd f \omega_I = \sum_{i = 1}^{n} \partial_i f \dd x_i \land \omega_I
+    \]
+
+    For the second, we have
+    \[
+        \dd (\dd f) = \sum_{i = 1}^{n} \sum_{j = 1}^{n} \partial_j\partial_i f \underbrace{\dd x_j \land \dd x_i}_{- \dd x_i \land \dd x_j} \land \omega_I
+    \]
+
+    Next, apply Schwarz.
+\end{proofbox}
+
 \end{document}

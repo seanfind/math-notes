@@ -21,6 +21,289 @@
     \end{enumerate}
 \end{problem}
 
+\begin{enumerate}[label=\alph*)]
+    \item Zeige, dass $|X_n| \leq |X_2|$ gilt. $|X_2|$ ist die Menge aller unendlichen Folgen mit Werten in $\{0, 1\}$. Sei $(a_n)_{n=0}^{\infty} = (a_0,a_1,a_2,\dots)$ eine Folge in $X_n$. Dann gilt für jedes Element: $a_k \in \{0, 1,\dots,n-1\} \ \forall k = 1,2,\dots$. 
+    
+    Wir können jedes $a_k$ als Binärzahl darstellen, das heisst, es gibt eine eindeutige Repräsentation von $a_k$, welche nur aus den Ziffern $0$ und $1$ besteht. Da jedes Element der Folge maximal den Wert $n-1$ hat, braucht die Binärdarstellung von jedem Element maximal $k := \lceil \log_2(n) \rceil$ Stellen.
 
+    Betrachte also die Abbildung,
+    \[
+    \begin{aligned}
+        b: n \rightarrow \underbrace{\{0, 1\} \times \dots \times \{0, 1\}}_{k \text{ mal}} = \{0, 1\}^k
+    \end{aligned}
+    \]
+
+    welche eine Zahl $x \in n$ auf die eindeutige $k$-stellige Binärdarstellung von $x$ abbildet.
+    
+
+    Wir konstruieren nun eine Injektion:
+    \begin{gather*}
+        f: X_n \rightarrow X_2 \\
+        (a_n)_{n=0}^{\infty} = (a_0,a_1,a_2,\dots) \mapsto (\underbrace{b(a_0)_0, \dots, b(a_0)_{k-1}}_{k \text{ Stellen der Zahl } b(a_0)}, \underbrace{b(a_1)_0, \dots, b(a_1)_{k-1}}_{k \text{ Stellen der Zahl } b(a_1)}, \dots)        
+    \end{gather*}
+
+    wobei $b(a_k)_j$ die $j$te Stelle des $k$ten Folgenglieds bezeichnet. Dies ist eine Injektion, da wir bei gegebenem $n$ die ursprüngliche Folge wieder zurückkonstruieren können. Wenn zwei Folgen in $X_n$ auf dieselbe Folge in $X_2$ abgebilden werden, dann müssen sie die gleiche Folge gewesen sein.
+
+    Es gilt also: $|X_n| \leq |X_2|$. Zeige als nächstes: $|X_2| \leq |X_n|$. Wir suchen eine Injektion von $X_2$ nach $X_n$.
+
+    Da $\{0, 1\} \subset \{0, 1, \dots, n-1\}$, ist jede Folge in $X_2$ auch in $X_n$. Also können wir die Identität als triviale Injektion von $X_2$ nach $X_n$ verwenden.
+
+    Es gilt also: $|X_2| \leq |X_n|$. Somit gilt nach Cantor-Bernstein-Schröder:
+    \begin{align*}
+        |X_2| = |X_n| \quad \forall n \geq 2
+    \end{align*}
+
+    Da $|X_2|$ einfach irgendeine Kardinalzahl ist, gilt, dass alle $X_n$ dieselbe Kardinalität besitzen.
+
+    \item Wir suchen eine Bijektion zwischen $X_2$ und $X_3$. Wir haben aus der Aufgabe (a) zwei Injektionen, sei $f: X_3 \rightarrow X_2$ und $g: X_2 \rightarrow X_3$ (wir nehmen hier einfach $n = 3$).
+    
+    Sei $A \subset X_2$ die Menge aller Folgen $(a_n)_{n \in \omega}$, bei welchen das wiederholte, abwechselnde Bilden der Urbilder $f^{-1}$ und $g^{-1}$ schliesslich in $X_2$ abbricht, da kein weiteres Urbild existiert (weil z.B. eine ungültige Binärfolge entstanden ist, die keiner Folge in $X_3$ entspricht).
+
+    Wir können jede dieser Folgen in $A$ mit $g$ eindeutig nach $X_3$ schicken. Alle Folgen in $X_2$ die nicht in $A$ sind, können wir einfach mit dem Urbild eindeutig weiterschicken, da beide Funktionen injektiv sind. Definiere also die folgende Bijektion $h: X_2 \rightarrow X_3$:
+    \begin{align*}
+        h(x) := 
+        \begin{cases}
+            g(x) & \text{falls }x \in A \\
+            f^{-1}(x) & \text{falls }x \in X_2 \setminus A \\
+        \end{cases}
+    \end{align*}
+
+    Nach der Konstruktion im Beweis des Cantor-Bernstein-Schröder Theorems ist diese Abbildung eine wohldefinierte Bijektion.
+
+    \item Wir können wieder nach dem gleichen Prinzip zwei Injektionen $f: X_n \rightarrow X_m$ und $g: X_m \rightarrow X_n$ finden (einmal die Base-$m$-Darstellung verwenden, einmal die Identität, beide wie bei der Aufgabe (a)). Dann können wir die gleiche Beweisstruktur wie bei der Aufgabe (b) verwenden, da wir da nie explizit von den spezifischen Eigenschaften der Mengen $X_2$ und $X_3$ ausgegangen sind. Also können wir dieselbe Konstruktion für beliebige $X_n$ und $X_m$ mit $n \geq m \geq 2$ verwenden. \qed
+\end{enumerate}
+
+\newpage
+
+\begin{problem}{}{}
+    Sei $G = (V, E)$ ein endlicher, ungerichteter Graph. Zeige, dass die folgenden Aussagen äquivalent sind:
+    \begin{enumerate}[label=\alph*)]
+        \item $G$ ist ein Baum
+        \item $G$ ist kreisfrei, aber wenn wir eine neue Kante hinzufügen, so entsteht ein Kreis.
+        \item $G$ enthält keine Schlingen und für beliebige zwei Knoten $a, b$ mit $a \neq b$ gibt es genau einen Kantenzug von $a$ nach $b$.
+        \item $G$ ist zusammenhängend, aber wenn wir irgendeine Kante löschen, so ist $G$ unzusammenhängend.
+    \end{enumerate}
+\end{problem}
+
+\begin{itemize}
+    \item \textbf{a) $\implies$ b)}: Angenommen $G$ ist ein Baum, d.h. $G$ ist zusammenhängend und kreisfrei. Da $G$ zusammenhängend ist, ist jedes Paar von verschiedenen Knoten durch einen Weg verbunden. Wenn wir eine neue Kante hinzufügen, dann verbindet diese Kante zwei Knoten $a$ und $b$. Wenn $a = b$, dann entsteht eine Schlinge, und somit haben wir einen trivialen Kreis. Wenn $a \neq b$, dann haben wir einen bestehenden Weg mit Anfangspunkt im Knoten $a$ und Endpunkt in Knoten $b$, da $G$ zusammenhängend ist. Nun haben wir aber Anfangspunkt und Endpunkt dieses Weges verbunden, und haben somit einen geschlossenen Kantenzug, also einen Kreis, erzeugt. Also gilt diese Implikation.
+    \item \textbf{b) $\implies$ c)}: Angenommen $G$ ist kreisfrei, aber wenn wir eine neue Kante hinzufügen, so entsteht ein Kreis. Da Schlingen insbesondere auch Kreise sind, enthält $G$ keine Schlingen. Seien $a, b$ zwei Knoten mit $a \neq b$.
+    
+    Zeige zuerst, dass es überhaupt einen Kantenzug von $a$ nach $b$ gibt. Wir wissen aus der Annahme, dass wenn wir $a$ und $b$ verbinden würden, dass dann ein Kreis entstehen würde. Wir verbinden nun $a$ und $b$ mit einer Kante $\{a, b\}$. Wir haben dann einen Kreis, also einen Kantenzug $H = \{\{a, b\}, \{b, x_3\}, \dots \{x_{l-1}, a\}\}$. Insbesondere haben wir dann aber den Kantenzug
+    \begin{align*}
+        H' = \{\{b, x_3\}, \dots \{x_{l-1}, a\}\}
+    \end{align*}
+
+    in anderen Worten, es existiert ein Kantenzug von $a$ nach $b$.
+
+    Zeige als nächstes, dass es genau einen Kantenzug von $a$ nach $b$ gibt. Angenommen, es gibt zwei unterschiedliche Kantenzüge von $a$ nach $b$. Wir haben dann
+    \begin{align*}
+        H_1 = \{\{a, x_1\}, \dots \{x_{l-1}, b\}\},\ H_2 = \{\{a, x'_1\}, \dots \{x'_{l-1}, b\}\}
+    \end{align*}
+
+    mit mindestens einem Index $k \in \{1,\dots,l-1\}$ sodass $x_k \neq x'_k$ gilt (sei $a =: x_0,\ b =: x_l$). 
+
+    Da die Kantenzüge unterschiedlich sind, gibt es einen letzten gemeinsamen Knoten $u$, bevor sich die Wege trennen. Da beide Wege sich in $b$ wieder treffen, muss es einen ersten Knoten $w$ geben, in dem die beiden Wege wieder zusammenkommen.
+
+    Dann bilden das Teilstück von $H_1$ von $u$ nach $w$ und das rückwärts durchlaufene Teilstück von $H_2$ von $w$ nach $u$ einen Kreis. Dies widerspricht der Annahme, dass $G$ kreisfrei ist. Also gibt es genau einen Kantenzug von $a$ nach $b$.
+
+    Somit gilt die Implikation $b) \implies c)$.
+
+    \item \textbf{c) $\implies$ d)}: Angenommen, $G$ enthält keine Schlingen und für beliebige zwei Knoten $a, b$ mit $a \neq b$ gibt es genau einen Kantenzug von $a$ nach $b$. 
+    
+    Da für beliebige $a, b$ mit $a \neq b$ gilt, dass es genau einen Kantenzug von $a$ nach $b$ gibt, so wissen wir, dass $G$ zusammenhängend ist. Wir müssen nur noch zeigen, dass wenn wir eine Kante löschen, dass $G$ dann unzusammenhängend ist.
+
+    Seien $a, b$ zwei Knoten in $G$, welche direkt durch eine Kante verbunden sind (bzw. $\{a, b\} \in E$). Wir wissen, dass diese durch genau einen Kantenzug verbunden sind, und der Kantenzug $H = \{\{a, b\}\}$ existiert, also sind $a$ und $b$ nur durch diesen Kantenzug bzw. durch diese eine Kante verbunden. Wenn wir also diese Kante löschen, sind $a$ und $b$ nicht mehr verbunden. Der Graph ist dann also nicht mehr zusammenhängend. 
+    
+    Da bei jeder gelöschten Kante in $G$ dieser Fall für irgendein $a$ und $b$ eintreten wird, wissen wir, dass wenn wir irgendeine Kante löschen, dass $G$ dann nicht mehr zusammenhängend ist.
+
+    \item \textbf{d) $\implies$ a)}: Angenommen, $G$ ist zusammenhängend, aber wenn wir irgendeine Kante löschen, dann ist $G$ unzusammenhängend. Zeige, dass $G$ ein Baum ist, also dass $G$ zusammenhängend und kreisfrei ist. Wir wissen bereits aus der Annahme, dass $G$ zusammenhängend ist.
+    
+    Zeige, dass $G$ kreisfrei ist. Angenommen, $G$ enthält einen Kreis, das heisst es gibt einen Kantenzug $H = \{\{x_0,x_1\},\{x_1,x_2\}, \dots, \{x_{l-1}, x_l\}\}$ mit $x_0 = x_l$. Dann können wir die Kante $\{x_0, x_1\}$ löschen, und es existiert immer noch ein Weg von $x_0$ nach $x_1$, nämlich der Kantenzug
+    \begin{align*}
+        \{\{x_1,x_2\}, \dots, \{x_{l-1}, x_l\}\}
+    \end{align*}
+    da $x_l = x_0$. Wenn zwei beliebige Knoten in $G$ durch einen Weg verbunden waren, der die Kante $\{x_0, x_1\}$ enthielt, so können wir diese Kante einfach mit obigem Kantenzug ersetzen, welcher uns auch von $x_0$ nach $x_1$ bringt. Also bleibt der ganze Graph zusammenhängend.
+    
+    Also haben wir eine Kante gelöscht, und $G$ ist immer noch zusammenhängend. Dies widerspricht unserer Annahme, also ist $G$ kreisfrei. \qed
+\end{itemize}
+
+\begin{problem}{}{}
+    Sei $G = (V, E)$ ein endlicher, ungerichteter und nicht-leerer Graph. Zeige, dass folgende Aussagen äquivalent sind:
+    \begin{enumerate}[label=\alph*)]
+        \item $G$ ist ein Baum.
+        \item $G$ ist kreisfrei und hat $n-1$ Kanten.
+        \item $G$ ist zusammenhängend und hat $n-1$ Kanten.
+    \end{enumerate}
+\end{problem}
+
+\begin{itemize}
+    \item \textbf{a) $\implies$ b)}: Angenommen, $G$ ist ein Baum, das heisst, $G$ ist zusammenhängend und kreisfrei. Wir müssen nur noch zeigen, dass $n-1$ Kanten hat.
+    
+    Beweis per Induktion über $n$. Unsere Induktionshypothese ist: wenn $G$ ein Baum mit $n$ Knoten ist, dann gilt $|E| = n - 1$.
+
+    \underline{Induktionsverankerung}: Für $n = 1$ und $n = 2$ gilt die Hypothese trivialerweise.
+
+    \underline{Induktionsschritt}: Wir nehmen an, dass wenn ein $G$ ein Baum mit $n - 1$ Knoten ist, dann gilt $|E_{n-1}| = n - 2$. Sei $G$ ein Baum mit $n$ Knoten. Zeige, dass $|E_n| = n-1$ gilt.
+    
+    Sei $G$ ein beliebiger Baum mit $n \geq 2$ Knoten. $G$ hat dann mindestens ein "Blatt", also ein Knoten $v$, aus welchem nur eine Kante geht ($\exists! e \in E : v \in e$). Wir können diese Kante $e$ aus $E$ und den Knoten $v$ aus $V$ entfernen, und bekommen einen Graphen $G'$ mit $n-1$ Knoten. Da $v$ ein Blatt war, trennen wir durch das Löschen der Kante $e$ keine Wege zwischen anderen Knoten im Graphen, also bleibt $G'$ zusammenhängend. Da $G$ kreisfrei war, ist auch $G'$ kreisfrei.
+
+    So ist $G'$ ein Baum mit $n-1$ Knoten. Wir können also unsere Induktionshypothese anwenden, und bekommen, dass $|E_{G'}| = n - 2$ gilt. Da wir beim Übergang von $G$ zu $G'$ genau eine Kante entfernt haben, gilt $|E_G| = n-2+1 = n-1$.
+
+    Es gilt also für alle $n$, dass ein Baum $G$ mit $n$ Knoten genau $n-1$ Kanten hat.
+
+    \item \textbf{b) $\implies$ c)}: Sei $G$ kreisfrei mit $n-1$ Kanten. Wir müssen nur zeigen, dass $G$ zusammenhängend ist.
+    
+    Angenommen, $G$ ist nicht zusammenhängend. Dann gibt es Knoten $a, b \in V$, sodass es keine Kantenzüge von $a$ nach $b$ gibt. Es gibt also $k$ verschiedene zusammenhängende Teilgraphen von $G$:
+    
+    \begin{align*}
+        \exists \{G_1,\dots,G_k\}\quad \text{mit} \ G_i \subset G \ \text{ und }\ G_i \text{ zusammenhängend }\forall i = 1,\dots,k
+    \end{align*}
+
+    Da $G$ kreisfrei ist, ist jedes $G_i$ auch kreisfrei. Somit ist jedes $G_i$ ein Baum. Sei $n_i$ die Anzahl Knoten im Teilgraph $G_i$. Dann gilt nach obigem Induktionsbeweis: $|E_{G_i}| = n_i - 1$. Wir haben dann aber
+    \begin{align*}
+        \sum_{i = 1}^{k} |E_{G_i}| = \sum_{i = 1}^{k} \left(n_i - 1\right) = \left(\sum_{i = 1}^{k} n_i\right) - \left(\sum_{i = 1}^{k} 1\right) = n - k
+    \end{align*}
+
+    Da $G$ nicht zusammenhängend ist, gilt $k \geq 2$. Dann ist $|E_G| \leq n - 2$. Dies widerspricht aber der Annahme, dass $G$ genau $n - 1$ Kanten besitzt. Also ist $G$ zusammenhängend.
+
+    \item \textbf{c) $\implies$ a)}: Angenommen, $G$ ist zusammenhängend und hat $n-1$ Kanten. Wir wollen zeigen, dass $G$ ein Baum ist, also dass $G$ kreisfrei und zusammenhängend ist. Wir müssen also nur zeigen, dass $G$ kreisfrei ist.
+    
+    Angenommen, $G$ ist nicht kreisfrei. Dann gibt es einen Kantenzug 
+    \[ H = \{\{x_0, x_1\}, \dots, \{x_{l-1}, x_l\}\} \]
+    mit $x_l = x_0$. Dann können wir eine Anzahl $k \geq 1$ Kanten in $H$ aus dem Baum löschen, bis $G$ kreisfrei ist. Dann bekommen wir einen Baum $G'$ mit $n - 1 - k$ Kanten, oder anders:
+    \begin{align*}
+        |E_{G'}| \leq n - 1 - k
+    \end{align*}
+
+    Wir haben im Übergang von $G$ zu $G'$ nur Kanten gelöscht und keine Knoten, also hat $G'$ immer noch $n$ Knoten. Dies widerspricht aber der Tatsache, die wir in unserem obigen Induktionsbeweis gezeigt haben, nämlich, dass ein Baum mit $n$ Knoten genau $n - 1$ Kanten hat. Also ist $G$ kreisfrei. \qed
+\end{itemize}
+
+\begin{problem}{Satz von Cayley}{}
+    Beweise für nicht-leere Graphen: Es gibt $n^{n-2}$ verschiedene Bäume mit $n$ festgelegten Knoten. 
+\end{problem}
+
+Sei $V = \{1,2,\dots,n\}$ die Knotenmenge und sei $T = (V, E)$ ein Baum. Sei $b_1$ der Endknoten (Knoten mit Grad 1) mit kleinster Nummer und $a_1$ der mit $b_1$ adjazente Knoten. Entferne den Knoten $b_1$ und die Kante $(a_1, b_1)$. Der Restgraph ist wieder ein Baum. Fahre so fort, bis nur noch eine Kante übrig bleibt. Zu zeigen ist, dass eine Bijektion zwischen den Bäumen $T = (V, E)$ und den $(n-2)$-Tupeln $\langle a_1, a_2,\dots,a_{n-2} \rangle$ existiert.
+
+% Wir wollen also zeigen, dass wir aus dem $(n-2)$-Tupel eindeutig wieder den ursprünglichen Baum rekonstruieren können.
+
+Sei $T_n$ die Menge aller Bäume mit der Knotenmenge $V = \{1,2,\dots,n\}$. Wir definieren eine Abbildung $\Phi$, die jedem Baum in $T_n$ einen $(n-2)$-Tupel $F \in \{1,\dots,n\}^{n-2}$ zuordnet.
+
+Sei $T = (V, E)$ ein Baum in $T_n$. Wir führen die oben beschriebenen Schritte aus, um auf ein $(n-2)$-Tupel $F = (a_1,\dots,a_{n-2})$ zu kommen. Definiere $\Phi$ so, dass $T$ auf dieses Tupel $F$ abgebildet wird. Da bei jedem Schritt wir eindeutig bestimmen können, welches $a_i$ als nächstes kommt, ist diese Abbildung wohldefiniert.
+
+Wir zeigen nun, dass sich aus jedem Tupel $F = (a_1, \dots, a_{n-2})$ eindeutig ein Baum rekonstruieren lässt. Sei $V_1 = \{1,\dots,n\}$ die anfängliche Knotenmenge, sei $F_1 = (a_1,\dots,a_{n-2})$ die anfängliche Folge. Wir führen für $i = 1,\dots,n-2$ die folgenden Schritte aus:
+\begin{enumerate}
+    \item Betrachte das kleinste Element $b_i \in V_i \setminus F_i$
+    \item Sei $a_i$ das erste Element der aktuellen Folge $F_i$.
+    \item Wir fügen die Kante $\{a_i, b_i\}$ unserer Kantenmenge $E$ zu.
+    \item Wir definieren nun $V_{i+1} := V_i \setminus \{b_i\}$, und erhalten $F_{i+1}$, indem wir das erste Element $a_i$ aus $F_i$ entfernen.
+\end{enumerate}
+
+Nach $n-2$ Schritten ist die Folge $F_{n-1}$ leer und $V_{n-1}$ enthält noch 2 Knoten $u, v$. Füge als letztes noch die Kante $\{u, v\}$ unserer Kantenmenge $E$ hinzu. Da wir bei jedem Schritt nur ein Blatt hinzufügen, ist der enstandene Graph kreisfrei und zusammenhängend, also ein Baum.
+
+Definiere also $\Phi^{-1}$ so, dass $F$ auf genau diesen enstandenen Baum abgebildet wird. Diese Abbildung ist wohldefiniert.
+
+Da wir bei beiden Vorgängen immer deterministisch vorgehen und immer einfach das kleinste Element aus einer endlichen Menge nehmen, sind alle Schritte bei beiden Vorgängen immer eindeutig. Somit ist $\Phi$ eine Bijektion zwischen $T_n$ und der menge aller $(n-2)$-Tupel mit Elementen in $\{1,\dots,n\}$.
+
+Die Anzahl Bäume in $T_n$ ist somit gleich wie die Anzahl $(n-2)$-Tupel mit Elementen in $\{1,\dots,n\}$. Die Anzahl $(n-2)$-Tupel mit Elementen in $\{1,\dots,n\}$ ist $n^{n-2}$, da wir für alle $(n-2)$ Positionen im Tupel genau $n$ mögliche Elemente zur Auswahl haben. Also gibt es $n^{n-2}$ Bäume mit $n$ festgelegten Knoten. \qed
+
+\begin{problem}{}{}
+    Sei $G$ ein endlicher Baum mit mindestens zwei Knoten.
+    \begin{enumerate}[label=\alph*)]
+        \item Zeige, dass $G$ mindestens zwei Blätter besitzt, d.h. Knoten vom Grad 1.
+        \item Verallgemeinere diese Aussage. Leite eine Beziehung zwischen der Anzahl der Blätter und den Knotengraden in $G$ her.
+    \end{enumerate}
+\end{problem}
+
+\begin{enumerate}[label=\alph*)]
+    \item Sei $G = (V, E)$ ein Baum mit $n \leq 2$ Knoten. Wir wissen aus der Vorlesung, dass für die Summe aller Knotengrade in einem Graphen gilt:
+    \[
+        \sum_{v \in V} \deg(v) = 2|E|
+    \]
+
+    Wir wissen auch aus dem Induktionsbeweis aus einer vorherigen Aufgabe, dass ein Baum mit $n$ Knoten genau $n-1$ Kanten besitzt. Also haben wir:
+    \[
+        \sum_{v \in V} \deg(v) = 2|E| = 2(n-1) = 2n-2
+    \]
+
+    Angenommen, $G$ hat $k$ Blätter, wobei $k \leq 1$, dann haben alle restlichen $(n - k)$ Knoten in G einen Grad von 2 oder höher. Dann gilt also:
+    \[
+        \sum_{v \in V} \deg(v) \geq k \cdot 1 +  (n - k) \cdot 2 = k + 2n - 2k = 2n - k
+    \]
+
+    Aber dann haben wir
+    \[
+        2n - k \leq \sum_{v \in V} \deg(v) = 2n-2 \iff - k \leq -2 \iff k \geq 2
+    \]
+
+    was aber ein Widerspruch ist. Also muss gelten, dass $G$ zwei oder mehr Blätter besitzt.
+
+    \item Sei $n_k$ die Anzahl Knoten in $G$ mit Grad $k$. Dann gilt
+    \[
+        n = n_1 + n_2 + n_3 + \dots \quad\text{ und }\quad \sum_{v \in V} \deg(v) = 1n_1 + 2n_2 + 3n_3 + \dots
+    \]
+
+    Wir wissen auch, wie vorher, dass für die Summe aller Knotengrade in einem Baum gilt:
+    \[
+        \sum_{v \in V} \deg(v) = 2|E| = 2(n-1) = 2n-2
+    \]
+
+    Also haben wir:
+    \begin{gather*}
+        \sum_{v \in V} \deg(v) = 1n_1 + 2n_2 + 3n_3 + \dots = 2n-2 \\
+        \iff n_1 + 2n_2 + 3n_3 + \dots = 2(n_1 + n_2 + n_3 + \dots) - 2 \\
+        \iff n_1 + 2n_2 + 3n_3 + \dots = -2 + 2n_1 + 2n_2 + 2n_3 + \dots \\
+        \iff n_1 = 2 + n_3 + 2n_4 + 3n_5 + \dots \\
+        \iff n_1 = 2 + \sum_{k = 3}^{\infty} (k-1)n_k
+    \end{gather*}
+
+    Da $n_1$ einfach die Anzahl Blätter ist, gilt in einem Baum immer, dass die Anzahl Blätter gleich $2 + \sum_{k = 3}^{\infty} (k-1)n_k$ ist, wobei $n_k$ die Anzahl Knoten von Grad k sind. \qed
+\end{enumerate}
+
+\begin{problem}{}{}
+    Sei $G = (V, E)$ ein ungerichteter Graph. Dann ist $T = (V_T,E_T)$ ein Spannbaum von $G$, wenn $V_T = V$, $E_T \subseteq E$, und $T$ ein Baum ist. Beweise, dass jeder zusammenhängende Graph einen Spannbaum enthält. Was unterscheidet den Fall eines endlichen Graphen G von einem unendlichen Graphen?
+\end{problem}
+
+Sei $G = (V, E)$ ein endlicher, zusammenhängender ungerichteter Graph. Wenn dieser Graph kreisfrei wäre, dann wäre er ein Baum, und es gilt $V = V$ und $E \subseteq E$, also ist $G$ dann ein Spannbaum von sich selbst, und der Beweis ist fertig.
+
+Angenommen, $G$ ist nicht kreisfrei. Dann können wir die folgenden Schritte ausführen, bis $G$ kreisfrei ist.
+
+\begin{enumerate}
+    \item Wenn $G$ nicht kreisfrei ist, dann gibt es einen geschlossenen Kantenzug $H$.
+    \item Wähle $e \in H$ und lösche $e$ aus dem Graphen.
+    \item Für jeden Weg, der ursprünglich die Kante $e$ genutzt hat, existiert nun ein alternativer Weg über die restlichen Kanten des Kreises $H$. So bleibt der gesamte Graph auch nach dem Entfernen von $e$ zusammenhängend.
+\end{enumerate}
+
+Wir führen diese Schritte so oft aus, bis wir einen Graphen $G'$ bekommen, welcher kreisfrei ist. Da $G$ endlich ist, besitzt $G$ nur endlich viele Kanten, also wird dieser Prozess nach endlich vielen Schritten abbrechen. Dann ist $G'$ kreisfrei und zusammenhängend, also ein Baum, insbesondere auch ein Spannbaum von $G$.
+
+\hrule
+
+Sei $G$ nun ein unendlicher Graph. Hier haben wir aber das Problem, dass wir möglicherweise unendlich viele Kreise haben, also werden wir mit obigem Algorithmus nie fertig.
+
+Trotzdem ist es möglich, $G$ auf einen kreisfreien Graphen $G'$, welches somit auch Spannbaum von $G$ ist, zu reduzieren. Wir suchen den maximalen kreisfreien Teilgraph von $G$. Wenn wir das Zorn-Kuratowski Lemma annehmen (bzw. ZFC annehmen), dann können wir wie folgt vorgehen:
+
+Sei $F$ die Menge aller kreisfreien Teilgraphen von $G$. Die Partialordnung auf $F$ ist $\subseteq$. Sei $K \subseteq F$ eine beliebige, nicht-leere Kette. Wir wollen zeigen, dass $F$ eine obere Schranke in $F$ besitzt.
+
+Betrachte
+\[
+    U = \bigcup_{T \in K} T
+\]
+
+Dieser Graph $U$ ist offensichtlich eine obere Schranke für $K$. Zeige, dass $U \in F$ ist. Dafür wollen wir zeigen, dass $U$ kreisfrei ist.
+
+Angenommen $U$ ist nicht kreisfrei. Dann besitzt $U$ einen Kreis (geschlossener Kantenzug) $H = \{e_1,\dots,e_n\}$. Da ein Kreis geschlossen ist, muss er aus endlich vielen Kanten bestehen. Da $U$ die Vereinigung aller Teilgraphen in $K$ ist, muss jede Kante $e_i \in H$ aus einem $T_i \in K$ stammen. Wir haben also eine endliche Anzahl $T_i \in F$, aus welche unsere Kanten in $H$ stammen.
+
+Da $F$ eine Partialordnung ist, gibt es eine grösste Teilmenge $T_\text{max}$ unter dieses Teilmengen, aus welchen die Kanten in $H$ stammen. Für dieses $T_\text{max}$ gilt:
+\[
+    e_i \in T_\text{max} \ \forall i = 1,\dots,n
+\]
+
+Dann ist aber $H \subset T_\text{max}$, also hat $T_\text{max}$ einen Kreis. Dies widerspricht aber der Tatsache, dass $T_\text{max} \in F$ gilt. Also muss $U$ kreisfrei sein.
+
+Wir haben also eine obere Schranke für die Kette $K$ gefunden. Da diese Kette beliebig war, besitzt jede Kette in $F$ eine obere Schranke.
+
+So gilt nach dem Zorn-Kuratowski Lemma, dass es einen maximalen kreisfreien Teilgraphen $G'$ von $G$ gibt. Dieser ist zusammenhängend und kreisfrei, also ein Baum, und es gilt $E_{G'} \subseteq E_G$ und $V_{G'} = V_G$. Also ist $G'$ ein Spannbaum von $G$.
+
+Also besitzt unter der Annahme von ZFC jeder zusammenhängende Graph (auch ein unendlicher) einen Spannbaum. \qed
 
 \end{document}
